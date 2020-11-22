@@ -14,7 +14,7 @@ curl http://localhost:8080/store/my-db/items/my-doc-id \
   --data '{ "message": "Hello World" }'
 
 curl http://localhost:8080/store/my-db/items/my-doc-id
-# { "_id": "my-doc-id", "_etag": "SOME_HASH", "message": "Hello World" }
+# { "message": "Hello World" }
 
 curl http://localhost:8080/store/my-db/items/my-doc-id --request DELETE
 
@@ -102,17 +102,14 @@ volumes:
 在指定的存储器(db)里, 插入/更新特定JSON文档(id).
 
 只接受带有 =Content-Type: application/json= 的请求,
-当Payload不是合法的JSON时, 将返回400.
+当payload不是合法的JSON时, 将返回400.
 
-文档根处的 =_id= 和 =_etag= 字段在 Store 里具有特殊意义, 相关的值会被服务器覆盖:
-=_id= 等同于文档id.
-=_etag= 是一个由服务器计算出的值, 该值可被用于基于ETag的缓存和乐观并发策略.
+成功创建文档时返回201, 正文为空, 响应头 =ETag= 里包含新的revision.
+成功更新文档时返回204, 正文为空, 响应头 =ETag= 里包含新的revision.
+revision 是一个由服务器计算出的值, 该值可被用于基于revision的缓存和乐观并发策略.
 
-成功创建文档时返回201, 正文为空, 响应头里包含新的 =ETag=.
-成功更新文档时返回204, 正文为空, 响应头里包含新的 =ETag=.
-
-可以使用 =If-Match= 发送带有ETag的请求, 这可以在更新时启用乐观并发策略,
-当ETag与服务器的文档不匹配时返回412.
+可以使用 =If-Match= 发送带有revision的请求, 这可以在更新时启用乐观并发策略,
+当revision与服务器的文档不匹配时返回412.
 
 ***** Example
 ****** curl
@@ -140,10 +137,10 @@ await fetch(`http://localhost:8080/store/${db}/items/${id}`, {
 
 检测文档是否存在, 返回200或404.
 
-响应头里会包含 =ETag= 字段, 可用于获取文档当前的ETag.
+响应头 =ETag= 里包含文档当前的revision.
 
-可以使用 =If-None-Match= 发送带有ETag的请求, 这可以启用基于ETag的缓存,
-如果ETag与服务器的文档一致, 将返回304, 否则返回200或404.
+可以使用 =If-None-Match= 发送带有revision的请求, 这可以启用基于revision的缓存,
+如果revision与服务器的文档一致, 将返回304, 否则返回200或404.
 
 ***** Example
 ****** curl
@@ -165,10 +162,10 @@ await fetch(`http://localhost:8080/store/${db}/items/${id}`, {
 
 获取JSON文档, 返回200或404.
 
-响应头里的 =ETag= 和文档的 =_etag= 字段, 可用于获取文档当前的ETag.
+响应头 =ETag= 里包含文档当前的revision.
 
-可以使用 =If-None-Match= 发送带有ETag的请求, 这可以启用基于ETag的缓存,
-如果ETag与服务器的文档一致, 将返回304, 否则返回200或404.
+可以使用 =If-None-Match= 发送带有revision的请求, 这可以启用基于revision的缓存,
+如果revision与服务器的文档一致, 将返回304, 否则返回200或404.
 
 ***** Example
 ****** curl
@@ -199,7 +196,7 @@ await fetch(`http://localhost:8080/store/${db}/items/${id}`)
 
 **** delete
 =DELETE /store/<db>/items/<id>=
-删除时可用 =If-Match= 包含ETag, 防止幻影删除, 不匹配时返回412.
+删除时可用 =If-Match= 包含revision, 防止幻影删除, 不匹配时返回412.
 
 **** 统计信息
 =GET /stats=
@@ -309,38 +306,111 @@ await fetch(`http://localhost:8080/api/store/${id}/json-schema`, {
 })
 #+END_SRC
 
-**** ETag策略
-***** 获取所有具有ETag策略的Store id
-=GET /api/store-with-etag-policies=
-
-返回由JSON表示的字符串数组 =string[]=.
-
-***** 获取特定store的ETag策略
-设置环境变量 =UPDATE_ETAG_REQUIRED=true= 可强制要求客户端在发出更新请求时提供 =If-Match= 请求头, 默认为 =false=.
-设置环境变量 =DELETE_ETAG_REQUIRED=true= 可强制要求客户端在发出删除请求时提供 =If-Match= 请求头, 默认为 =false=.
+**** Revision策略
+设置环境变量 =UPDATE_REVISION_REQUIRED=true= 可强制要求客户端在发出更新请求时提供 =If-Match= 请求头, 默认为 =false=.
+设置环境变量 =DELETE_REVISION_REQUIRED=true= 可强制要求客户端在发出删除请求时提供 =If-Match= 请求头, 默认为 =false=.
 
 可单独为特定store设置策略以覆盖默认值.
 
-=GET /api/store/<id>/etag-policies=
+***** 获取所有具有revision策略的Store id
+=GET /api/store-with-revision-policies=
+
+返回由JSON表示的字符串数组 =string[]=.
+
+****** Example 
+******* curl
+#+BEGIN_SRC sh
+curl \
+  --header "Authorization: Bearer $ADMIN_PASSWORD" \
+  "http://localhost:8080/api/store-with-revision-policies"
+#+END_SRC
+
+******* fetch
+#+BEGIN_SRC js
+await fetch('http://localhost:8080/api/store-with-revision-policies', {
+  headers: {
+    'Authorization': `Bearer ${adminPassword}`
+  }
+})
+#+END_SRC
+
+***** 获取特定store的revision策略
+=GET /api/store/<id>/revision-policies=
 
 返回JSON:
 #+BEGIN_SRC ts
 {
-  updateETagRequired: boolean | null
-  deleteETagRequired: boolean | null
+  updateRevisionRequired: boolean | null
+  deleteRevisionRequired: boolean | null
 }
 #+END_SRC
 =null= 代表沿用相关默认值.
 
-****** 设置ETag策略
-=PUT /api/store/<id>/etag-policies/update-etag-required=
-=PUT /api/store/<id>/etag-policies/delete-etag-required=
+****** Example
+******* curl
+#+BEGIN_SRC sh
+curl \
+  --header "Authorization: Bearer $ADMIN_PASSWORD" \
+  "http://localhost:8080/api/store/$id/revision-policies"
+#+END_SRC
+
+******* fetch
+#+BEGIN_SRC js
+await fetch(`http://localhost:8080/api/store/${id}/revision-policies`, {
+  headers: {
+    'Authorization': `Bearer ${adminPassword}`
+  }
+}).then(res => res.json())
+#+END_SRC
+
+***** 设置revision策略
+=PUT /api/store/<id>/revision-policies/update-revision-required=
+=PUT /api/store/<id>/revision-policies/delete-revision-required=
 
 Payload必须是一个布尔值.
 
-****** 移除ETag策略
-=DELETE /api/store/<id>/etag-policies/update-etag-required=
-=DELETE /api/store/<id>/etag-policies/delete-etag-required=
+****** Example
+******* curl
+#+BEGIN_SRC sh
+curl \
+  --request PUT \
+  --header "Authorization: Bearer $ADMIN_PASSWORD" \
+  --header "Content-Type: application/json" \
+  --data "$UPDATE_REVISION_RQUIRED" \
+  "http://localhost:8080/api/store/$id/revision-policies/update-revision-required"
+#+END_SRC
+
+******* fetch
+#+BEGIN_SRC js
+await fetch(`http://localhost:8080/api/store/${id}/revision-policies/update-revision-required`, {
+  method: 'PUT'
+, headers: {
+    'Authorization': `Bearer ${adminPassword}`
+  , 'Content-Type': 'application/json'
+  }
+, body: JSON.stringify(updateRevisionRequired)
+})
+#+END_SRC
+
+***** 移除revision策略
+=DELETE /api/store/<id>/revision-policies/update-revision-required=
+=DELETE /api/store/<id>/revision-policies/delete-revision-required=
+
+****** Example
+******* curl
+#+BEGIN_SRC sh
+curl \
+  --request DELETE \
+  --header "Authorization: Bearer $ADMIN_PASSWORD" \
+  "http://localhost:8080/api/store/$id/revision-policies/update-revision-required"
+#+END_SRC
+
+******* fetch
+#+BEGIN_SRC js
+await fetch(`http://localhost:8080/api/store/${id}/revision-policies/update-revision-required`, {
+  method: 'DELETE'
+})
+#+END_SRC
 
 **** 访问控制
 Store提供两种可以同时启用的访问控制策略.
