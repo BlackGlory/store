@@ -85,6 +85,7 @@
     "level": "^6.0.1",
     "leveldown": "^5.6.0",
     "migrations-file": "^0.1.1",
+    "nanoid": "^3.1.18",
     "return-style": "^0.10.1",
     "rxjs": "^7.0.0-beta.8",
     "subleveldown": "^5.0.1"

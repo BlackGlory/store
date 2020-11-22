@@ -13,7 +13,7 @@ beforeEach(async () => {
   await resetDatabases()
 })
 
-describe('setItem(namespace: string, id: string, doc: IDocument): Promise<Hash>', () => {
+describe('setItem(namespace: string, id: string, doc: IDocument): Promise<Revision>', () => {
   it('set doc and return hash', async () => {
     const namespace = 'test'
     const id = 'id-1'
@@ -25,7 +25,7 @@ describe('setItem(namespace: string, id: string, doc: IDocument): Promise<Hash>'
 
     expect(result).toBePromise()
     expect(proResult).toBeString()
-    expect(proResult).toBe(item.meta.hash)
+    expect(proResult).toBe(item.meta.rev)
     expect(item.doc).toStrictEqual(doc)
   })
 })

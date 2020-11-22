@@ -1,7 +1,7 @@
-type Hash = string
+type Revision = string
 
 interface IMetadata {
-  hash: Hash
+  rev: Revision
 }
 
 interface IDocument {
@@ -17,23 +17,23 @@ interface IStoreDAO {
   hasItem(namespace: string, id: string): Promise<boolean>
   getItem(namespace: string, id: string): Promise<IItem | null>
 
-  setItem(namespace: string, id: string, doc: IDocument): Promise<Hash>
+  setItem(namespace: string, id: string, doc: IDocument): Promise<Revision>
 
-  updateItem(namespace: string, id: string, doc: IDocument): Promise<Hash>
+  updateItem(namespace: string, id: string, doc: IDocument): Promise<Revision>
   updateItemWithCheck(
     namespace: string
   , id: string
-  , hash: Hash
+  , rev: Revision
   , doc: IDocument
-  ): Promise<Hash>
+  ): Promise<Revision>
 
   removeItem(namespace: string, id: string): Promise<void>
-  removeItemWithCheck(namespace: string, id: string, hash: Hash): Promise<void>
+  removeItemWithCheck(namespace: string, id: string, rev: Revision): Promise<void>
 
   listAllItemIds(namespace: string): NodeJS.ReadableStream
 
   Error: {
     NotFound: new (namespace: string, id: string) => Error
-    IncorrectHash: new (namespace: string, id: string, hash: string) => Error
+    IncorrectRevision: new (namespace: string, id: string) => Error
   }
 }

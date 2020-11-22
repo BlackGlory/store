@@ -1,11 +1,11 @@
-import { validateHash } from './utils/validate-hash'
-import { NotFound, IncorrectHash } from './error'
+import { validateRevision } from './utils/validate-hash'
+import { NotFound, IncorrectRevision } from './error'
 import { setItemNoLock } from './utils/set-item-no-lock'
 import { hasItem } from './has-item'
 import { getItem } from './get-item'
 import { acquire } from './utils/mutex-pool'
 
-export async function updateItem(namespace: string, id: string, doc: IDocument): Promise<Hash> {
+export async function updateItem(namespace: string, id: string, doc: IDocument): Promise<Revision> {
   return await acquire(namespace, id, async () => {
     const item = await hasItem(namespace, id)
     if (!item) throw new NotFound(namespace, id)
@@ -13,14 +13,14 @@ export async function updateItem(namespace: string, id: string, doc: IDocument):
   })
 }
 
-export async function updateItemWithCheck(namespace: string, id: string, hash: Hash, doc: IDocument): Promise<Hash> {
+export async function updateItemWithCheck(namespace: string, id: string, rev: Revision, doc: IDocument): Promise<Revision> {
   return await acquire(namespace, id, async () => {
     const item = await getItem(namespace, id)
     if (!item) throw new NotFound(namespace, id)
-    if (validateHash(item, hash)) {
+    if (validateRevision(item, rev)) {
       return await setItemNoLock(namespace, id, doc)
     } else {
-      throw new IncorrectHash(namespace, id, hash)
+      throw new IncorrectRevision(namespace, id)
     }
   })
 }

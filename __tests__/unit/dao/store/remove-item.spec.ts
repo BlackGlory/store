@@ -1,5 +1,5 @@
 import { removeItem, removeItemWithCheck } from '@dao/store/remove-item'
-import { NotFound, IncorrectHash } from '@dao/store/error'
+import { NotFound, IncorrectRevision } from '@dao/store/error'
 import { getErrorPromise } from 'return-style'
 import { resetDatabases, resetEnvironment } from '@test/utils'
 import { set, has } from './utils'
@@ -21,7 +21,7 @@ describe('removeItem(namespace: string, id: string): Promise<void>', () => {
       const namespace = 'test'
       const id = 'id'
       const item: IItem = {
-        meta: { hash: 'hash' }
+        meta: { rev: 'rev' }
       , doc: { message: 'message' }
       }
       await set(namespace, id, item)
@@ -52,19 +52,19 @@ describe('removeItem(namespace: string, id: string): Promise<void>', () => {
   })
 })
 
-describe('removeItemWithCheck(namespace: string, id: string, hash: string): Promise<void>', () => {
+describe('removeItemWithCheck(namespace: string, id: string, rev: string): Promise<void>', () => {
   describe('it exists', () => {
-    describe('correct hash', () => {
+    describe('correct rev', () => {
       it('return undefined', async () => {
         const namespace = 'test'
         const id = 'id'
         const item: IItem = {
-          meta: { hash: 'hash' }
+          meta: { rev: 'rev' }
         , doc: { message: 'message' }
         }
         await set(namespace, id, item)
 
-        const result = removeItemWithCheck(namespace, id, item.meta.hash)
+        const result = removeItemWithCheck(namespace, id, item.meta.rev)
         const proResult = await result
         const isExist = await has(namespace, id)
 
@@ -74,22 +74,22 @@ describe('removeItemWithCheck(namespace: string, id: string, hash: string): Prom
       })
     })
 
-    describe('incorrect hash', () => {
-      it('throw IncorrectHash', async () => {
+    describe('incorrect rev', () => {
+      it('throw IncorrectRevision', async () => {
         const namespace = 'test'
         const id = 'id'
         const item: IItem = {
-          meta: { hash: 'hash' }
+          meta: { rev: 'rev' }
         , doc: { message: 'message' }
         }
         await set(namespace, id, item)
 
-        const result = removeItemWithCheck(namespace, id, 'bad-hash')
+        const result = removeItemWithCheck(namespace, id, 'bad-rev')
         const proResult = await getErrorPromise(result)
         const isExist = await has(namespace, id)
 
         expect(result).toBePromise()
-        expect(proResult).toBeInstanceOf(IncorrectHash)
+        expect(proResult).toBeInstanceOf(IncorrectRevision)
         expect(isExist).toBeTruthy()
       })
     })
@@ -99,9 +99,9 @@ describe('removeItemWithCheck(namespace: string, id: string, hash: string): Prom
     it('throw NotFound', async () => {
       const namespace = 'test'
       const id = 'id'
-      const hash = 'hash'
+      const rev = 'hash'
 
-      const result = removeItemWithCheck(namespace, id, hash)
+      const result = removeItemWithCheck(namespace, id, rev)
       const proResult = await getErrorPromise(result)
       const isExist = await has(namespace, id)
 

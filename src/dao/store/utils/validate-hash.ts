@@ -1,3 +1,3 @@
-export function validateHash(item: IItem, hash: string): boolean {
-  return hash === item.meta.hash
+export function validateRevision(item: IItem, rev: string): boolean {
+  return rev === item.meta.rev
 }

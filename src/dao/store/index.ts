@@ -1,4 +1,4 @@
-import { NotFound, IncorrectHash } from './error'
+import { NotFound, IncorrectRevision } from './error'
 import { setItem } from './set-item'
 import { getItem }  from './get-item'
 import { hasItem } from './has-item'
@@ -17,6 +17,6 @@ export const StoreDAO: IStoreDAO = {
 , listAllItemIds
 , Error: {
     NotFound
-  , IncorrectHash
+  , IncorrectRevision
   }
 }

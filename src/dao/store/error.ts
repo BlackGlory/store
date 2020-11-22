@@ -5,9 +5,9 @@ export class NotFound extends Error {
   }
 }
 
-export class IncorrectHash extends Error {
+export class IncorrectRevision extends Error {
   name = this.constructor.name
-  constructor(namespace: string, id: string, hash: string) {
-    super(`The hash ${hash} of the item in ${namespace}/${id} is incorrect`)
+  constructor(namespace: string, id: string) {
+    super(`The revision of the item in ${namespace}/${id} is incorrect`)
   }
 }

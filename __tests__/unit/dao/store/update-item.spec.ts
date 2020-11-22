@@ -1,5 +1,5 @@
 import { updateItem, updateItemWithCheck } from '@dao/store/update-item'
-import { NotFound, IncorrectHash } from '@dao/store/error'
+import { NotFound, IncorrectRevision } from '@dao/store/error'
 import { resetDatabases, resetEnvironment } from '@test/utils'
 import '@blackglory/jest-matchers'
 import 'jest-extended'
@@ -15,13 +15,13 @@ beforeEach(async () => {
   await resetDatabases()
 })
 
-describe('updateItem(namespace: string, id: string, doc: string): Promise<Hash>', () => {
+describe('updateItem(namespace: string, id: string, doc: string): Promise<Revision>', () => {
   describe('it exists', () => {
-    it('update item and return new hash', async () => {
+    it('update item and return new revision', async () => {
       const namespace = 'test'
       const id = 'id'
       const item: IItem = {
-        meta: { hash: 'hash' }
+        meta: { rev: 'revision' }
       , doc: { message: 'message' }
       }
       const newDoc: IDocument = { message: 'updated' }
@@ -33,9 +33,9 @@ describe('updateItem(namespace: string, id: string, doc: string): Promise<Hash>'
 
       expect(result).toBePromise()
       expect(proResult).toBeString()
-      expect(proResult).not.toBe(item.meta.hash)
+      expect(proResult).not.toBe(item.meta.rev)
       expect(updatedItem.doc).toStrictEqual(newDoc)
-      expect(updatedItem.meta.hash).toBe(proResult)
+      expect(updatedItem.meta.rev).toBe(proResult)
     })
   })
 
@@ -54,49 +54,49 @@ describe('updateItem(namespace: string, id: string, doc: string): Promise<Hash>'
   })
 })
 
-describe('updateItemWithCheck(namespace: string, id: string, hash: string, doc: string): Promise<Hash>', () => {
+describe('updateItemWithCheck(namespace: string, id: string, rev: string, doc: string): Promise<Revision>', () => {
   describe('it exists', () => {
-    describe('correct hash', () => {
-      it('update item and return new hash', async () => {
+    describe('correct revision', () => {
+      it('update item and return new revision', async () => {
         const namespace = 'test'
         const id = 'id'
-        const hash = 'hash'
+        const revision = 'revision'
         const item: IItem = {
-          meta: { hash }
+          meta: { rev: revision }
         , doc: { message: 'message' }
         }
         const newDoc: IDocument = { message: 'updated' }
         set(namespace, id, item)
 
-        const result = updateItemWithCheck(namespace, id, hash, newDoc)
+        const result = updateItemWithCheck(namespace, id, revision, newDoc)
         const proResult = await result
         const updatedItem = await get(namespace, id)
 
         expect(result).toBePromise()
         expect(proResult).toBeString()
-        expect(proResult).not.toBe(item.meta.hash)
+        expect(proResult).not.toBe(item.meta.rev)
         expect(updatedItem.doc).toStrictEqual(newDoc)
-        expect(updatedItem.meta.hash).toBe(proResult)
+        expect(updatedItem.meta.rev).toBe(proResult)
       })
     })
 
-    describe('incorrect hash', () => {
-      it('throw IncorrectHash', async () => {
+    describe('incorrect revision', () => {
+      it('throw IncorrectRevision', async () => {
         const namespace = 'test'
         const id = 'id'
         const item: IItem = {
-          meta: { hash: 'hash' }
+          meta: { rev: 'revision' }
         , doc: { message: 'message' }
         }
         const newDoc: IDocument = { message: 'updated' }
         set(namespace, id, item)
 
-        const result = updateItemWithCheck(namespace, id, 'bad-hash', newDoc)
+        const result = updateItemWithCheck(namespace, id, 'bad-revision', newDoc)
         const proResult = await getErrorPromise(result)
         const existingItem = await get(namespace, id)
 
         expect(result).toBePromise()
-        expect(proResult).toBeInstanceOf(IncorrectHash)
+        expect(proResult).toBeInstanceOf(IncorrectRevision)
         expect(existingItem).toStrictEqual(item)
       })
     })
@@ -107,9 +107,9 @@ describe('updateItemWithCheck(namespace: string, id: string, hash: string, doc: 
       const namespace = 'test'
       const id = 'id-1'
       const doc: IDocument = { message: 'updated' }
-      const hash = 'hash'
+      const revision = 'revision'
 
-      const result = updateItemWithCheck(namespace, id, hash, doc)
+      const result = updateItemWithCheck(namespace, id, revision, doc)
       const proResult = await getErrorPromise(result)
 
       expect(result).toBePromise()

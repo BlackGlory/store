@@ -1,8 +1,8 @@
 import { hasItem } from './has-item'
 import { getItem } from './get-item'
-import { validateHash } from './utils/validate-hash'
+import { validateRevision } from './utils/validate-hash'
 import { removeById } from './utils/remove-by-id'
-import { NotFound, IncorrectHash } from './error'
+import { NotFound, IncorrectRevision } from './error'
 import { acquire } from './utils/mutex-pool'
 
 export async function removeItem(namespace: string, id: string): Promise<void> {
@@ -13,14 +13,14 @@ export async function removeItem(namespace: string, id: string): Promise<void> {
   })
 }
 
-export async function removeItemWithCheck(namespace: string, id: string, hash: Hash): Promise<void> {
+export async function removeItemWithCheck(namespace: string, id: string, rev: Revision): Promise<void> {
   return await acquire(namespace, id, async () => {
     const item = await getItem(namespace, id)
     if (!item) throw new NotFound(namespace, id)
-    if (validateHash(item, hash)) {
+    if (validateRevision(item, rev)) {
       await removeById(namespace, id)
     } else {
-      throw new IncorrectHash(namespace, id, hash)
+      throw new IncorrectRevision(namespace, id)
     }
   })
 }

@@ -1,14 +1,14 @@
 import { getSubDatabase } from './get-sub-database'
-import { computeHash } from './compute-hash'
+import { nanoid } from 'nanoid'
 
-export async function setItemNoLock(namespace: string, id: string, doc: IDocument): Promise<Hash> {
+export async function setItemNoLock(namespace: string, id: string, doc: IDocument): Promise<Revision> {
   const db = getSubDatabase(namespace)
 
-  const hash = computeHash(JSON.stringify(doc))
+  const rev = nanoid()
   const item: IItem = {
-    meta: { hash }
+    meta: { rev }
   , doc: doc
   }
   await db.put(id, item)
-  return hash
+  return rev
 }
