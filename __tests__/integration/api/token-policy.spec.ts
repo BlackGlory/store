@@ -1,14 +1,15 @@
 import { buildServer } from '@src/server'
-import { prepareDatabase, resetEnvironment } from '@test/utils'
+import { resetDatabases, resetEnvironment } from '@test/utils'
 import { matchers } from 'jest-json-schema'
 
 jest.mock('@dao/access-control/database')
 jest.mock('@dao/json-schema/database')
+jest.mock('@dao/store/database')
 expect.extend(matchers)
 
 beforeEach(async () => {
   resetEnvironment()
-  await prepareDatabase()
+  await resetDatabases()
 })
 
 describe('TokenPolicy', () => {

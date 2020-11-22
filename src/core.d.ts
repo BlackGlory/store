@@ -8,13 +8,21 @@ type Json =
 | { [property: string]: Json }
 | Json[]
 
-interface ILog {
-  id: string
-  payload: string
+interface IDoc {
+  _id: string
+  _etag: string
 }
 
 interface ICore {
   isAdmin(password: string): boolean
+
+  // Store: {
+  //   set(store: string, id: string, doc: Json): Promise<string>
+  //   has(store: string, id: string): Promise<boolean>
+  //   get(store: string, id: string): Promise<IDoc>
+  //   list(store: string): NodeJS.ReadableStream
+  //   remove(store: string, id: string): Promise<string>
+  // }
 
   stats(): {
     memoryUsage: NodeJS.MemoryUsage
