@@ -1,12 +1,13 @@
 import * as DAO from '@dao/access-control/token-policy'
 import { getDatabase } from '@dao/access-control/database'
-import { resetAccessControlDatabase, resetEnvironment, resetDatabases } from '@test/utils'
+import { resetEnvironment, resetDatabases } from '@test/utils'
 import { Database } from 'better-sqlite3'
 import 'jest-extended'
 
 jest.mock('@dao/access-control/database')
 jest.mock('@dao/json-schema/database')
 jest.mock('@dao/store/database')
+jest.mock('@dao/revision-policy/database')
 
 beforeEach(async () => {
   resetEnvironment()
@@ -133,6 +134,47 @@ describe('TokenPolicy', () => {
         const id = 'id'
 
         const result = DAO.unsetReadTokenRequired(id)
+
+        expect(result).toBeUndefined()
+        expect(exist(db, id)).toBeFalse()
+      })
+    })
+  })
+
+  describe('setDeleteTokenRequired(id: string, val: boolean): void', () => {
+    it('return undefined', async () => {
+      const db = getDatabase()
+      const id = 'id'
+
+      const result = DAO.setDeleteTokenRequired(id, true)
+      const row = select(db, id)
+
+      expect(result).toBeUndefined()
+      expect(row['delete_token_required']).toBe(1)
+    })
+  })
+
+  describe('unsetDeleteTokenRequired(id: string): void', () => {
+    describe('policy exists', () => {
+      it('return undefined', async () => {
+        const db = getDatabase()
+        const id = 'id'
+        insert(db, id, { readTokenRequired: 1, writeTokenRequired: 1, deleteTokenRequired: 1 })
+
+        const result = DAO.unsetDeleteTokenRequired(id)
+        const row = select(db, id)
+
+        expect(result).toBeUndefined()
+        expect(row['delete_token_required']).toBeNull()
+      })
+    })
+
+    describe('policy does not exist', () => {
+      it('return undefined', async () => {
+        const db = getDatabase()
+        const id = 'id'
+
+        const result = DAO.unsetDeleteTokenRequired(id)
 
         expect(result).toBeUndefined()
         expect(exist(db, id)).toBeFalse()

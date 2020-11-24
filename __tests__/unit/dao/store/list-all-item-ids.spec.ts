@@ -7,6 +7,7 @@ import '@blackglory/jest-matchers'
 jest.mock('@dao/store/database')
 jest.mock('@dao/json-schema/database')
 jest.mock('@dao/access-control/database')
+jest.mock('@dao/revision-policy/database')
 
 beforeEach(async () => {
   resetEnvironment()

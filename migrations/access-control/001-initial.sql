@@ -17,14 +17,14 @@ CREATE TABLE store_whitelist (
 );
 
 CREATE TABLE store_token_policy (
-  store_id             VARCHAR(255) NOT NULL UNIQUE
+  store_id              VARCHAR(255) NOT NULL UNIQUE
 , write_token_required  BOOLEAN
 , read_token_required   BOOLEAN
 , delete_token_required BOOLEAN
 );
 
 CREATE TABLE store_token (
-  store_id         VARCHAR(255) NOT NULL
+  store_id          VARCHAR(255) NOT NULL
 , token             VARCHAR(255) NOT NULL
 , read_permission   BOOLEAN      NOT NULL DEFAULT 0 CHECK(read_permission IN (0,1))
 , write_permission  BOOLEAN      NOT NULL DEFAULT 0 CHECK(write_permission IN (0,1))

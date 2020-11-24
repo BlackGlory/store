@@ -1,11 +1,13 @@
 import * as AccessControlDatatbase from '@dao/access-control/database'
 import * as JsonSchemaDatabase from '@dao/json-schema/database'
 import * as StoreDatabase from '@dao/store/database'
+import * as RevisionPolicyDatabase from '@dao/revision-policy/database'
 
 export async function resetDatabases() {
   await resetAccessControlDatabase()
   await resetJsonSchemaDatabase()
   await resetStoreDatabase()
+  await resetRevisionPolicy()
 }
 
 export async function resetAccessControlDatabase() {
@@ -21,6 +23,11 @@ export async function resetJsonSchemaDatabase() {
 export async function resetStoreDatabase() {
   await StoreDatabase.closeDatabase()
   await StoreDatabase.prepareDatabase()
+}
+
+export async function resetRevisionPolicy() {
+  await RevisionPolicyDatabase.closeDatabase()
+  await RevisionPolicyDatabase.prepareDatabase()
 }
 
 export async function resetEnvironment() {

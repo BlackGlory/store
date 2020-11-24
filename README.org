@@ -307,8 +307,8 @@ await fetch(`http://localhost:8080/api/store/${id}/json-schema`, {
 #+END_SRC
 
 **** Revision策略
-设置环境变量 =UPDATE_REVISION_REQUIRED=true= 可强制要求客户端在发出更新请求时提供 =If-Match= 请求头, 默认为 =false=.
-设置环境变量 =DELETE_REVISION_REQUIRED=true= 可强制要求客户端在发出删除请求时提供 =If-Match= 请求头, 默认为 =false=.
+设置环境变量 =STORE_UPDATE_REVISION_REQUIRED=true= 可强制要求客户端在发出更新请求时提供 =If-Match= 请求头, 默认为 =false=.
+设置环境变量 =STORE_DELETE_REVISION_REQUIRED=true= 可强制要求客户端在发出删除请求时提供 =If-Match= 请求头, 默认为 =false=.
 
 可单独为特定store设置策略以覆盖默认值.
 

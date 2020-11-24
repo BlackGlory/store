@@ -94,18 +94,10 @@ export function WRITE_PAYLOAD_LIMIT(): number {
   }
 }
 
-export function STORE_LOGS_TIME_TO_LIVE(): number {
-  if (process.env.STORE_LOGS_TIME_TO_LIVE) {
-    return Number(process.env.STORE_LOGS_TIME_TO_LIVE)
-  } else {
-    return 0
-  }
+export function UPDATE_REVISION_REQUIRED(): boolean {
+  return process.env.STORE_UPDATE_REVISION_REQUIRED === 'true'
 }
 
-export function STORE_LOGS_LIMIT(): number {
-  if (process.env.STORE_LOGS_LIMIT) {
-    return Number(process.env.STORE_LOGS_LIMIT)
-  } else {
-    return 0
-  }
+export function DELETE_REVISION_REQUIRED(): boolean {
+  return process.env.STORE_DELETE_REVISION_REQUIRED === 'true'
 }
