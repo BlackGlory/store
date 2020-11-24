@@ -1,39 +1,25 @@
-import * as AccessControlDatatbase from '@dao/access-control/database'
-import * as JsonSchemaDatabase from '@dao/json-schema/database'
-import * as StoreDatabase from '@dao/store/database'
-import * as RevisionPolicyDatabase from '@dao/revision-policy/database'
+import * as ConfigInSqlite3 from '@dao/config-in-sqlite3/database'
+import * as DataInLevelDB from '@dao/data-in-leveldb/database'
 
 export async function resetDatabases() {
-  await resetAccessControlDatabase()
-  await resetJsonSchemaDatabase()
-  await resetStoreDatabase()
-  await resetRevisionPolicy()
+  await resetConfigInSqlite3Database()
+  await resetDataInLeveldbDatabase()
 }
 
-export async function resetAccessControlDatabase() {
-  AccessControlDatatbase.closeDatabase()
-  await AccessControlDatatbase.prepareDatabase()
+export async function resetConfigInSqlite3Database() {
+  ConfigInSqlite3.closeDatabase()
+  await ConfigInSqlite3.prepareDatabase()
 }
 
-export async function resetJsonSchemaDatabase() {
-  JsonSchemaDatabase.closeDatabase()
-  await JsonSchemaDatabase.prepareDatabase()
-}
-
-export async function resetStoreDatabase() {
-  await StoreDatabase.closeDatabase()
-  await StoreDatabase.prepareDatabase()
-}
-
-export async function resetRevisionPolicy() {
-  await RevisionPolicyDatabase.closeDatabase()
-  await RevisionPolicyDatabase.prepareDatabase()
+export async function resetDataInLeveldbDatabase() {
+  await DataInLevelDB.closeDatabase()
+  await DataInLevelDB.prepareDatabase()
 }
 
 export async function resetEnvironment() {
   // assigning a property on `process.env` will implicitly convert the value to a string.
   // use `delete` to delete a property from `process.env`.
-  // sjee also: https://nodejs.org/api/process.html#process_process_env
+  // see also: https://nodejs.org/api/process.html#process_process_env
   delete process.env.STORE_HOST
   delete process.env.STORE_PORT
   delete process.env.STORE_ADMIN_PASSWORD

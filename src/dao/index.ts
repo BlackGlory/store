@@ -1,3 +1,4 @@
-export { AccessControlDAO } from './access-control'
-export { JsonSchemaDAO } from './json-schema'
-export { StoreDAO } from './store'
+export { AccessControlDAO } from './config-in-sqlite3/access-control'
+export { JsonSchemaDAO } from './config-in-sqlite3/json-schema'
+export { RevisionPolicyDAO } from './config-in-sqlite3/revision-policy'
+export { StoreDAO } from './data-in-leveldb/store'
