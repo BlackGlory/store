@@ -19,7 +19,7 @@ interface ICore {
 
   Store: {
     has(store: string, id: string): Promise<boolean>
-    get(store: string, id: string): Promise<IDocument>
+    get(store: string, id: string): Promise<IItem | null>
     set(store: string, id: string, doc: IDocument, rev?: Revision): Promise<Revision>
     remove(store: string, id: string, rev?: Revision): Promise<void>
     list(store: string): NodeJS.ReadableStream
@@ -59,7 +59,7 @@ interface ICore {
 
   JsonSchema: {
     isEnabled(): boolean
-    validate(id: string, payload: string): Promise<void>
+    validate(id: string, payload: unknown): Promise<void>
     getAllIds(): Promise<string[]>
     get(id: string): Promise<string | null>
     set(id: string, schema: string): Promise<void>

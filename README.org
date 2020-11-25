@@ -186,17 +186,36 @@ await fetch(`http://localhost:8080/store/${db}/items/${id}`)
 ***** Example
 ****** curl
 #+BEGIN_SRC sh
-curl "http://localhost:8080/store/$db/items/$id"
+curl "http://localhost:8080/store/$db/items"
 #+END_SRC
 
 ****** JavaScript
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/store/${db}/items/${id}`)
+await fetch(`http://localhost:8080/store/${db}/items`)
 #+END_SRC
 
 **** delete
 =DELETE /store/<db>/items/<id>=
-删除时可用 =If-Match= 包含revision, 防止幻影删除, 不匹配时返回412.
+
+删除特定JSON文档, 返回204或404.
+
+可以使用 =If-Match= 发送带有revision的请求, 这可以防止幻影删除,
+当revision与服务器的文档不匹配时返回412.
+
+***** Example
+****** curl
+#+BEGIN_SRC sh
+curl \
+  --request DELETE \
+  "http://localhost:8080/store/$db/items/$id"
+#+END_SRC
+
+****** JavaScript
+#+BEGIN_SRC js
+await fetch(`http://localhost:8080/store/${db}/items/${id}`, {
+  method: 'DELETE'
+})
+#+END_SRC
 
 **** 统计信息
 =GET /stats=
@@ -209,6 +228,18 @@ await fetch(`http://localhost:8080/store/${db}/items/${id}`)
   resourceUsage: NodeJS.ResourceUsage
 }
 #+END_SRC
+
+***** Example
+****** curl
+#+BEGIN_SRC sh
+curl 'http://localhost:8080/stats'
+#+END_SRC
+
+****** JavaScript
+#+BEGIN_SRC js
+await fetch('http://localhost:8080/stats').then(res => res.json())
+#+END_SRC
+
 *** Private
 **** JSON Schema验证
 通过环境变量 =STORE_DEFAULT_JSON_SCHEMA= 可设置默认的JSON Schema.

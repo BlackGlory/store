@@ -24,13 +24,12 @@ export function remove(id: string): Promise<void> {
   return JsonSchemaDAO.removeJsonSchema(id)
 }
 
-export async function validate(id: string, payload: string): Promise<void> {
-  const json = JSON.parse(payload)
+export async function validate(id: string, payload: unknown): Promise<void> {
   const jsonSchema= await JsonSchemaDAO.getJsonSchema(id)
   const schema = jsonSchema ?? DEFAULT_JSON_SCHEMA()
   if (schema) {
     const ajv = new Ajv()
-    const valid = ajv.validate(JSON.parse(schema), json)
+    const valid = ajv.validate(JSON.parse(schema), payload)
     if (!valid) throw new Error(ajv.errorsText())
   }
 }

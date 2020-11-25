@@ -6,10 +6,8 @@ export function has(store: string, id: string): Promise<boolean> {
   return StoreDAO.hasItem(store, id)
 }
 
-export async function get(store: string, id: string): Promise<IDocument> {
-  const item = await StoreDAO.getItem(store, id)
-  if (!item) throw new NotFound()
-  return item.doc
+export async function get(store: string, id: string): Promise<IItem | null> {
+  return StoreDAO.getItem(store, id)
 }
 
 export async function set(store: string, id: string, doc: IDocument, rev?: Revision): Promise<Revision> {
@@ -29,7 +27,6 @@ export async function set(store: string, id: string, doc: IDocument, rev?: Revis
     }
   } catch (e) {
     if (e instanceof StoreDAO.Error.IncorrectRevision) throw new IncorrectRevision()
-    if (e instanceof StoreDAO.Error.NotFound) throw new NotFound()
     throw e
   }
 }
