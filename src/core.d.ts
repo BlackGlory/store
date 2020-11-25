@@ -11,6 +11,12 @@ type Json =
 interface ICore {
   isAdmin(password: string): boolean
 
+  stats(): {
+    memoryUsage: NodeJS.MemoryUsage
+    cpuUsage: NodeJS.CpuUsage
+    resourceUsage: NodeJS.ResourceUsage
+  }
+
   Store: {
     has(store: string, id: string): Promise<boolean>
     get(store: string, id: string): Promise<IDocument>
@@ -19,10 +25,18 @@ interface ICore {
     list(store: string): NodeJS.ReadableStream
   }
 
-  stats(): {
-    memoryUsage: NodeJS.MemoryUsage
-    cpuUsage: NodeJS.CpuUsage
-    resourceUsage: NodeJS.ResourceUsage
+  RevisionPolicy: {
+    getAllIds(): Promise<string[]>
+    get(id: string): Promise<{
+      updateRevisionRequired: boolean | null
+      deleteRevisionRequired: boolean | null
+    }>
+
+    setUpdateRevisionRequired(id: string, val: boolean): Promise<void>
+    unsetUpdateRevisionRequired(id: string): Promise<void>
+
+    setDeleteRevisionRequired(id: string, val: boolean): Promise<void>
+    unsetDeleteRevisionRequired(id: string): Promise<void>
   }
 
   Blacklist: {

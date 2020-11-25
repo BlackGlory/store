@@ -81,7 +81,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
   )
 
   server.delete<{
-    Params: { id: string}
+    Params: { id: string }
   }>(
     '/store/:id/token-policies/write-token-required'
   , {
