@@ -8,21 +8,16 @@ type Json =
 | { [property: string]: Json }
 | Json[]
 
-interface IDoc {
-  _id: string
-  _etag: string
-}
-
 interface ICore {
   isAdmin(password: string): boolean
 
-  // Store: {
-  //   set(store: string, id: string, doc: Json): Promise<string>
-  //   has(store: string, id: string): Promise<boolean>
-  //   get(store: string, id: string): Promise<IDoc>
-  //   list(store: string): NodeJS.ReadableStream
-  //   remove(store: string, id: string): Promise<string>
-  // }
+  Store: {
+    has(store: string, id: string): Promise<boolean>
+    get(store: string, id: string): Promise<IDocument>
+    set(store: string, id: string, doc: IDocument, rev?: Revision): Promise<Revision>
+    remove(store: string, id: string, rev?: Revision): Promise<void>
+    list(store: string): NodeJS.ReadableStream
+  }
 
   stats(): {
     memoryUsage: NodeJS.MemoryUsage
@@ -103,5 +98,7 @@ interface ICore {
   Error: {
     Forbidden: new () => Error
     Unauthorized: new () => Error
+    NotFound: new () => Error
+    IncorrectRevision: new () => Error
   }
 }

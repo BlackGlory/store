@@ -7,8 +7,8 @@ import { acquire } from './utils/mutex-pool'
 
 export async function removeItem(namespace: string, id: string): Promise<void> {
   return await acquire(namespace, id, async () => {
-    const item = await hasItem(namespace, id)
-    if (!item) throw new NotFound(namespace, id)
+    const exist = await hasItem(namespace, id)
+    if (!exist) throw new NotFound(namespace, id)
     await removeById(namespace, id)
   })
 }
