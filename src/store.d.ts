@@ -27,8 +27,8 @@ interface IStoreDAO {
   , doc: IDocument
   ): Promise<Revision>
 
-  removeItem(namespace: string, id: string): Promise<void>
-  removeItemWithCheck(namespace: string, id: string, rev: Revision): Promise<void>
+  deleteItem(namespace: string, id: string): Promise<void>
+  deleteItemWithCheck(namespace: string, id: string, rev: Revision): Promise<void>
 
   listAllItemIds(namespace: string): NodeJS.ReadableStream
 

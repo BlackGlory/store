@@ -1,4 +1,4 @@
-import { removeItem, removeItemWithCheck } from '@dao/data-in-leveldb/store/remove-item'
+import { deleteItem, deleteItemWithCheck } from '@dao/data-in-leveldb/store/delete-item'
 import { NotFound, IncorrectRevision } from '@dao/data-in-leveldb/store/error'
 import { getErrorPromise } from 'return-style'
 import { resetDatabases, resetEnvironment } from '@test/utils'
@@ -14,7 +14,7 @@ beforeEach(async () => {
   await resetDatabases()
 })
 
-describe('removeItem(namespace: string, id: string): Promise<void>', () => {
+describe('deleteItem(namespace: string, id: string): Promise<void>', () => {
   describe('it exists', () => {
     it('return undefined', async () => {
       const namespace = 'test'
@@ -25,7 +25,7 @@ describe('removeItem(namespace: string, id: string): Promise<void>', () => {
       }
       await set(namespace, id, item)
 
-      const result = removeItem(namespace, id)
+      const result = deleteItem(namespace, id)
       const proResult = await result
       const isExist = await has(namespace, id)
 
@@ -40,7 +40,7 @@ describe('removeItem(namespace: string, id: string): Promise<void>', () => {
       const namespace = 'test'
       const id = 'id'
 
-      const result = removeItem(namespace, id)
+      const result = deleteItem(namespace, id)
       const proResult = await getErrorPromise(result)
       const isExist = await has(namespace, id)
 
@@ -51,7 +51,7 @@ describe('removeItem(namespace: string, id: string): Promise<void>', () => {
   })
 })
 
-describe('removeItemWithCheck(namespace: string, id: string, rev: string): Promise<void>', () => {
+describe('deleteItemWithCheck(namespace: string, id: string, rev: string): Promise<void>', () => {
   describe('it exists', () => {
     describe('correct rev', () => {
       it('return undefined', async () => {
@@ -63,7 +63,7 @@ describe('removeItemWithCheck(namespace: string, id: string, rev: string): Promi
         }
         await set(namespace, id, item)
 
-        const result = removeItemWithCheck(namespace, id, item.meta.rev)
+        const result = deleteItemWithCheck(namespace, id, item.meta.rev)
         const proResult = await result
         const isExist = await has(namespace, id)
 
@@ -83,7 +83,7 @@ describe('removeItemWithCheck(namespace: string, id: string, rev: string): Promi
         }
         await set(namespace, id, item)
 
-        const result = removeItemWithCheck(namespace, id, 'bad-rev')
+        const result = deleteItemWithCheck(namespace, id, 'bad-rev')
         const proResult = await getErrorPromise(result)
         const isExist = await has(namespace, id)
 
@@ -100,7 +100,7 @@ describe('removeItemWithCheck(namespace: string, id: string, rev: string): Promi
       const id = 'id'
       const rev = 'hash'
 
-      const result = removeItemWithCheck(namespace, id, rev)
+      const result = deleteItemWithCheck(namespace, id, rev)
       const proResult = await getErrorPromise(result)
       const isExist = await has(namespace, id)
 

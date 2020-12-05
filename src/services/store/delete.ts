@@ -40,7 +40,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       }
 
       try {
-        await Core.Store.remove(storeId, itemId, rev)
+        await Core.Store.del(storeId, itemId, rev)
         reply.status(204).send()
       } catch (e) {
         if (e instanceof Core.Error.NotFound) return reply.status(404).send()

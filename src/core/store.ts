@@ -31,16 +31,16 @@ export async function set(store: string, id: string, doc: IDocument, rev?: Revis
   }
 }
 
-export async function remove(store: string, id: string, rev?: Revision): Promise<void> {
+export async function del(store: string, id: string, rev?: Revision): Promise<void> {
   try {
     if (rev) {
-      return await StoreDAO.removeItemWithCheck(store, id, rev)
+      return await StoreDAO.deleteItemWithCheck(store, id, rev)
     } else {
       const policies = await RevisionPolicyDAO.getRevisionPolicies(store)
       const deleteRevisionRequired = policies.deleteRevisionRequired
                                   ?? DELETE_REVISION_REQUIRED()
       if (deleteRevisionRequired) throw new IncorrectRevision()
-      return await StoreDAO.removeItem(store, id)
+      return await StoreDAO.deleteItem(store, id)
     }
   } catch (e) {
     if (e instanceof StoreDAO.Error.IncorrectRevision) throw new IncorrectRevision()
