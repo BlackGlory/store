@@ -183,6 +183,9 @@ await fetch(`http://localhost:8080/store/${db}/items/${id}`)
 
 获取所有项目的id, 返回 =string[]=.
 
+如果返回的内容很多, 客户端可能需要JSON流([[https://en.wikipedia.org/wiki/JSON_streaming][JSON streaming]]), 因此也支持返回[[https://github.com/ndjson/ndjson-spec][ndjson]]格式,
+只需要在请求头中设置 =Accept: application/x-ndjson=.
+
 ***** Example
 ****** curl
 #+BEGIN_SRC sh
@@ -191,7 +194,7 @@ curl "http://localhost:8080/store/$db/items"
 
 ****** JavaScript
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/store/${db}/items`)
+await fetch(`http://localhost:8080/store/${db}/items`).then(res => res.json())
 #+END_SRC
 
 **** delete
