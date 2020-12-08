@@ -365,7 +365,7 @@ await fetch('http://localhost:8080/api/store-with-revision-policies', {
   headers: {
     'Authorization': `Bearer ${adminPassword}`
   }
-})
+}).then(res => res.json())
 #+END_SRC
 
 ***** 获取特定store的revision策略
