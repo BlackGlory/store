@@ -17,14 +17,17 @@ describe('getItem(namespace: string, id: string): Promise<IItem | null>', () => 
     it('return IItem', async () => {
       const namespace = 'test'
       const id = 'id-1'
-      const doc = { message: 'message' }
-      await set(namespace, id, doc)
+      const item: IItem = {
+        meta: { rev: 'rev' }
+      , doc: { message: 'message' }
+      }
+      await set(namespace, id, item)
 
       const result = getItem(namespace, id)
       const proResult = await result
 
       expect(result).toBePromise()
-      expect(proResult).toStrictEqual(doc)
+      expect(proResult).toStrictEqual(item)
     })
   })
 
