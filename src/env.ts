@@ -66,6 +66,10 @@ export function JSON_VALIDATION(): boolean {
   return process.env.STORE_JSON_VALIDATION === 'true'
 }
 
+export function JSON_PAYLOAD_ONLY(): boolean {
+  return process.env.STORE_JSON_PAYLOAD_ONLY === 'true'
+}
+
 export function DEFAULT_JSON_SCHEMA(): string | undefined {
   return process.env.STORE_DEFAULT_JSON_SCHEMA
 }

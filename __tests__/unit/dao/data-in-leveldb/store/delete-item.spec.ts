@@ -20,7 +20,10 @@ describe('deleteItem(namespace: string, id: string): Promise<void>', () => {
       const namespace = 'test'
       const id = 'id'
       const item: IItem = {
-        meta: { rev: 'rev' }
+        meta: {
+          rev: 'rev'
+        , type: 'application/json'
+        }
       , doc: { message: 'message' }
       }
       await set(namespace, id, item)
@@ -58,7 +61,10 @@ describe('deleteItemWithCheck(namespace: string, id: string, rev: string): Promi
         const namespace = 'test'
         const id = 'id'
         const item: IItem = {
-          meta: { rev: 'rev' }
+          meta: {
+            rev: 'rev'
+          , type: 'application/json'
+          }
         , doc: { message: 'message' }
         }
         await set(namespace, id, item)
@@ -78,7 +84,10 @@ describe('deleteItemWithCheck(namespace: string, id: string, rev: string): Promi
         const namespace = 'test'
         const id = 'id'
         const item: IItem = {
-          meta: { rev: 'rev' }
+          meta: {
+            rev: 'rev'
+          , type: 'application/json'
+          }
         , doc: { message: 'message' }
         }
         await set(namespace, id, item)

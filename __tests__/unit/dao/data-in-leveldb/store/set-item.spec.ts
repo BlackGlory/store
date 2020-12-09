@@ -12,13 +12,14 @@ beforeEach(async () => {
   await resetDatabases()
 })
 
-describe('setItem(namespace: string, id: string, doc: IDocument): Promise<Revision>', () => {
+describe('setItem(namespace: string, id: string, type: string, doc: IDocument): Promise<Revision>', () => {
   it('set doc and return hash', async () => {
     const namespace = 'test'
     const id = 'id-1'
+    const type = 'application/json'
     const doc = { message: 'message' }
 
-    const result = setItem(namespace, id, doc)
+    const result = setItem(namespace, id, type, doc)
     const proResult = await result
     const item = await get(namespace, id)
 

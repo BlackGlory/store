@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from 'fastify'
 import { idSchema, tokenSchema } from '@src/schema'
-import { WRITE_PAYLOAD_LIMIT } from '@env'
+import { WRITE_PAYLOAD_LIMIT, JSON_PAYLOAD_ONLY } from '@env'
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
   server.post<{
@@ -17,7 +17,9 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
         params: { id: idSchema }
       , querystring: { token: tokenSchema }
       , headers: {
-          'content-type': { type: 'string', pattern: '^application/json' }
+          'content-type': JSON_PAYLOAD_ONLY()
+                          ? { type: 'string', pattern: '^application/json' }
+                          : { type: 'string' }
         , 'if-match': { type: 'string' }
         }
       , body: { type: 'object' }
@@ -32,13 +34,20 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       const itemId = req.params.itemId
       const doc = req.body
       const token = req.query.token
+      const type = req.headers['content-type'] ?? 'application/octet-stream'
 
       try {
         await Core.Blacklist.check(storeId)
         await Core.Whitelist.check(storeId)
         await Core.TBAC.checkWritePermission(storeId, token)
         if (Core.JsonSchema.isEnabled()) {
-          await Core.JsonSchema.validate(storeId, doc)
+          if (isJSONPayload()) {
+            await Core.JsonSchema.validate(storeId, doc)
+          } else {
+            if (await Core.JsonSchema.get(storeId)) {
+              throw new Error('This id only accepts application/json')
+            }
+          }
         }
       } catch (e) {
         if (e instanceof Core.Error.Unauthorized) return reply.status(401).send()
@@ -48,11 +57,19 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       }
 
       try {
-        await Core.Store.set(storeId, itemId, doc)
+        await Core.Store.set(storeId, itemId, type, doc)
         reply.status(204).send()
       } catch (e) {
         if (e instanceof Core.Error.IncorrectRevision) return reply.status(412).send()
         throw e
+      }
+
+      function isJSONPayload(): boolean {
+        const contentType = req.headers['content-type']
+        if (!contentType) return false
+        return contentType
+          .toLowerCase()
+          .startsWith('application/json')
       }
     }
   )

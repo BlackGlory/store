@@ -18,7 +18,10 @@ describe('hasItem(namespace: string, id: string): Promise<boolean>', () => {
       const namespace = 'test'
       const id = 'id-1'
       const item: IItem = {
-        meta: { rev: 'hash' }
+        meta: {
+          rev: 'hash'
+        , type: 'application/json'
+        }
       , doc: { message: 'message' }
       }
       await set(namespace, id, item)

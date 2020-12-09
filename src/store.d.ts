@@ -2,11 +2,10 @@ type Revision = string
 
 interface IMetadata {
   rev: Revision
+  type: string
 }
 
-interface IDocument {
-  [index: string]: Json
-}
+type IDocument = Json
 
 interface IItem {
   meta: IMetadata
@@ -17,12 +16,13 @@ interface IStoreDAO {
   hasItem(namespace: string, id: string): Promise<boolean>
   getItem(namespace: string, id: string): Promise<IItem | null>
 
-  setItem(namespace: string, id: string, doc: IDocument): Promise<Revision>
+  setItem(namespace: string, id: string, type: string, doc: IDocument): Promise<Revision>
 
-  updateItem(namespace: string, id: string, doc: IDocument): Promise<Revision>
+  updateItem(namespace: string, id: string, type: string, doc: IDocument): Promise<Revision>
   updateItemWithCheck(
     namespace: string
   , id: string
+  , type: string
   , rev: Revision
   , doc: IDocument
   ): Promise<Revision>

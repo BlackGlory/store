@@ -14,19 +14,23 @@ beforeEach(async () => {
   await resetDatabases()
 })
 
-describe('updateItem(namespace: string, id: string, doc: string): Promise<Revision>', () => {
+describe('updateItem(namespace: string, id: string, type: string, doc: string): Promise<Revision>', () => {
   describe('it exists', () => {
     it('update item and return new revision', async () => {
       const namespace = 'test'
       const id = 'id'
+      const type = 'application/json'
       const item: IItem = {
-        meta: { rev: 'revision' }
+        meta: {
+          rev: 'revision'
+        , type
+        }
       , doc: { message: 'message' }
       }
       const newDoc: IDocument = { message: 'updated' }
       set(namespace, id, item)
 
-      const result = updateItem(namespace, id, newDoc)
+      const result = updateItem(namespace, id, type, newDoc)
       const proResult = await result
       const updatedItem = await get(namespace, id)
 
@@ -42,9 +46,10 @@ describe('updateItem(namespace: string, id: string, doc: string): Promise<Revisi
     it('throw NotFound', async () => {
       const namespace = 'test'
       const id = 'id-1'
+      const type = 'application/json'
       const doc: IDocument = { message: 'updated' }
 
-      const result = updateItem(namespace, id, doc)
+      const result = updateItem(namespace, id, type, doc)
       const proResult = await getErrorPromise(result)
 
       expect(result).toBePromise()
@@ -53,21 +58,25 @@ describe('updateItem(namespace: string, id: string, doc: string): Promise<Revisi
   })
 })
 
-describe('updateItemWithCheck(namespace: string, id: string, rev: string, doc: string): Promise<Revision>', () => {
+describe('updateItemWithCheck(namespace: string, id: string, type: string, rev: string, doc: string): Promise<Revision>', () => {
   describe('it exists', () => {
     describe('correct revision', () => {
       it('update item and return new revision', async () => {
         const namespace = 'test'
         const id = 'id'
         const revision = 'revision'
+        const type = 'application/json'
         const item: IItem = {
-          meta: { rev: revision }
+          meta: {
+            rev: revision
+          , type
+          }
         , doc: { message: 'message' }
         }
         const newDoc: IDocument = { message: 'updated' }
         set(namespace, id, item)
 
-        const result = updateItemWithCheck(namespace, id, revision, newDoc)
+        const result = updateItemWithCheck(namespace, id, type, revision, newDoc)
         const proResult = await result
         const updatedItem = await get(namespace, id)
 
@@ -83,14 +92,18 @@ describe('updateItemWithCheck(namespace: string, id: string, rev: string, doc: s
       it('throw IncorrectRevision', async () => {
         const namespace = 'test'
         const id = 'id'
+        const type = 'application/json'
         const item: IItem = {
-          meta: { rev: 'revision' }
+          meta: {
+            rev: 'revision'
+          , type: 'application/json'
+          }
         , doc: { message: 'message' }
         }
         const newDoc: IDocument = { message: 'updated' }
         set(namespace, id, item)
 
-        const result = updateItemWithCheck(namespace, id, 'bad-revision', newDoc)
+        const result = updateItemWithCheck(namespace, id, type, 'bad-revision', newDoc)
         const proResult = await getErrorPromise(result)
         const existingItem = await get(namespace, id)
 
@@ -105,10 +118,11 @@ describe('updateItemWithCheck(namespace: string, id: string, rev: string, doc: s
     it('throw NotFound', async () => {
       const namespace = 'test'
       const id = 'id-1'
+      const type = 'application/json'
       const doc: IDocument = { message: 'updated' }
       const revision = 'revision'
 
-      const result = updateItemWithCheck(namespace, id, revision, doc)
+      const result = updateItemWithCheck(namespace, id, type, revision, doc)
       const proResult = await getErrorPromise(result)
 
       expect(result).toBePromise()

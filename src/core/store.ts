@@ -10,20 +10,20 @@ export async function get(store: string, id: string): Promise<IItem | null> {
   return StoreDAO.getItem(store, id)
 }
 
-export async function set(store: string, id: string, doc: IDocument, rev?: Revision): Promise<Revision> {
+export async function set(store: string, id: string, type: string, doc: IDocument, rev?: Revision): Promise<Revision> {
   try {
     if (await StoreDAO.hasItem(store, id)) {
       if (rev) {
-        return await StoreDAO.updateItemWithCheck(store, id, rev, doc)
+        return await StoreDAO.updateItemWithCheck(store, id, type, rev, doc)
       } else {
         const policies = await RevisionPolicyDAO.getRevisionPolicies(store)
         const updateRevisionRequired = policies.updateRevisionRequired
                                     ?? UPDATE_REVISION_REQUIRED()
         if (updateRevisionRequired) throw new IncorrectRevision()
-        return await StoreDAO.updateItem(store, id, doc)
+        return await StoreDAO.updateItem(store, id, type, doc)
       }
     } else {
-      return await StoreDAO.setItem(store, id, doc)
+      return await StoreDAO.setItem(store, id, type, doc)
     }
   } catch (e) {
     if (e instanceof StoreDAO.Error.IncorrectRevision) throw new IncorrectRevision()

@@ -20,7 +20,7 @@ interface ICore {
   Store: {
     has(store: string, id: string): Promise<boolean>
     get(store: string, id: string): Promise<IItem | null>
-    set(store: string, id: string, doc: IDocument, rev?: Revision): Promise<Revision>
+    set(store: string, id: string, type: string, doc: IDocument, rev?: Revision): Promise<Revision>
     del(store: string, id: string, rev?: Revision): Promise<void>
     list(store: string): NodeJS.ReadableStream
   }

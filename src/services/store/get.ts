@@ -48,6 +48,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
         } else {
           reply
             .header('ETag', result.meta.rev)
+            .header('Content-Type', result.meta.type)
             .send(result.doc)
         }
       } else {
