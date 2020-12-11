@@ -86,9 +86,9 @@ export function PAYLOAD_LIMIT(): number {
   }
 }
 
-export function WRITE_PAYLOAD_LIMIT(): number {
-  if (process.env.STORE_WRITE_PAYLOAD_LIMIT) {
-    return Number(process.env.STORE_WRITE_PAYLOAD_LIMIT)
+export function SET_PAYLOAD_LIMIT(): number {
+  if (process.env.STORE_SET_PAYLOAD_LIMIT) {
+    return Number(process.env.STORE_SET_PAYLOAD_LIMIT)
   } else {
     return PAYLOAD_LIMIT()
   }

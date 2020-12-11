@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from 'fastify'
 import { idSchema, tokenSchema } from '@src/schema'
-import { WRITE_PAYLOAD_LIMIT, JSON_PAYLOAD_ONLY } from '@env'
+import { SET_PAYLOAD_LIMIT, JSON_PAYLOAD_ONLY } from '@env'
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
   server.post<{
@@ -27,7 +27,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
           204: { type: 'null' }
         }
       }
-    , bodyLimit: WRITE_PAYLOAD_LIMIT()
+    , bodyLimit: SET_PAYLOAD_LIMIT()
     }
   , async (req, reply) => {
       const storeId = req.params.storeId
