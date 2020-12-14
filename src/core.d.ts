@@ -1,12 +1,16 @@
-type IUnfollow = () => void
+type IRevision = string
 
-type Json =
-| string
-| number
-| boolean
-| null
-| { [property: string]: Json }
-| Json[]
+interface IMetadata {
+  rev: IRevision
+  type: string
+}
+
+type IDocument = import('@blackglory/types').Json
+
+interface IItem {
+  meta: IMetadata
+  doc: IDocument
+}
 
 interface ICore {
   isAdmin(password: string): boolean
@@ -20,8 +24,8 @@ interface ICore {
   Store: {
     has(store: string, id: string): Promise<boolean>
     get(store: string, id: string): Promise<IItem | null>
-    set(store: string, id: string, type: string, doc: IDocument, rev?: Revision): Promise<Revision>
-    del(store: string, id: string, rev?: Revision): Promise<void>
+    set(store: string, id: string, type: string, doc: IDocument, rev?: IRevision): Promise<IRevision>
+    del(store: string, id: string, rev?: IRevision): Promise<void>
     list(store: string): NodeJS.ReadableStream
   }
 
@@ -62,7 +66,7 @@ interface ICore {
     validate(id: string, payload: unknown): Promise<void>
     getAllIds(): Promise<string[]>
     get(id: string): Promise<string | null>
-    set(id: string, schema: string): Promise<void>
+    set(id: string, schema: import('@blackglory/types').Json): Promise<void>
     remove(id: string): Promise<void>
   }
 

@@ -10,7 +10,7 @@ export async function get(store: string, id: string): Promise<IItem | null> {
   return StoreDAO.getItem(store, id)
 }
 
-export async function set(store: string, id: string, type: string, doc: IDocument, rev?: Revision): Promise<Revision> {
+export async function set(store: string, id: string, type: string, doc: IDocument, rev?: IRevision): Promise<IRevision> {
   try {
     if (await StoreDAO.hasItem(store, id)) {
       if (rev) {
@@ -31,7 +31,7 @@ export async function set(store: string, id: string, type: string, doc: IDocumen
   }
 }
 
-export async function del(store: string, id: string, rev?: Revision): Promise<void> {
+export async function del(store: string, id: string, rev?: IRevision): Promise<void> {
   try {
     if (rev) {
       return await StoreDAO.deleteItemWithCheck(store, id, rev)

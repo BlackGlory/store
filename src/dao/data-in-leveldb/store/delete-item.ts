@@ -13,7 +13,7 @@ export async function deleteItem(namespace: string, id: string): Promise<void> {
   })
 }
 
-export async function deleteItemWithCheck(namespace: string, id: string, rev: Revision): Promise<void> {
+export async function deleteItemWithCheck(namespace: string, id: string, rev: IRevision): Promise<void> {
   return await acquire(namespace, id, async () => {
     const item = await getItem(namespace, id)
     if (!item) throw new NotFound(namespace, id)

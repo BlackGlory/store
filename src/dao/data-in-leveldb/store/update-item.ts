@@ -5,7 +5,7 @@ import { hasItem } from './has-item'
 import { getItem } from './get-item'
 import { acquire } from './utils/mutex-pool'
 
-export async function updateItem(namespace: string, id: string, type: string, doc: IDocument): Promise<Revision> {
+export async function updateItem(namespace: string, id: string, type: string, doc: IDocument): Promise<IRevision> {
   return await acquire(namespace, id, async () => {
     const exist = await hasItem(namespace, id)
     if (!exist) throw new NotFound(namespace, id)
@@ -13,7 +13,7 @@ export async function updateItem(namespace: string, id: string, type: string, do
   })
 }
 
-export async function updateItemWithCheck(namespace: string, id: string, type: string, rev: Revision, doc: IDocument): Promise<Revision> {
+export async function updateItemWithCheck(namespace: string, id: string, type: string, rev: IRevision, doc: IDocument): Promise<IRevision> {
   return await acquire(namespace, id, async () => {
     const item = await getItem(namespace, id)
     if (!item) throw new NotFound(namespace, id)
