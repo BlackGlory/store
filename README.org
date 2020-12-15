@@ -101,8 +101,7 @@ volumes:
 
 在指定的存储器里, 插入/更新特定项目的文档.
 
-成功创建文档时返回201, 正文为空, 响应头 =ETag= 里包含新的revision.
-成功更新文档时返回204, 正文为空, 响应头 =ETag= 里包含新的revision.
+成功时返回204, 正文为空, 响应头 =ETag= 里包含新的revision.
 revision 是一个由服务器计算出的值, 该值可被用于基于revision的缓存和乐观并发策略.
 
 可以使用 =If-Match= 发送带有revision的请求, 这可以在更新时启用乐观并发策略,
@@ -128,12 +127,12 @@ await fetch(`http://localhost:8080/store/${db}/items/${id}`, {
 **** has
 =HEAD /store/<db>/items/<id>=
 
-检测文档是否存在, 返回200或404.
+检测文档是否存在, 返回204或404.
 
 响应头 =ETag= 里包含文档当前的revision.
 
 可以使用 =If-None-Match= 发送带有revision的请求, 这可以启用基于revision的缓存,
-如果revision与服务器的文档一致, 将返回304, 否则返回200或404.
+如果revision与服务器的文档一致, 将返回304, 否则返回204或404.
 
 ***** Example
 ****** curl

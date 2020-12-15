@@ -3,7 +3,7 @@ import { idSchema, tokenSchema } from '@src/schema'
 import { SET_PAYLOAD_LIMIT, JSON_PAYLOAD_ONLY } from '@env'
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
-  server.post<{
+  server.put<{
     Params: {
       storeId: string
       itemId: string
@@ -22,7 +22,6 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
                           : { type: 'string' }
         , 'if-match': { type: 'string' }
         }
-      , body: { type: 'object' }
       , response: {
           204: { type: 'null' }
         }
