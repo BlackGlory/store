@@ -34,6 +34,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       const doc = req.body
       const token = req.query.token
       const type = req.headers['content-type'] ?? 'application/octet-stream'
+      const rev = req.headers['if-match']
 
       try {
         await Core.Blacklist.check(storeId)
@@ -56,7 +57,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       }
 
       try {
-        await Core.Store.set(storeId, itemId, type, doc)
+        await Core.Store.set(storeId, itemId, type, doc, rev)
         reply.status(204).send()
       } catch (e) {
         if (e instanceof Core.Error.IncorrectRevision) return reply.status(412).send()
