@@ -20,11 +20,9 @@ describe('deleteItem(namespace: string, id: string): Promise<void>', () => {
       const namespace = 'test'
       const id = 'id'
       const item: IItem = {
-        meta: {
-          rev: 'rev'
-        , type: 'application/json'
-        }
-      , doc: { message: 'message' }
+        rev: 'rev'
+      , type: 'application/json'
+      , payload: 'payload'
       }
       await set(namespace, id, item)
 
@@ -61,15 +59,13 @@ describe('deleteItemWithCheck(namespace: string, id: string, rev: string): Promi
         const namespace = 'test'
         const id = 'id'
         const item: IItem = {
-          meta: {
-            rev: 'rev'
-          , type: 'application/json'
-          }
-        , doc: { message: 'message' }
+          rev: 'rev'
+        , type: 'application/json'
+        , payload: 'payload'
         }
         await set(namespace, id, item)
 
-        const result = deleteItemWithCheck(namespace, id, item.meta.rev)
+        const result = deleteItemWithCheck(namespace, id, item.rev)
         const proResult = await result
         const isExist = await has(namespace, id)
 
@@ -84,11 +80,9 @@ describe('deleteItemWithCheck(namespace: string, id: string, rev: string): Promi
         const namespace = 'test'
         const id = 'id'
         const item: IItem = {
-          meta: {
-            rev: 'rev'
-          , type: 'application/json'
-          }
-        , doc: { message: 'message' }
+          rev: 'rev'
+        , type: 'application/json'
+        , payload: 'payload'
         }
         await set(namespace, id, item)
 
@@ -107,7 +101,7 @@ describe('deleteItemWithCheck(namespace: string, id: string, rev: string): Promi
     it('throw NotFound', async () => {
       const namespace = 'test'
       const id = 'id'
-      const rev = 'hash'
+      const rev = 'rev'
 
       const result = deleteItemWithCheck(namespace, id, rev)
       const proResult = await getErrorPromise(result)

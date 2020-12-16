@@ -2,15 +2,15 @@ interface IStoreDAO {
   hasItem(namespace: string, id: string): Promise<boolean>
   getItem(namespace: string, id: string): Promise<IItem | null>
 
-  setItem(namespace: string, id: string, type: string, doc: IDocument): Promise<IRevision>
+  setItem(namespace: string, id: string, type: string, payload: string): Promise<IRevision>
 
-  updateItem(namespace: string, id: string, type: string, doc: IDocument): Promise<IRevision>
+  updateItem(namespace: string, id: string, type: string, payload: string): Promise<IRevision>
   updateItemWithCheck(
     namespace: string
   , id: string
   , type: string
   , rev: IRevision
-  , doc: IDocument
+  , payload: string
   ): Promise<IRevision>
 
   deleteItem(namespace: string, id: string): Promise<void>

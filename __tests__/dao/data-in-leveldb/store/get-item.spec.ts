@@ -18,11 +18,9 @@ describe('getItem(namespace: string, id: string): Promise<IItem | null>', () => 
       const namespace = 'test'
       const id = 'id-1'
       const item: IItem = {
-        meta: {
-          rev: 'rev'
-        , type: 'application/json'
-        }
-      , doc: { message: 'message' }
+        rev: 'rev'
+      , type: 'application/json'
+      , payload: 'payload'
       }
       await set(namespace, id, item)
 

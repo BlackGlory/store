@@ -33,9 +33,9 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
         await Core.Whitelist.check(storeId)
         await Core.TBAC.checkDeletePermission(storeId, token)
       } catch (e) {
-        if (e instanceof Core.Error.Unauthorized) return reply.status(401).send()
-        if (e instanceof Core.Error.Forbidden) return reply.status(403).send()
-        if (e instanceof Error) return reply.status(400).send(e.message)
+        if (e instanceof Core.Blacklist.Forbidden) return reply.status(403).send()
+        if (e instanceof Core.Whitelist.Forbidden) return reply.status(403).send()
+        if (e instanceof Core.TBAC.Unauthorized) return reply.status(401).send()
         throw e
       }
 
@@ -43,8 +43,8 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
         await Core.Store.del(storeId, itemId, rev)
         reply.status(204).send()
       } catch (e) {
-        if (e instanceof Core.Error.NotFound) return reply.status(204).send()
-        if (e instanceof Core.Error.IncorrectRevision) return reply.status(412).send()
+        if (e instanceof Core.Store.NotFound) return reply.status(204).send()
+        if (e instanceof Core.Store.IncorrectRevision) return reply.status(412).send()
         throw e
       }
     }

@@ -1,6 +1,6 @@
 import { StoreDAO, RevisionPolicyDAO } from '@dao'
-import { NotFound, IncorrectRevision } from './error'
 import { UPDATE_REVISION_REQUIRED, DELETE_REVISION_REQUIRED } from '@env'
+import { CustomError } from '@blackglory/errors'
 
 export function has(store: string, id: string): Promise<boolean> {
   return StoreDAO.hasItem(store, id)
@@ -10,20 +10,23 @@ export async function get(store: string, id: string): Promise<IItem | null> {
   return StoreDAO.getItem(store, id)
 }
 
-export async function set(store: string, id: string, type: string, doc: IDocument, rev?: IRevision): Promise<IRevision> {
+/**
+ * @throws {IncorrectRevision}
+ */
+export async function set(store: string, id: string, type: string, payload: string, rev?: IRevision): Promise<IRevision> {
   try {
     if (await StoreDAO.hasItem(store, id)) {
       if (rev) {
-        return await StoreDAO.updateItemWithCheck(store, id, type, rev, doc)
+        return await StoreDAO.updateItemWithCheck(store, id, type, rev, payload)
       } else {
         const policies = await RevisionPolicyDAO.getRevisionPolicies(store)
         const updateRevisionRequired = policies.updateRevisionRequired
                                     ?? UPDATE_REVISION_REQUIRED()
         if (updateRevisionRequired) throw new IncorrectRevision()
-        return await StoreDAO.updateItem(store, id, type, doc)
+        return await StoreDAO.updateItem(store, id, type, payload)
       }
     } else {
-      return await StoreDAO.setItem(store, id, type, doc)
+      return await StoreDAO.setItem(store, id, type, payload)
     }
   } catch (e) {
     if (e instanceof StoreDAO.Error.IncorrectRevision) throw new IncorrectRevision()
@@ -31,6 +34,10 @@ export async function set(store: string, id: string, type: string, doc: IDocumen
   }
 }
 
+/**
+ * @throws {IncorrectRevision}
+ * @throws {NotFound}
+ */
 export async function del(store: string, id: string, rev?: IRevision): Promise<void> {
   try {
     if (rev) {
@@ -52,3 +59,6 @@ export async function del(store: string, id: string, rev?: IRevision): Promise<v
 export function list(store: string): NodeJS.ReadableStream {
   return StoreDAO.listAllItemIds(store)
 }
+
+export class IncorrectRevision extends CustomError {}
+export class NotFound extends CustomError {}

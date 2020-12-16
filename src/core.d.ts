@@ -1,15 +1,9 @@
 type IRevision = string
 
-interface IMetadata {
+interface IItem {
   rev: IRevision
   type: string
-}
-
-type IDocument = import('@blackglory/types').Json
-
-interface IItem {
-  meta: IMetadata
-  doc: IDocument
+  payload: string
 }
 
 interface ICore {
@@ -24,9 +18,21 @@ interface ICore {
   Store: {
     has(store: string, id: string): Promise<boolean>
     get(store: string, id: string): Promise<IItem | null>
-    set(store: string, id: string, type: string, doc: IDocument, rev?: IRevision): Promise<IRevision>
-    del(store: string, id: string, rev?: IRevision): Promise<void>
     list(store: string): NodeJS.ReadableStream
+
+    /**
+     * @throws {IncorrectionRevision}
+     */
+    set(store: string, id: string, type: string, payload: string, rev?: IRevision): Promise<IRevision>
+
+    /**
+     * @throws {IncorrectRevision}
+     * @throws {NotFound}
+     */
+    del(store: string, id: string, rev?: IRevision): Promise<void>
+
+    IncorrectRevision: new () => import('@blackglory/errors').CustomError
+    NotFound: new () => import('@blackglory/errors').CustomError
   }
 
   RevisionPolicy: {
@@ -46,35 +52,64 @@ interface ICore {
   Blacklist: {
     isEnabled(): boolean
     isBlocked(id: string): Promise<boolean>
-    check(id: string): Promise<void>
     getAll(): Promise<string[]>
     add(id: string): Promise<void>
     remove(id: string): Promise<void>
+
+    /**
+     * @throws {Forbidden}
+     */
+    check(id: string): Promise<void>
+    Forbidden: new () => import('@blackglory/errors').CustomError
   }
 
   Whitelist: {
     isEnabled(): boolean
     isBlocked(id: string): Promise<boolean>
-    check(id: string): Promise<void>
     getAll(): Promise<string[]>
     add(id: string): Promise<void>
     remove(id: string): Promise<void>
+
+    /**
+     * @throws {Forbidden}
+     */
+    check(id: string): Promise<void>
+    Forbidden: new () => import('@blackglory/errors').CustomError
   }
 
   JsonSchema: {
     isEnabled(): boolean
-    validate(id: string, payload: unknown): Promise<void>
     getAllIds(): Promise<string[]>
     get(id: string): Promise<string | null>
     set(id: string, schema: import('@blackglory/types').Json): Promise<void>
     remove(id: string): Promise<void>
+
+    /**
+     * @throws {InvalidPayload}
+     */
+    validate(id: string, payload: import('@blackglory/types').Json): Promise<void>
+    InvalidPayload: new () => import('@blackglory/errors').CustomError
   }
 
   TBAC: {
     isEnabled(): boolean
+
+    /**
+     * @throws {Unauthorized}
+     */
     checkWritePermission(id: string, token?: string): Promise<void>
+
+    /**
+     * @throws {Unauthorized}
+     */
     checkReadPermission(id: string, token?: string): Promise<void>
+
+    /**
+     * @throws {Unauthorized}
+     */
     checkDeletePermission(id: string, token?: string): Promise<void>
+
+    Unauthorized: new () => import('@blackglory/errors').CustomError
 
     Token: {
       getAllIds(): Promise<string[]>
@@ -111,12 +146,5 @@ interface ICore {
       setDeleteTokenRequired(id: string, val: boolean): Promise<void>
       unsetDeleteTokenRequired(id: string): Promise<void>
     }
-  }
-
-  Error: {
-    Forbidden: new () => Error
-    Unauthorized: new () => Error
-    NotFound: new () => Error
-    IncorrectRevision: new () => Error
   }
 }

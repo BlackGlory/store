@@ -14,31 +14,29 @@ beforeEach(async () => {
   await resetDatabases()
 })
 
-describe('updateItem(namespace: string, id: string, type: string, doc: string): Promise<Revision>', () => {
+describe('updateItem(namespace: string, id: string, type: string, payload: string): Promise<Revision>', () => {
   describe('it exists', () => {
     it('update item and return new revision', async () => {
       const namespace = 'test'
       const id = 'id'
       const type = 'application/json'
       const item: IItem = {
-        meta: {
-          rev: 'revision'
-        , type
-        }
-      , doc: { message: 'message' }
+        rev: 'revision'
+      , type
+      , payload: 'payload'
       }
-      const newDoc: IDocument = { message: 'updated' }
+      const newPayload = 'new-payload'
       set(namespace, id, item)
 
-      const result = updateItem(namespace, id, type, newDoc)
+      const result = updateItem(namespace, id, type, newPayload)
       const proResult = await result
       const updatedItem = await get(namespace, id)
 
       expect(result).toBePromise()
       expect(proResult).toBeString()
-      expect(proResult).not.toBe(item.meta.rev)
-      expect(updatedItem.doc).toStrictEqual(newDoc)
-      expect(updatedItem.meta.rev).toBe(proResult)
+      expect(proResult).not.toBe(item.rev)
+      expect(updatedItem.payload).toStrictEqual(newPayload)
+      expect(updatedItem.rev).toBe(proResult)
     })
   })
 
@@ -47,9 +45,9 @@ describe('updateItem(namespace: string, id: string, type: string, doc: string): 
       const namespace = 'test'
       const id = 'id-1'
       const type = 'application/json'
-      const doc: IDocument = { message: 'updated' }
+      const payload = 'payload'
 
-      const result = updateItem(namespace, id, type, doc)
+      const result = updateItem(namespace, id, type, payload)
       const proResult = await getErrorPromise(result)
 
       expect(result).toBePromise()
@@ -58,7 +56,7 @@ describe('updateItem(namespace: string, id: string, type: string, doc: string): 
   })
 })
 
-describe('updateItemWithCheck(namespace: string, id: string, type: string, rev: string, doc: string): Promise<Revision>', () => {
+describe('updateItemWithCheck(namespace: string, id: string, type: string, rev: string, payload: string): Promise<Revision>', () => {
   describe('it exists', () => {
     describe('correct revision', () => {
       it('update item and return new revision', async () => {
@@ -67,24 +65,22 @@ describe('updateItemWithCheck(namespace: string, id: string, type: string, rev: 
         const revision = 'revision'
         const type = 'application/json'
         const item: IItem = {
-          meta: {
-            rev: revision
-          , type
-          }
-        , doc: { message: 'message' }
+          rev: revision
+        , type
+        , payload: 'payload'
         }
-        const newDoc: IDocument = { message: 'updated' }
+        const newPayload = 'new-payload'
         set(namespace, id, item)
 
-        const result = updateItemWithCheck(namespace, id, type, revision, newDoc)
+        const result = updateItemWithCheck(namespace, id, type, revision, newPayload)
         const proResult = await result
         const updatedItem = await get(namespace, id)
 
         expect(result).toBePromise()
         expect(proResult).toBeString()
-        expect(proResult).not.toBe(item.meta.rev)
-        expect(updatedItem.doc).toStrictEqual(newDoc)
-        expect(updatedItem.meta.rev).toBe(proResult)
+        expect(proResult).not.toBe(item.rev)
+        expect(updatedItem.payload).toStrictEqual(newPayload)
+        expect(updatedItem.rev).toBe(proResult)
       })
     })
 
@@ -94,16 +90,14 @@ describe('updateItemWithCheck(namespace: string, id: string, type: string, rev: 
         const id = 'id'
         const type = 'application/json'
         const item: IItem = {
-          meta: {
-            rev: 'revision'
-          , type: 'application/json'
-          }
-        , doc: { message: 'message' }
+          rev: 'revision'
+        , type: 'application/json'
+        , payload: 'payload'
         }
-        const newDoc: IDocument = { message: 'updated' }
+        const newPayload = 'new-payload'
         set(namespace, id, item)
 
-        const result = updateItemWithCheck(namespace, id, type, 'bad-revision', newDoc)
+        const result = updateItemWithCheck(namespace, id, type, 'bad-revision', newPayload)
         const proResult = await getErrorPromise(result)
         const existingItem = await get(namespace, id)
 
@@ -119,10 +113,10 @@ describe('updateItemWithCheck(namespace: string, id: string, type: string, rev: 
       const namespace = 'test'
       const id = 'id-1'
       const type = 'application/json'
-      const doc: IDocument = { message: 'updated' }
+      const payload = 'payload'
       const revision = 'revision'
 
-      const result = updateItemWithCheck(namespace, id, type, revision, doc)
+      const result = updateItemWithCheck(namespace, id, type, revision, payload)
       const proResult = await getErrorPromise(result)
 
       expect(result).toBePromise()
