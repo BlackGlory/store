@@ -15,8 +15,6 @@ export const StoreDAO: IStoreDAO = {
 , deleteItem
 , deleteItemWithCheck
 , listAllItemIds
-, Error: {
-    NotFound
-  , IncorrectRevision
-  }
+, NotFound
+, IncorrectRevision
 }

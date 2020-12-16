@@ -1,6 +1,5 @@
 import { StoreDAO, RevisionPolicyDAO } from '@dao'
 import { UPDATE_REVISION_REQUIRED, DELETE_REVISION_REQUIRED } from '@env'
-import { CustomError } from '@blackglory/errors'
 
 export function has(store: string, id: string): Promise<boolean> {
   return StoreDAO.hasItem(store, id)
@@ -22,14 +21,14 @@ export async function set(store: string, id: string, type: string, payload: stri
         const policies = await RevisionPolicyDAO.getRevisionPolicies(store)
         const updateRevisionRequired = policies.updateRevisionRequired
                                     ?? UPDATE_REVISION_REQUIRED()
-        if (updateRevisionRequired) throw new IncorrectRevision()
+        if (updateRevisionRequired) throw new IncorrectRevision(store, id)
         return await StoreDAO.updateItem(store, id, type, payload)
       }
     } else {
       return await StoreDAO.setItem(store, id, type, payload)
     }
   } catch (e) {
-    if (e instanceof StoreDAO.Error.IncorrectRevision) throw new IncorrectRevision()
+    if (e instanceof StoreDAO.IncorrectRevision) throw new IncorrectRevision(store, id)
     throw e
   }
 }
@@ -46,12 +45,12 @@ export async function del(store: string, id: string, rev?: IRevision): Promise<v
       const policies = await RevisionPolicyDAO.getRevisionPolicies(store)
       const deleteRevisionRequired = policies.deleteRevisionRequired
                                   ?? DELETE_REVISION_REQUIRED()
-      if (deleteRevisionRequired) throw new IncorrectRevision()
+      if (deleteRevisionRequired) throw new IncorrectRevision(store, id)
       return await StoreDAO.deleteItem(store, id)
     }
   } catch (e) {
-    if (e instanceof StoreDAO.Error.IncorrectRevision) throw new IncorrectRevision()
-    if (e instanceof StoreDAO.Error.NotFound) throw new NotFound()
+    if (e instanceof StoreDAO.IncorrectRevision) throw new IncorrectRevision(store, id)
+    if (e instanceof StoreDAO.NotFound) throw new NotFound(store, id)
     throw e
   }
 }
@@ -60,5 +59,5 @@ export function list(store: string): NodeJS.ReadableStream {
   return StoreDAO.listAllItemIds(store)
 }
 
-export class IncorrectRevision extends CustomError {}
-export class NotFound extends CustomError {}
+export class IncorrectRevision extends StoreDAO.IncorrectRevision {}
+export class NotFound extends StoreDAO.NotFound {}

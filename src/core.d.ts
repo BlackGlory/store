@@ -31,8 +31,8 @@ interface ICore {
      */
     del(store: string, id: string, rev?: IRevision): Promise<void>
 
-    IncorrectRevision: new () => import('@blackglory/errors').CustomError
-    NotFound: new () => import('@blackglory/errors').CustomError
+    NotFound: new (...args: any) => import('@blackglory/errors').CustomError
+    IncorrectRevision: new (...args: any) => import('@blackglory/errors').CustomError
   }
 
   RevisionPolicy: {

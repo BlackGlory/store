@@ -18,8 +18,6 @@ interface IStoreDAO {
 
   listAllItemIds(namespace: string): NodeJS.ReadableStream
 
-  Error: {
-    NotFound: new (namespace: string, id: string) => Error
-    IncorrectRevision: new (namespace: string, id: string) => Error
-  }
+  NotFound: new (namespace: string, id: string) => import('@blackglory/errors').CustomError
+  IncorrectRevision: new (namespace: string, id: string) => import('@blackglory/errors').CustomError
 }
