@@ -1,3 +1,5 @@
+type CustomError = import('@blackglory/errors').CustomError
+
 interface IStoreDAO {
   hasItem(namespace: string, id: string): Promise<boolean>
   getItem(namespace: string, id: string): Promise<IItem | null>
@@ -18,6 +20,6 @@ interface IStoreDAO {
 
   listAllItemIds(namespace: string): NodeJS.ReadableStream
 
-  NotFound: new (namespace: string, id: string) => import('@blackglory/errors').CustomError
-  IncorrectRevision: new (namespace: string, id: string) => import('@blackglory/errors').CustomError
+  NotFound: new (namespace: string, id: string) => CustomError
+  IncorrectRevision: new (namespace: string, id: string) => CustomError
 }

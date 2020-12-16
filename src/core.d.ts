@@ -1,3 +1,5 @@
+type Json = import('@blackglory/types').Json
+type CustomErrorConstructor = import('@blackglory/errors').CustomErrorConstructor
 type IRevision = string
 
 interface IItem {
@@ -31,8 +33,8 @@ interface ICore {
      */
     del(store: string, id: string, rev?: IRevision): Promise<void>
 
-    NotFound: new (...args: any) => import('@blackglory/errors').CustomError
-    IncorrectRevision: new (...args: any) => import('@blackglory/errors').CustomError
+    NotFound: new (namespace: string, id: string) => CustomError
+    IncorrectRevision: new (namespace: string, id: string) => CustomError
   }
 
   RevisionPolicy: {
@@ -60,7 +62,7 @@ interface ICore {
      * @throws {Forbidden}
      */
     check(id: string): Promise<void>
-    Forbidden: new () => import('@blackglory/errors').CustomError
+    Forbidden: CustomErrorConstructor
   }
 
   Whitelist: {
@@ -74,21 +76,21 @@ interface ICore {
      * @throws {Forbidden}
      */
     check(id: string): Promise<void>
-    Forbidden: new () => import('@blackglory/errors').CustomError
+    Forbidden: CustomErrorConstructor
   }
 
   JsonSchema: {
     isEnabled(): boolean
     getAllIds(): Promise<string[]>
     get(id: string): Promise<string | null>
-    set(id: string, schema: import('@blackglory/types').Json): Promise<void>
+    set(id: string, schema: Json): Promise<void>
     remove(id: string): Promise<void>
 
     /**
      * @throws {InvalidPayload}
      */
-    validate(id: string, payload: import('@blackglory/types').Json): Promise<void>
-    InvalidPayload: new () => import('@blackglory/errors').CustomError
+    validate(id: string, payload: Json): Promise<void>
+    InvalidPayload: CustomErrorConstructor
   }
 
   TBAC: {
@@ -109,7 +111,7 @@ interface ICore {
      */
     checkDeletePermission(id: string, token?: string): Promise<void>
 
-    Unauthorized: new () => import('@blackglory/errors').CustomError
+    Unauthorized: CustomErrorConstructor
 
     Token: {
       getAllIds(): Promise<string[]>
