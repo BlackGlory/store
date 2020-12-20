@@ -225,6 +225,17 @@ Array<{
 }>
 #+END_SRC
 
+***** Example
+****** curl
+#+BEGIN_SRC sh
+curl "http://localhost:8080/store"
+#+END_SRC
+
+****** JavaScript
+#+BEGIN_SRC js
+await fetch(`http://localhost:8080/store`).then(res => res.json())
+#+END_SRC
+
 **** 统计信息
 =GET /stats=
 
