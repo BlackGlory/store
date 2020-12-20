@@ -2,6 +2,11 @@ type Json = import('@blackglory/types').Json
 type CustomErrorConstructor = import('@blackglory/errors').CustomErrorConstructor
 type IRevision = string
 
+interface IInfo {
+  id: string
+  items: number
+}
+
 interface IItem {
   rev: IRevision
   type: string
@@ -21,6 +26,7 @@ interface ICore {
     has(store: string, id: string): Promise<boolean>
     get(store: string, id: string): Promise<IItem | null>
     list(store: string): AsyncIterable<string>
+    info(): Promise<IInfo[]>
 
     /**
      * @throws {IncorrectionRevision}

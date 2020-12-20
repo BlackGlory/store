@@ -4,6 +4,7 @@ import { routes as hasRoutes } from './has'
 import { routes as getRoutes } from './get'
 import { routes as listRoutes } from './list'
 import { routes as deleteRoutes } from './delete'
+import { routes as infoRoutes } from './info'
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
   server.register(setRoutes, { Core })
@@ -11,4 +12,5 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
   server.register(getRoutes, { Core })
   server.register(listRoutes, { Core })
   server.register(deleteRoutes, { Core })
+  server.register(infoRoutes, { Core })
 }

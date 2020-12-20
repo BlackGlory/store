@@ -14,11 +14,10 @@ beforeEach(async () => {
 describe('no access control', () => {
   it('200', async () => {
     const server = await buildServer()
-    const storeId = 'store-id'
 
     const res = await server.inject({
       method: 'GET'
-    , url: `/store/${storeId}/items`
+    , url: `/store`
     })
 
     expect(res.statusCode).toBe(200)

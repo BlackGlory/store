@@ -9,6 +9,10 @@ export async function get(store: string, id: string): Promise<IItem | null> {
   return StoreDAO.getItem(store, id)
 }
 
+export async function info(): Promise<IInfo[]> {
+  return StoreDAO.info()
+}
+
 /**
  * @throws {IncorrectRevision}
  */

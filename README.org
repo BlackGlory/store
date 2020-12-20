@@ -213,6 +213,18 @@ await fetch(`http://localhost:8080/store/${db}/items/${id}`, {
 })
 #+END_SRC
 
+
+**** info
+=GET /store=
+
+输出JSON:
+#+BEGIN_SRC ts
+Array<{
+  id: string
+  items: number
+}>
+#+END_SRC
+
 **** 统计信息
 =GET /stats=
 
