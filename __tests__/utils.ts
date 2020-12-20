@@ -1,5 +1,5 @@
 import * as ConfigInSqlite3 from '@dao/config-in-sqlite3/database'
-import * as DataInLevelDB from '@dao/data-in-leveldb/database'
+import * as DataInSqlite3 from '@dao/data-in-sqlite3/database'
 import * as Env from '@env'
 import { isFunction } from '@blackglory/types'
 
@@ -9,13 +9,13 @@ export async function resetDatabases() {
 }
 
 export async function resetConfigInSqlite3Database() {
-  ConfigInSqlite3.closeDatabase()
+  await ConfigInSqlite3.closeDatabase()
   await ConfigInSqlite3.prepareDatabase()
 }
 
 export async function resetDataInLeveldbDatabase() {
-  await DataInLevelDB.closeDatabase()
-  await DataInLevelDB.prepareDatabase()
+  await DataInSqlite3.closeDatabase()
+  await DataInSqlite3.prepareDatabase()
 }
 
 export async function resetEnvironment() {

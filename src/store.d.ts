@@ -1,25 +1,40 @@
 type CustomError = import('@blackglory/errors').CustomError
 
 interface IStoreDAO {
-  hasItem(namespace: string, id: string): Promise<boolean>
-  getItem(namespace: string, id: string): Promise<IItem | null>
+  hasItem(storeId: string, itemId: string): Promise<boolean>
+  getItem(storeId: string, itemId: string): Promise<IItem | null>
+  setItem(storeId: string, itemId: string, type: string, payload: string): Promise<IRevision>
 
-  setItem(namespace: string, id: string, type: string, payload: string): Promise<IRevision>
+  /**
+   * @throws {NotFound}
+   */
+  updateItem(storeId: string, itemId: string, type: string, payload: string): Promise<IRevision>
 
-  updateItem(namespace: string, id: string, type: string, payload: string): Promise<IRevision>
+  /**
+   * @throws {NotFound}
+   * @throws {IncorrectRevision}
+   */
   updateItemWithCheck(
-    namespace: string
-  , id: string
+    storeId: string
+  , itemId: string
   , type: string
   , rev: IRevision
   , payload: string
   ): Promise<IRevision>
 
-  deleteItem(namespace: string, id: string): Promise<void>
-  deleteItemWithCheck(namespace: string, id: string, rev: IRevision): Promise<void>
+  /**
+   * @throws {NotFound}
+   */
+  deleteItem(storeId: string, itemId: string): Promise<void>
 
-  listAllItemIds(namespace: string): NodeJS.ReadableStream
+  /**
+   * @throws {NotFound}
+   * @throws {IncorrectRevision}
+   */
+  deleteItemWithCheck(storeId: string, itemId: string, rev: IRevision): Promise<void>
 
-  NotFound: new (namespace: string, id: string) => CustomError
-  IncorrectRevision: new (namespace: string, id: string) => CustomError
+  listAllItemIds(storeId: string): AsyncIterable<string>
+
+  NotFound: new (storeId: string, itemId: string) => CustomError
+  IncorrectRevision: new (storeId: string, itemId: string) => CustomError
 }

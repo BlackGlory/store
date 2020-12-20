@@ -20,7 +20,7 @@ interface ICore {
   Store: {
     has(store: string, id: string): Promise<boolean>
     get(store: string, id: string): Promise<IItem | null>
-    list(store: string): NodeJS.ReadableStream
+    list(store: string): AsyncIterable<string>
 
     /**
      * @throws {IncorrectionRevision}
@@ -28,8 +28,8 @@ interface ICore {
     set(store: string, id: string, type: string, payload: string, rev?: IRevision): Promise<IRevision>
 
     /**
-     * @throws {IncorrectRevision}
      * @throws {NotFound}
+     * @throws {IncorrectRevision}
      */
     del(store: string, id: string, rev?: IRevision): Promise<void>
 

@@ -5,7 +5,7 @@ import { resetDatabases, resetEnvironment } from '@test/utils'
 import 'jest-extended'
 
 jest.mock('@dao/config-in-sqlite3/database')
-jest.mock('@dao/data-in-leveldb/database')
+jest.mock('@dao/data-in-sqlite3/database')
 
 beforeEach(async () => {
   resetEnvironment()

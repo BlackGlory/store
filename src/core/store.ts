@@ -14,28 +14,27 @@ export async function get(store: string, id: string): Promise<IItem | null> {
  */
 export async function set(store: string, id: string, type: string, payload: string, rev?: IRevision): Promise<IRevision> {
   try {
-    if (await StoreDAO.hasItem(store, id)) {
-      if (rev) {
-        return await StoreDAO.updateItemWithCheck(store, id, type, rev, payload)
-      } else {
-        const policies = await RevisionPolicyDAO.getRevisionPolicies(store)
-        const updateRevisionRequired = policies.updateRevisionRequired
-                                    ?? UPDATE_REVISION_REQUIRED()
-        if (updateRevisionRequired) throw new IncorrectRevision(store, id)
-        return await StoreDAO.updateItem(store, id, type, payload)
-      }
+    if (rev) {
+      return await StoreDAO.updateItemWithCheck(store, id, type, rev, payload)
     } else {
-      return await StoreDAO.setItem(store, id, type, payload)
+      const policies = await RevisionPolicyDAO.getRevisionPolicies(store)
+      const updateRevisionRequired = policies.updateRevisionRequired
+                                  ?? UPDATE_REVISION_REQUIRED()
+      if (updateRevisionRequired) throw new IncorrectRevision(store, id)
+      return await StoreDAO.updateItem(store, id, type, payload)
     }
   } catch (e) {
+    if (e instanceof StoreDAO.NotFound) {
+      return await StoreDAO.setItem(store, id, type, payload)
+    }
     if (e instanceof StoreDAO.IncorrectRevision) throw new IncorrectRevision(store, id)
     throw e
   }
 }
 
 /**
- * @throws {IncorrectRevision}
  * @throws {NotFound}
+ * @throws {IncorrectRevision}
  */
 export async function del(store: string, id: string, rev?: IRevision): Promise<void> {
   try {
@@ -55,7 +54,7 @@ export async function del(store: string, id: string, rev?: IRevision): Promise<v
   }
 }
 
-export function list(store: string): NodeJS.ReadableStream {
+export function list(store: string): AsyncIterable<string> {
   return StoreDAO.listAllItemIds(store)
 }
 

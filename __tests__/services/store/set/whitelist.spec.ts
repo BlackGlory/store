@@ -5,7 +5,7 @@ import { AccessControlDAO, StoreDAO } from '@dao'
 import 'jest-extended'
 
 jest.mock('@dao/config-in-sqlite3/database')
-jest.mock('@dao/data-in-leveldb/database')
+jest.mock('@dao/data-in-sqlite3/database')
 expect.extend(matchers)
 
 beforeEach(async () => {
