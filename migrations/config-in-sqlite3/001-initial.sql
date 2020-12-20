@@ -33,7 +33,7 @@ CREATE TABLE store_token (
 );
 
 CREATE TABLE store_json_schema (
-  store_id   VARCHAR(255) NOT NULL UNIQUE
+  store_id    VARCHAR(255) NOT NULL UNIQUE
 , json_schema TEXT         NOT NULL
 );
 
