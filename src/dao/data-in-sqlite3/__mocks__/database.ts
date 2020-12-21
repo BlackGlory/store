@@ -18,11 +18,11 @@ export function closeDatabase() {
 export async function prepareDatabase() {
   db = connectDatabase()
   await migrateDatabase(db)
+  db.exec('PRAGMA main.auto_vacuum = FULL;');
 }
 
 function connectDatabase(): IDatabase {
   const db = new Database(':memory:')
-  db.exec('PRAGMA foreign_keys = ON;')
   return db
 }
 

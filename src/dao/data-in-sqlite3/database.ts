@@ -22,6 +22,7 @@ export function closeDatabase() {
 export async function prepareDatabase() {
   db = connectDatabase()
   await migrateDatabase(db)
+  db.exec('PRAGMA main.auto_vacuum = FULL;');
 }
 
 function connectDatabase() {
@@ -29,7 +30,6 @@ function connectDatabase() {
   const dataFilename = path.join(dataPath, 'data.db')
   fs.ensureDirSync(dataPath)
   const db = new Database(dataFilename)
-  db.exec('PRAGMA schema.auto_vacuum = FULL;')
   return db
 }
 
