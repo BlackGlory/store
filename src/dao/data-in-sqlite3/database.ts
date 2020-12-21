@@ -29,7 +29,7 @@ function connectDatabase() {
   const dataFilename = path.join(dataPath, 'data.db')
   fs.ensureDirSync(dataPath)
   const db = new Database(dataFilename)
-  db.exec('PRAGMA foreign_keys = ON;')
+  db.exec('PRAGMA schema.auto_vacuum = FULL;')
   return db
 }
 
