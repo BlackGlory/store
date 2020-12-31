@@ -15,9 +15,11 @@ beforeEach(async () => {
 describe('clearItems(storeId: string): void', () => {
   describe('empty', () => {
     it('return undefined', () => {
-      const storeId = 'test'
+      const storeId1 = 'store-id1'
+      const storeId2 = 'store-id2'
+      set(storeId2, 'item-id', { payload: 'payload', rev: 'rev', type: 'text/plain' })
 
-      const result = DAO.clearItems(storeId)
+      const result = DAO.clearItems(storeId1)
 
       expect(result).toBeUndefined()
     })
@@ -25,20 +27,19 @@ describe('clearItems(storeId: string): void', () => {
 
   describe('not empty', () => {
     it('return undefined', () => {
-      const storeId = 'test'
-      const itemId = 'itemId'
-      const item: IItem = {
-        rev: 'rev'
-      , type: 'application/json'
-      , payload: 'payload'
-      }
-      set(storeId, itemId, item)
+      const storeId1 = 'store-id1'
+      const storeId2 = 'store-id2'
+      const itemId = 'item-id'
+      set(storeId1, 'item-id', { payload: 'payload', rev: 'rev', type: 'text/plain' })
+      set(storeId2, 'item-id', { payload: 'payload', rev: 'rev', type: 'text/plain' })
 
-      const result = DAO.clearItems(storeId)
-      const isExist = has(storeId, itemId)
+      const result = DAO.clearItems(storeId1)
+      const isExist1 = has(storeId1, itemId)
+      const isExist2 = has(storeId2, itemId)
 
       expect(result).toBeUndefined()
-      expect(isExist).toBeFalsy()
+      expect(isExist1).toBeFalsy()
+      expect(isExist2).toBeTruthy()
     })
   })
 })
