@@ -13,13 +13,8 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
     '/store/:storeId/items'
   , {
       schema: {
-        params: {
-          storeId: idSchema
-        , itemId: idSchema
-        }
-      , querystring: {
-          token: tokenSchema
-        }
+        params: { storeId: idSchema }
+      , querystring: { token: tokenSchema }
       }
     }
   , (req, reply) => {

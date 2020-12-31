@@ -28,7 +28,10 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
     '/store/:storeId/items/:itemId'
   , {
       schema: {
-        params: { id: idSchema }
+        params: {
+          storeId: idSchema
+        , itemId: idSchema
+        }
       , querystring: { token: tokenSchema }
       , headers: {
           'content-type': JSON_PAYLOAD_ONLY()

@@ -1,4 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
+import { idSchema } from '@src/schema'
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
   server.get<{
@@ -7,7 +8,10 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
     '/store/:storeId/stats'
   , {
       schema: {
-        response: {
+        params: {
+          storeId: idSchema
+        }
+      , response: {
           200: {
             id: { type: 'string' }
           , items: { type: 'number' }
