@@ -20,6 +20,7 @@ export async function buildServer() {
       }
     }
   })
+
   server.register(cors, { origin: true })
   server.register(api, { Core })
   server.register(stats, { Core })

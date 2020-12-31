@@ -171,7 +171,7 @@ curl "http://localhost:8080/store/$db/items/$id"
 await fetch(`http://localhost:8080/store/${db}/items/${id}`)
 #+END_SRC
 
-**** list
+**** list items
 =GET /store/<db>/items=
 
 获取所有项目的id, 返回 =string[]=.
@@ -188,6 +188,24 @@ curl "http://localhost:8080/store/$db/items"
 ****** JavaScript
 #+BEGIN_SRC js
 await fetch(`http://localhost:8080/store/${db}/items`).then(res => res.json())
+#+END_SRC
+
+**** list stores
+=GET /store=
+
+列出所有的store id.
+
+输出JSON =Array<string>=
+
+***** Example
+****** curl
+#+BEGIN_SRC sh
+curl "http://localhost:8080/store"
+#+END_SRC
+
+****** JavaScript
+#+BEGIN_SRC js
+await fetch(`http://localhost:8080/store`).then(res => res.json())
 #+END_SRC
 
 **** delete
@@ -213,16 +231,35 @@ await fetch(`http://localhost:8080/store/${db}/items/${id}`, {
 })
 #+END_SRC
 
+**** clear
+=DELETE /store/<id>=
 
-**** info
-=GET /store=
+清空store内的所有items.
+
+***** Example
+****** curl
+#+BEGIN_SRC sh
+curl \
+  --request DELETE \
+  "http://localhost:8080/store/$db"
+#+END_SRC
+
+****** JavaScript
+#+BEGIN_SRC js
+await fetch(`http://localhost:8080/store/${db}`, {
+  method: 'DELETE'
+})
+#+END_SRC
+
+**** stats
+=GET /store/<id>/stats=
 
 输出JSON:
 #+BEGIN_SRC ts
-Array<{
+{
   id: string
   items: number
-}>
+}
 #+END_SRC
 
 ***** Example

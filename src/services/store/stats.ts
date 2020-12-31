@@ -1,26 +1,24 @@
 import { FastifyPluginAsync } from 'fastify'
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
-  server.get(
-    '/store'
+  server.get<{
+    Params: { storeId: string }
+  }>(
+    '/store/:storeId/stats'
   , {
       schema: {
         response: {
           200: {
-            type: 'array'
-          , items: {
-              type: 'object'
-            , properties: {
-                id: { type: 'string' }
-              , items: { type: 'number' }
-              }
-            }
+            id: { type: 'string' }
+          , items: { type: 'number' }
           }
         }
       }
     }
   , async (req, reply) => {
-      const result = await Core.Store.info()
+      const storeId = req.params.storeId
+
+      const result = await Core.Store.stats(storeId)
       reply.send(result)
     }
   )

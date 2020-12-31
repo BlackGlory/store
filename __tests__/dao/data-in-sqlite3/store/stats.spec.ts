@@ -1,4 +1,4 @@
-import * as DAO from '@dao/data-in-sqlite3/store/info'
+import * as DAO from '@dao/data-in-sqlite3/store/stats'
 import { set } from './utils'
 import { resetDatabases, resetEnvironment } from '@test/utils'
 import '@blackglory/jest-matchers'
@@ -11,29 +11,34 @@ beforeEach(async () => {
   await resetDatabases()
 })
 
-describe('info(): IInfo[]', () => {
+describe('stats(): IInfo', () => {
   describe('empty', () => {
-    it('return []', () => {
-      const result = DAO.info()
+    it('return IInfo', () => {
+      const storeId = 'store-1'
 
-      expect(result).toEqual([])
+      const result = DAO.stats(storeId)
+
+      expect(result).toEqual({
+        id: storeId
+      , items: 0
+      })
     })
   })
 
   describe('not empty', () => {
-    it('return IInfo[]', () => {
+    it('return IInfo', () => {
       const storeId1 = 'store-1'
       const storeId2 = 'store-2'
       set(storeId1, 'item-1', { type: 'text/plain', payload: 'payload-1', rev: 'rev-1' })
       set(storeId1, 'item-2', { type: 'text/plain', payload: 'payload-2', rev: 'rev-2' })
       set(storeId2, 'item-1', { type: 'text/plain', payload: 'payload-1', rev: 'rev-1' })
 
-      const result = DAO.info()
+      const result = DAO.stats(storeId1)
 
-      expect(result).toEqual([
-        { id: storeId1, items: 2 }
-      , { id: storeId2, items: 1 }
-      ])
+      expect(result).toEqual({
+        id: storeId1
+      , items: 2
+      })
     })
   })
 })

@@ -4,7 +4,7 @@ interface IStoreDAO {
   hasItem(storeId: string, itemId: string): Promise<boolean>
   getItem(storeId: string, itemId: string): Promise<IItem | null>
   setItem(storeId: string, itemId: string, type: string, payload: string): Promise<IRevision>
-  info(): Promise<IInfo[]>
+  stats(storeId: string): Promise<Stats>
 
   /**
    * @throws {NotFound}
@@ -34,7 +34,10 @@ interface IStoreDAO {
    */
   deleteItemWithCheck(storeId: string, itemId: string, rev: IRevision): Promise<void>
 
+  clearItems(storeId: string): Promise<void>
+
   listAllItemIds(storeId: string): AsyncIterable<string>
+  listAllStoreIds(): AsyncIterable<string>
 
   NotFound: new (storeId: string, itemId: string) => CustomError
   IncorrectRevision: new (storeId: string, itemId: string) => CustomError

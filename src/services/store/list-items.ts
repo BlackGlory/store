@@ -51,7 +51,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
   )
 
   async function* generateNDJson(storeId: string): AsyncIterable<string> {
-    const asyncIter = Core.Store.list(storeId)[Symbol.asyncIterator]()
+    const asyncIter = Core.Store.listItems(storeId)[Symbol.asyncIterator]()
     const firstResult = await asyncIter.next()
     if (!firstResult.done) yield JSON.stringify(firstResult.value)
     while (true) {
@@ -62,7 +62,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
   }
 
   async function* generateJSON(storeId: string): AsyncIterable<string> {
-    const asyncIter = Core.Store.list(storeId)[Symbol.asyncIterator]()
+    const asyncIter = Core.Store.listItems(storeId)[Symbol.asyncIterator]()
     const firstResult = await asyncIter.next()
     yield '['
     if (!firstResult.done) yield JSON.stringify(firstResult.value)

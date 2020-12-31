@@ -35,7 +35,7 @@ export function deleteItemWithCheck(storeId: string, itemId: string, rev: IRevis
 function del(storeId: string, itemId: string): void {
   getDatabase().prepare(`
     DELETE FROM store_item
-    WHERE store_id = $storeId
-      AND item_id = $itemId
+     WHERE store_id = $storeId
+       AND item_id = $itemId;
   `).run({ storeId, itemId })
 }

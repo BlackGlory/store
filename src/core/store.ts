@@ -9,8 +9,12 @@ export async function get(store: string, id: string): Promise<IItem | null> {
   return StoreDAO.getItem(store, id)
 }
 
-export async function info(): Promise<IInfo[]> {
-  return StoreDAO.info()
+export async function stats(store: string): Promise<Stats> {
+  return StoreDAO.stats(store)
+}
+
+export async function clear(store: string): Promise<void> {
+  return StoreDAO.clearItems(store)
 }
 
 /**
@@ -58,8 +62,12 @@ export async function del(store: string, id: string, rev?: IRevision): Promise<v
   }
 }
 
-export function list(store: string): AsyncIterable<string> {
+export function listItems(store: string): AsyncIterable<string> {
   return StoreDAO.listAllItemIds(store)
+}
+
+export function listStores(): AsyncIterable<string> {
+  return StoreDAO.listAllStoreIds()
 }
 
 export class IncorrectRevision extends StoreDAO.IncorrectRevision {}
