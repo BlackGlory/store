@@ -9,7 +9,7 @@ import { listAllItemIds } from './list-all-item-ids'
 import { listAllStoreIds } from './list-all-store-ids'
 import { stats } from './stats'
 
-export const StoreDAO: IDataDAO = {
+export const StoreDAO: IStoreDAO = {
   hasItem: asyncify(hasItem)
 , getItem: asyncify(getItem)
 , setItem: asyncify(setItem)
