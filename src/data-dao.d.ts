@@ -1,6 +1,6 @@
 type CustomError = import('@blackglory/errors').CustomError
 
-interface IStoreDAO {
+interface IDataDAO {
   hasItem(storeId: string, itemId: string): Promise<boolean>
   getItem(storeId: string, itemId: string): Promise<IItem | null>
   setItem(storeId: string, itemId: string, type: string, payload: string): Promise<IRevision>
