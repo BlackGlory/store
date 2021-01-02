@@ -4,16 +4,18 @@ import { resetCache } from '@env/cache'
 
 export async function resetDatabases() {
   await resetConfigInSqlite3Database()
-  await resetDataInLeveldbDatabase()
+  await resetDataInSqlite3Database()
 }
 
-export async function resetConfigInSqlite3Database() {
-  await ConfigInSqlite3.closeDatabase()
+async function resetConfigInSqlite3Database() {
+  ConfigInSqlite3.closeDatabase()
+  ConfigInSqlite3.openDatabase()
   await ConfigInSqlite3.prepareDatabase()
 }
 
-export async function resetDataInLeveldbDatabase() {
-  await DataInSqlite3.closeDatabase()
+async function resetDataInSqlite3Database() {
+  DataInSqlite3.closeDatabase()
+  DataInSqlite3.openDatabase()
   await DataInSqlite3.prepareDatabase()
 }
 
