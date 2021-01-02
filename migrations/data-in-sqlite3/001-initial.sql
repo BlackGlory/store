@@ -23,4 +23,4 @@ CREATE TABLE store_item (
 
 PRAGMA journal_mode = DELETE;
 
-DROP TABLE store_items;
+DROP TABLE store_item;
