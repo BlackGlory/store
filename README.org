@@ -94,7 +94,7 @@ volumes:
 #+END_SRC
 ** API
 *** Public
-所有API中的store和item的id都需要满足此正则表达式: =^[a-zA-Z0-9\.\-_]{1,256}$=
+所有API中的store和item的id都需要满足此正则表达式: =^[a-zA-Z0-9\.\-_]{0,255}$=
 
 **** set
 =PUT /store/<db>/items/<id>=
