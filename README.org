@@ -6,7 +6,7 @@
 
 ** Quickstart
 #+BEGIN_SRC sh
-docker run --detach --log 8080:8080 blackglory/store
+docker run --detach --publish 8080:8080 blackglory/store
 
 curl http://localhost:8080/store/my-db/items/my-doc-id \
   --request PUT \
