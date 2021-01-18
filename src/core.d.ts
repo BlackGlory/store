@@ -16,7 +16,7 @@ interface IItem {
 interface ICore {
   isAdmin(password: string): boolean
 
-  stats(): {
+  metrics(): {
     memoryUsage: NodeJS.MemoryUsage
     cpuUsage: NodeJS.CpuUsage
     resourceUsage: NodeJS.ResourceUsage
