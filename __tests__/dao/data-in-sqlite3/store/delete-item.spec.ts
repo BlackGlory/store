@@ -2,7 +2,7 @@ import * as DAO from '@dao/data-in-sqlite3/store/delete-item'
 import { NotFound, IncorrectRevision } from '@dao/data-in-sqlite3/store/error'
 import { getError } from 'return-style'
 import { resetDatabases, resetEnvironment } from '@test/utils'
-import { set, has } from './utils'
+import { hasRawItem, setRawItem } from './utils'
 import '@blackglory/jest-matchers'
 import 'jest-extended'
 
@@ -19,18 +19,18 @@ describe('deleteItem(storeId: string, itemId: string): void', () => {
     it('return undefined', () => {
       const storeId = 'test'
       const itemId = 'itemId'
-      const item: IItem = {
-        rev: 'rev'
-      , type: 'application/json'
+      setRawItem({
+        store_id: storeId
+      , item_id: itemId
       , payload: 'payload'
-      }
-      set(storeId, itemId, item)
+      , rev: 'rev'
+      , type: 'application/json'
+      })
 
       const result = DAO.deleteItem(storeId, itemId)
-      const isExist = has(storeId, itemId)
 
       expect(result).toBeUndefined()
-      expect(isExist).toBeFalsy()
+      expect(hasRawItem(storeId, itemId)).toBeFalse()
     })
   })
 
@@ -40,10 +40,9 @@ describe('deleteItem(storeId: string, itemId: string): void', () => {
       const itemId = 'itemId'
 
       const err = getError(() => DAO.deleteItem(storeId, itemId))
-      const isExist = has(storeId, itemId)
 
       expect(err).toBeInstanceOf(NotFound)
-      expect(isExist).toBeFalsy()
+      expect(hasRawItem(storeId, itemId)).toBeFalse()
     })
   })
 })
@@ -54,18 +53,19 @@ describe('deleteItemWithCheck(storeId: string, itemId: string, rev: string): voi
       it('return undefined', () => {
         const storeId = 'test'
         const itemId = 'itemId'
-        const item: IItem = {
-          rev: 'rev'
+        const rev = 'rev'
+        setRawItem({
+          store_id: storeId
+        , item_id: itemId
+        , rev
         , type: 'application/json'
         , payload: 'payload'
-        }
-        set(storeId, itemId, item)
+        })
 
-        const result = DAO.deleteItemWithCheck(storeId, itemId, item.rev)
-        const isExist = has(storeId, itemId)
+        const result = DAO.deleteItemWithCheck(storeId, itemId, rev)
 
         expect(result).toBeUndefined()
-        expect(isExist).toBeFalsy()
+        expect(hasRawItem(storeId, itemId)).toBeFalse()
       })
     })
 
@@ -73,18 +73,18 @@ describe('deleteItemWithCheck(storeId: string, itemId: string, rev: string): voi
       it('throw IncorrectRevision', () => {
         const storeId = 'test'
         const itemId = 'itemId'
-        const item: IItem = {
-          rev: 'rev'
+        setRawItem({
+          store_id: storeId
+        , item_id: itemId
+        , rev: 'rev'
         , type: 'application/json'
         , payload: 'payload'
-        }
-        set(storeId, itemId, item)
+        })
 
         const result = getError(() => DAO.deleteItemWithCheck(storeId, itemId, 'bad-rev'))
-        const isExist = has(storeId, itemId)
 
         expect(result).toBeInstanceOf(IncorrectRevision)
-        expect(isExist).toBeTruthy()
+        expect(hasRawItem(storeId, itemId)).toBeTrue()
       })
     })
   })
@@ -96,10 +96,9 @@ describe('deleteItemWithCheck(storeId: string, itemId: string, rev: string): voi
       const rev = 'rev'
 
       const result = getError(() => DAO.deleteItemWithCheck(storeId, itemId, rev))
-      const isExist = has(storeId, itemId)
 
       expect(result).toBeInstanceOf(NotFound)
-      expect(isExist).toBeFalsy()
+      expect(hasRawItem(storeId, itemId)).toBeFalse()
     })
   })
 })

@@ -1,42 +1,41 @@
 import { getDatabase } from '@dao/data-in-sqlite3/database'
 
-export function set(storeId: string, itemId: string, item: IItem) {
+interface IRawItem {
+  store_id: string
+  item_id: string
+  type: string
+  payload: string
+  rev: string
+}
+
+export function setRawItem(props: IRawItem): void {
   getDatabase().prepare(`
-    INSERT INTO store_item (store_id, item_id, type, payload, rev)
-    VALUES ($storeId, $itemId, $type, $payload, $rev);
-  `).run({
-    storeId
-  , itemId
-  , type: item.type
-  , payload: item.payload
-  , rev: item.rev
-  })
+    INSERT INTO store_item (
+      store_id
+    , item_id
+    , type
+    , payload
+    , rev
+    )
+    VALUES (
+      $store_id
+    , $item_id
+    , $type
+    , $payload
+    , $rev
+    );
+  `).run(props)
 }
 
-export function get(storeId: string, itemId: string): IItem {
-  const row = getDatabase().prepare(`
-    SELECT type
-         , payload
-         , rev
+export function hasRawItem(storeId: string, itemId: string): boolean {
+  return !!getRawItem(storeId, itemId)
+}
+
+export function getRawItem(storeId: string, itemId: string): IRawItem | null {
+  return getDatabase().prepare(`
+    SELECT *
       FROM store_item
      WHERE store_id = $storeId
        AND item_id = $itemId;
   `).get({ storeId, itemId })
-  return {
-    type: row['type']
-  , payload: row['payload']
-  , rev: row['rev']
-  }
-}
-
-export function has(storeId: string, itemId: string): boolean {
-  const row = getDatabase().prepare(`
-    SELECT type
-         , payload
-         , rev
-      FROM store_item
-     WHERE store_id = $storeId
-       AND item_id = $itemId;
-  `).get({ storeId, itemId })
-  return row
 }

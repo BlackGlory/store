@@ -1,5 +1,5 @@
 import * as DAO from '@dao/data-in-sqlite3/store/stats'
-import { set } from './utils'
+import { setRawItem } from './utils'
 import { resetDatabases, resetEnvironment } from '@test/utils'
 import '@blackglory/jest-matchers'
 
@@ -29,9 +29,27 @@ describe('stats(): IInfo', () => {
     it('return IInfo', () => {
       const storeId1 = 'store-1'
       const storeId2 = 'store-2'
-      set(storeId1, 'item-1', { type: 'text/plain', payload: 'payload-1', rev: 'rev-1' })
-      set(storeId1, 'item-2', { type: 'text/plain', payload: 'payload-2', rev: 'rev-2' })
-      set(storeId2, 'item-1', { type: 'text/plain', payload: 'payload-1', rev: 'rev-1' })
+      setRawItem({
+        store_id: storeId1
+      , item_id: 'item-1'
+      , type: 'text/plain'
+      , payload: 'payload-1'
+      , rev: 'rev-1'
+      })
+      setRawItem({
+        store_id: storeId1
+      , item_id: 'item-2'
+      , type: 'text/plain'
+      , payload: 'payload-2'
+      , rev: 'rev-2'
+      })
+      setRawItem({
+        store_id: storeId2
+      , item_id: 'item-1'
+      , type: 'text/plain'
+      , payload: 'payload-1'
+      , rev: 'rev-1'
+      })
 
       const result = DAO.stats(storeId1)
 

@@ -1,6 +1,6 @@
 import * as DAO from '@dao/data-in-sqlite3/store/has-item'
 import { resetDatabases, resetEnvironment } from '@test/utils'
-import { set } from './utils'
+import { setRawItem } from './utils'
 import '@blackglory/jest-matchers'
 import 'jest-extended'
 
@@ -22,7 +22,13 @@ describe('hasItem(storeId: string, itemId: string): boolean', () => {
       , type: 'application/json'
       , payload: 'payload'
       }
-      set(storeId, itemId, item)
+      setRawItem({
+        store_id: storeId
+      , item_id: itemId
+      , rev: item.rev
+      , type: item.type
+      , payload: item.payload
+      })
 
       const result = DAO.hasItem(storeId, itemId)
 

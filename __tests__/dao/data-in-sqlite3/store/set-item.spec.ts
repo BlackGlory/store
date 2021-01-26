@@ -1,6 +1,6 @@
 import * as DAO from '@dao/data-in-sqlite3/store/set-item'
 import { resetDatabases, resetEnvironment } from '@test/utils'
-import { get } from './utils'
+import { getRawItem } from './utils'
 import '@blackglory/jest-matchers'
 import 'jest-extended'
 
@@ -20,10 +20,11 @@ describe('setItem(storeId: string, itemId: string, type: string, payload: string
     const payload = 'payload'
 
     const result = DAO.setItem(storeId, itemId, type, payload)
-    const item = get(storeId, itemId)
+    const item = getRawItem(storeId, itemId)
 
     expect(result).toBeString()
-    expect(result).toBe(item.rev)
-    expect(item.payload).toStrictEqual(payload)
+    expect(item).not.toBeNull()
+    expect(item!.rev).toBe(result)
+    expect(item!.payload).toStrictEqual(payload)
   })
 })

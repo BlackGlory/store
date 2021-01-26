@@ -1,7 +1,6 @@
 import * as DAO from '@dao/config-in-sqlite3/revision-policy/revision-policy'
-import { getDatabase } from '@dao/config-in-sqlite3/database'
 import { resetEnvironment, resetDatabases } from '@test/utils'
-import { Database } from 'better-sqlite3'
+import { getRawRevisionPolicy, hasRawRevisionPolicy, setRawRevisionPolicy } from './utils'
 import 'jest-extended'
 
 jest.mock('@dao/config-in-sqlite3/database')
@@ -15,9 +14,12 @@ beforeEach(async () => {
 describe('RevisionPolicy', () => {
   describe('getAllIdsWithRevisionPolicies(): string[]', () => {
     it('return string[]', async () => {
-      const db = getDatabase()
       const id = 'id'
-      insert(db, id, { updateRevisionRequired: 1, deleteRevisionRequired: 1 })
+      setRawRevisionPolicy({
+        store_id: id
+      , update_revision_required: 1
+      , delete_revision_required: 1
+      })
 
       const result = DAO.getAllIdsWithRevisionPolicies()
 
@@ -28,9 +30,12 @@ describe('RevisionPolicy', () => {
   describe('getRevisionPolicies(storeId: string): { updateRevisionRequired: boolean | null, deleteRevisionRequired: boolean | null', () => {
     describe('policy exists', () => {
       it('return', async () => {
-        const db = getDatabase()
         const id = 'id'
-        insert(db, id, { updateRevisionRequired: 1, deleteRevisionRequired: 1 })
+        setRawRevisionPolicy({
+          store_id: id
+        , update_revision_required: 1
+        , delete_revision_required: 1
+        })
 
         const result = DAO.getRevisionPolicies(id)
 
@@ -57,113 +62,89 @@ describe('RevisionPolicy', () => {
 
   describe('setUpdateRevisionRequired(storeId: string, val: boolean): void', () => {
     it('return undefined', async () => {
-      const db = getDatabase()
       const id = 'id'
 
       const result = DAO.setUpdateRevisionRequired(id, true)
-      const row = select(db, id)
+      const row = getRawRevisionPolicy(id)
 
       expect(result).toBeUndefined()
-      expect(row['update_revision_required']).toBe(1)
+      expect(row).not.toBeNull()
+      expect(row!['update_revision_required']).toBe(1)
     })
   })
 
   describe('unsetUpdateRevisionRequired(storeId: string): void', () => {
     describe('policy exists', () => {
       it('return undefined', async () => {
-        const db = getDatabase()
         const id = 'id'
-        insert(db, id, { updateRevisionRequired: 1, deleteRevisionRequired: 1 })
+        setRawRevisionPolicy({
+          store_id: id
+        , update_revision_required: 1
+        , delete_revision_required: 1
+        })
 
         const result = DAO.unsetUpdateRevisionRequired(id)
-        const row = select(db, id)
+        const row = getRawRevisionPolicy(id)
 
         expect(result).toBeUndefined()
-        expect(row['update_revision_required']).toBeNull()
+        expect(row).not.toBeNull()
+        expect(row!['update_revision_required']).toBeNull()
       })
     })
 
     describe('policy does not exist', () => {
       it('return undefined', async () => {
-        const db = getDatabase()
         const id = 'id'
 
         const result = DAO.unsetUpdateRevisionRequired(id)
 
         expect(result).toBeUndefined()
-        expect(exist(db, id)).toBeFalse()
+        expect(hasRawRevisionPolicy(id)).toBeFalse()
       })
     })
   })
 
   describe('setDeleteRevisionRequired(storeId: string, val: boolean): void', () => {
     it('return undefined', async () => {
-      const db = getDatabase()
       const id = 'id'
 
       const result = DAO.setDeleteRevisionRequired(id, true)
-      const row = select(db, id)
+      const row = getRawRevisionPolicy(id)
 
       expect(result).toBeUndefined()
-      expect(row['delete_revision_required']).toBe(1)
+      expect(row).not.toBeNull()
+      expect(row!['delete_revision_required']).toBe(1)
     })
   })
 
   describe('unsetDeleteRevisionRequired(id: string): void', () => {
     describe('policy exists', () => {
       it('return undefined', async () => {
-        const db = getDatabase()
         const id = 'id'
-        insert(db, id, { updateRevisionRequired: 1, deleteRevisionRequired: 1 })
+        setRawRevisionPolicy({
+          store_id: id
+        , update_revision_required: 1
+        , delete_revision_required: 1
+        })
 
         const result = DAO.unsetDeleteRevisionRequired(id)
-        const row = select(db, id)
+        const row = getRawRevisionPolicy(id)
 
         expect(result).toBeUndefined()
-        expect(row['delete_revision_required']).toBeNull()
+        expect(row).not.toBeNull()
+        expect(row!['delete_revision_required']).toBeNull()
       })
     })
 
     describe('policy does not exist', () => {
       it('return undefined', async () => {
-        const db = getDatabase()
         const id = 'id'
 
         const result = DAO.unsetDeleteRevisionRequired(id)
 
         expect(result).toBeUndefined()
-        expect(exist(db, id)).toBeFalse()
+        expect(hasRawRevisionPolicy(id)).toBeFalse()
       })
     })
   })
 })
-
-function exist(db: Database, id: string) {
-  return !!select(db, id)
-}
-
-function select(db: Database, id: string) {
-  return db.prepare(`
-    SELECT *
-      FROM store_revision_policy
-     WHERE store_id = $id;
-  `).get({ id })
-}
-
-function insert(
-  db: Database
-, id: string
-, { updateRevisionRequired, deleteRevisionRequired }: {
-    updateRevisionRequired: number | null
-    deleteRevisionRequired: number | null
-  }
-) {
-  db.prepare(`
-    INSERT INTO store_revision_policy (store_id, update_revision_required, delete_revision_required)
-    VALUES ($id, $updateRevisionRequired, $deleteRevisionRequired);
-  `).run({
-    id
-  , updateRevisionRequired
-  , deleteRevisionRequired
-  })
-}

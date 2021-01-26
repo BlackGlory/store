@@ -1,6 +1,6 @@
 import * as DAO from '@dao/data-in-sqlite3/store/list-all-store-ids'
 import { toArray } from 'iterable-operator'
-import { set } from './utils'
+import { setRawItem } from './utils'
 import { resetDatabases, resetEnvironment } from '@test/utils'
 import '@blackglory/jest-matchers'
 
@@ -27,7 +27,13 @@ describe('listAllStoreIds(): Iterable<string>', () => {
     it('return Iterable<string>', () => {
       const storeId = 'store-id'
       const itemId = 'item-1'
-      set(storeId, itemId, { type: 'text/plain', payload: 'payload-1', rev: 'rev-1' })
+      setRawItem({
+        store_id: storeId
+      , item_id: itemId
+      , type: 'text/plain'
+      , payload: 'payload-1'
+      , rev: 'rev-1'
+      })
 
       const iter = DAO.listAllStoreIds()
       const result = toArray(iter)

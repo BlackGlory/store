@@ -1,6 +1,6 @@
 import * as DAO from '@dao/data-in-sqlite3/store/clear-items'
 import { resetDatabases, resetEnvironment } from '@test/utils'
-import { set, has } from './utils'
+import { hasRawItem, setRawItem } from './utils'
 import '@blackglory/jest-matchers'
 import 'jest-extended'
 
@@ -17,11 +17,19 @@ describe('clearItems(storeId: string): void', () => {
     it('return undefined', () => {
       const storeId1 = 'store-id1'
       const storeId2 = 'store-id2'
-      set(storeId2, 'item-id', { payload: 'payload', rev: 'rev', type: 'text/plain' })
+      const itemId = 'item-id'
+      setRawItem({
+        store_id: storeId2
+      , item_id: itemId
+      , payload: 'payload'
+      , rev: 'rev'
+      , type: 'text/plain'
+      })
 
       const result = DAO.clearItems(storeId1)
 
       expect(result).toBeUndefined()
+      expect(hasRawItem(storeId2, itemId)).toBeTrue()
     })
   })
 
@@ -30,16 +38,26 @@ describe('clearItems(storeId: string): void', () => {
       const storeId1 = 'store-id1'
       const storeId2 = 'store-id2'
       const itemId = 'item-id'
-      set(storeId1, 'item-id', { payload: 'payload', rev: 'rev', type: 'text/plain' })
-      set(storeId2, 'item-id', { payload: 'payload', rev: 'rev', type: 'text/plain' })
+      setRawItem({
+        store_id: storeId1
+      , item_id: itemId
+      , payload: 'payload'
+      , rev: 'rev'
+      , type: 'text/plain'
+      })
+      setRawItem({
+        store_id: storeId2
+      , item_id: itemId
+      , payload: 'payload'
+      , rev: 'rev'
+      , type: 'text/plain'
+      })
 
       const result = DAO.clearItems(storeId1)
-      const isExist1 = has(storeId1, itemId)
-      const isExist2 = has(storeId2, itemId)
 
       expect(result).toBeUndefined()
-      expect(isExist1).toBeFalsy()
-      expect(isExist2).toBeTruthy()
+      expect(hasRawItem(storeId1, itemId)).toBeFalse()
+      expect(hasRawItem(storeId2, itemId)).toBeTrue()
     })
   })
 })

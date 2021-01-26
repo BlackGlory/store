@@ -1,10 +1,10 @@
 import * as DAO from '@dao/data-in-sqlite3/store/update-item'
 import { NotFound, IncorrectRevision } from '@dao/data-in-sqlite3/store/error'
 import { resetDatabases, resetEnvironment } from '@test/utils'
+import { getError } from 'return-style'
+import { getRawItem, setRawItem } from './utils'
 import '@blackglory/jest-matchers'
 import 'jest-extended'
-import { getError } from 'return-style'
-import { get, set } from './utils'
 
 jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
@@ -20,21 +20,24 @@ describe('updateItem(storeId: string, itemId: string, type: string, payload: str
       const storeId = 'test'
       const itemId = 'itemId'
       const type = 'application/json'
-      const item: IItem = {
-        rev: 'revision'
+      const rev = 'revision'
+      setRawItem({
+        store_id: storeId
+      , item_id: itemId
+      , rev
       , type
       , payload: 'payload'
-      }
+      })
       const newPayload = 'new-payload'
-      set(storeId, itemId, item)
 
       const result = DAO.updateItem(storeId, itemId, type, newPayload)
-      const updatedItem = get(storeId, itemId)
+      const updatedItem = getRawItem(storeId, itemId)
 
       expect(result).toBeString()
-      expect(result).not.toBe(item.rev)
-      expect(updatedItem.payload).toStrictEqual(newPayload)
-      expect(updatedItem.rev).toBe(result)
+      expect(result).not.toBe(rev)
+      expect(updatedItem).not.toBeNull()
+      expect(updatedItem!.payload).toBe(newPayload)
+      expect(updatedItem!.rev).toBe(result)
     })
   })
 
@@ -60,21 +63,23 @@ describe('updateItemWithCheck(storeId: string, itemId: string, type: string, rev
         const itemId = 'itemId'
         const revision = 'revision'
         const type = 'application/json'
-        const item: IItem = {
-          rev: revision
+        const newPayload = 'new-payload'
+        setRawItem({
+          store_id: storeId
+        , item_id: itemId
+        , rev: revision
         , type
         , payload: 'payload'
-        }
-        const newPayload = 'new-payload'
-        set(storeId, itemId, item)
+        })
 
         const result = DAO.updateItemWithCheck(storeId, itemId, type, revision, newPayload)
-        const updatedItem = get(storeId, itemId)
+        const updatedItem = getRawItem(storeId, itemId)
 
         expect(result).toBeString()
-        expect(result).not.toBe(item.rev)
-        expect(updatedItem.payload).toStrictEqual(newPayload)
-        expect(updatedItem.rev).toBe(result)
+        expect(result).not.toBe(revision)
+        expect(updatedItem).not.toBeNull()
+        expect(updatedItem!.payload).toBe(newPayload)
+        expect(updatedItem!.rev).toBe(result)
       })
     })
 
@@ -83,19 +88,23 @@ describe('updateItemWithCheck(storeId: string, itemId: string, type: string, rev
         const storeId = 'test'
         const itemId = 'itemId'
         const type = 'application/json'
-        const item: IItem = {
-          rev: 'revision'
-        , type: 'application/json'
+        const rawItem = {
+          store_id: storeId
+        , item_id: itemId
+        , rev: 'revision'
+        , type
         , payload: 'payload'
         }
+        setRawItem(rawItem)
         const newPayload = 'new-payload'
-        set(storeId, itemId, item)
 
-        const result = getError(() => DAO.updateItemWithCheck(storeId, itemId, type, 'bad-revision', newPayload))
-        const existingItem = get(storeId, itemId)
+        const result = getError(
+          () => DAO.updateItemWithCheck(storeId, itemId, type, 'bad-revision', newPayload)
+        )
+        const existingItem = getRawItem(storeId, itemId)
 
         expect(result).toBeInstanceOf(IncorrectRevision)
-        expect(existingItem).toStrictEqual(item)
+        expect(existingItem).toEqual(rawItem)
       })
     })
   })
