@@ -195,17 +195,17 @@ await fetch(`http://localhost:8080/store/${db}/items`).then(res => res.json())
 
 列出所有的store id.
 
-输出JSON =Array<string>=
+输出JSON =Array<string>=.
 
 ***** Example
 ****** curl
 #+BEGIN_SRC sh
-curl "http://localhost:8080/store"
+curl 'http://localhost:8080/store'
 #+END_SRC
 
 ****** JavaScript
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/store`).then(res => res.json())
+await fetch('http://localhost:8080/store').then(res => res.json())
 #+END_SRC
 
 **** delete
@@ -273,7 +273,7 @@ curl "http://localhost:8080/store"
 await fetch(`http://localhost:8080/store`).then(res => res.json())
 #+END_SRC
 
-**** Metrics
+**** metrics
 =GET /metrics=
 
 输出JSON:
