@@ -2,7 +2,7 @@ import { getDatabase } from '../database'
 
 export function getItem(storeId: string, itemId: string): IItem | null {
   const row = getDatabase().prepare(`
-    SELECT rev
+    SELECT revision
          , type
          , payload
       FROM store_item
@@ -12,7 +12,7 @@ export function getItem(storeId: string, itemId: string): IItem | null {
   if (!row) return null
 
   return {
-    rev: row['rev']
+    revision: row['revision']
   , type: row['type']
   , payload: row['payload']
   }

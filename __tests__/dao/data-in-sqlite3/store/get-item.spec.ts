@@ -18,14 +18,14 @@ describe('getItem(storeId: string, itemId: string): IItem | null', () => {
       const storeId = 'test'
       const itemId = 'itemId-1'
       const item: IItem = {
-        rev: 'rev'
+        revision: 'revision'
       , type: 'application/json'
       , payload: 'payload'
       }
       setRawItem({
         store_id: storeId
       , item_id: itemId
-      , rev: item.rev
+      , revision: item.revision
       , type: item.type
       , payload: item.payload
       })

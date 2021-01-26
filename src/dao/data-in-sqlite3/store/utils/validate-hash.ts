@@ -1,3 +1,3 @@
-export function validateRevision(item: IItem, rev: string): boolean {
-  return rev === item.rev
+export function validateRevision(item: IItem, revision: string): boolean {
+  return revision === item.revision
 }

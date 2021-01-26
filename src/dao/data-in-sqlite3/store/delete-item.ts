@@ -19,12 +19,12 @@ export function deleteItem(storeId: string, itemId: string): void {
  * @throws {NotFound}
  * @throws {IncorrectRevision}
  */
-export function deleteItemWithCheck(storeId: string, itemId: string, rev: IRevision): void {
+export function deleteItemWithCheck(storeId: string, itemId: string, revision: IRevision): void {
   getDatabase().transaction(() => {
     const item = getItem(storeId, itemId)
     if (!item) throw new NotFound(storeId, itemId)
 
-    if (validateRevision(item, rev)) {
+    if (validateRevision(item, revision)) {
       del(storeId, itemId)
     } else {
       throw new IncorrectRevision(storeId, itemId)

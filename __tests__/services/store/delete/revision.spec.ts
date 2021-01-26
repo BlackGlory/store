@@ -19,12 +19,12 @@ describe('revision', () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
         const server = await buildServer()
-        const rev = await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
+        const revision = await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
 
         const res = await server.inject({
           method: 'DELETE'
         , url: `/store/${storeId}/items/${itemId}`
-        , headers: { 'if-match': rev }
+        , headers: { 'if-match': revision }
         })
 
         expect(res.statusCode).toBe(204)
@@ -41,7 +41,7 @@ describe('revision', () => {
         const res = await server.inject({
           method: 'DELETE'
         , url: `/store/${storeId}/items/${itemId}`
-        , headers: { 'if-match': 'bad-rev' }
+        , headers: { 'if-match': 'bad-revision' }
         })
 
         expect(res.statusCode).toBe(412)
@@ -71,13 +71,13 @@ describe('revision', () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
         const server = await buildServer()
-        const rev = await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
+        const revision = await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
         await RevisionPolicyDAO.setDeleteRevisionRequired(storeId, true)
 
         const res = await server.inject({
           method: 'DELETE'
         , url: `/store/${storeId}/items/${itemId}`
-        , headers: { 'if-match': rev }
+        , headers: { 'if-match': revision }
         })
 
         expect(res.statusCode).toBe(204)
@@ -95,7 +95,7 @@ describe('revision', () => {
         const res = await server.inject({
           method: 'DELETE'
         , url: `/store/${storeId}/items/${itemId}`
-        , headers: { 'if-match': 'bad-rev' }
+        , headers: { 'if-match': 'bad-revision' }
         })
 
         expect(res.statusCode).toBe(412)

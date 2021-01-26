@@ -20,11 +20,11 @@ describe('updateItem(storeId: string, itemId: string, type: string, payload: str
       const storeId = 'test'
       const itemId = 'itemId'
       const type = 'application/json'
-      const rev = 'revision'
+      const revision = 'revision'
       setRawItem({
         store_id: storeId
       , item_id: itemId
-      , rev
+      , revision
       , type
       , payload: 'payload'
       })
@@ -34,10 +34,10 @@ describe('updateItem(storeId: string, itemId: string, type: string, payload: str
       const updatedItem = getRawItem(storeId, itemId)
 
       expect(result).toBeString()
-      expect(result).not.toBe(rev)
+      expect(result).not.toBe(revision)
       expect(updatedItem).not.toBeNull()
       expect(updatedItem!.payload).toBe(newPayload)
-      expect(updatedItem!.rev).toBe(result)
+      expect(updatedItem!.revision).toBe(result)
     })
   })
 
@@ -55,7 +55,7 @@ describe('updateItem(storeId: string, itemId: string, type: string, payload: str
   })
 })
 
-describe('updateItemWithCheck(storeId: string, itemId: string, type: string, rev: string, payload: string): IRevision', () => {
+describe('updateItemWithCheck(storeId: string, itemId: string, type: string, revision: string, payload: string): IRevision', () => {
   describe('it exists', () => {
     describe('correct revision', () => {
       it('update item and return new revision', () => {
@@ -67,7 +67,7 @@ describe('updateItemWithCheck(storeId: string, itemId: string, type: string, rev
         setRawItem({
           store_id: storeId
         , item_id: itemId
-        , rev: revision
+        , revision: revision
         , type
         , payload: 'payload'
         })
@@ -79,7 +79,7 @@ describe('updateItemWithCheck(storeId: string, itemId: string, type: string, rev
         expect(result).not.toBe(revision)
         expect(updatedItem).not.toBeNull()
         expect(updatedItem!.payload).toBe(newPayload)
-        expect(updatedItem!.rev).toBe(result)
+        expect(updatedItem!.revision).toBe(result)
       })
     })
 
@@ -91,7 +91,7 @@ describe('updateItemWithCheck(storeId: string, itemId: string, type: string, rev
         const rawItem = {
           store_id: storeId
         , item_id: itemId
-        , rev: 'revision'
+        , revision: 'revision'
         , type
         , payload: 'payload'
         }

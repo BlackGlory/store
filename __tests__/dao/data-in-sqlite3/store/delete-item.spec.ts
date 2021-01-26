@@ -23,7 +23,7 @@ describe('deleteItem(storeId: string, itemId: string): void', () => {
         store_id: storeId
       , item_id: itemId
       , payload: 'payload'
-      , rev: 'rev'
+      , revision: 'revision'
       , type: 'application/json'
       })
 
@@ -47,41 +47,41 @@ describe('deleteItem(storeId: string, itemId: string): void', () => {
   })
 })
 
-describe('deleteItemWithCheck(storeId: string, itemId: string, rev: string): void', () => {
+describe('deleteItemWithCheck(storeId: string, itemId: string, revision: string): void', () => {
   describe('it exists', () => {
-    describe('correct rev', () => {
+    describe('correct revision', () => {
       it('return undefined', () => {
         const storeId = 'test'
         const itemId = 'itemId'
-        const rev = 'rev'
+        const revision = 'revision'
         setRawItem({
           store_id: storeId
         , item_id: itemId
-        , rev
+        , revision
         , type: 'application/json'
         , payload: 'payload'
         })
 
-        const result = DAO.deleteItemWithCheck(storeId, itemId, rev)
+        const result = DAO.deleteItemWithCheck(storeId, itemId, revision)
 
         expect(result).toBeUndefined()
         expect(hasRawItem(storeId, itemId)).toBeFalse()
       })
     })
 
-    describe('incorrect rev', () => {
+    describe('incorrect revision', () => {
       it('throw IncorrectRevision', () => {
         const storeId = 'test'
         const itemId = 'itemId'
         setRawItem({
           store_id: storeId
         , item_id: itemId
-        , rev: 'rev'
+        , revision: 'revision'
         , type: 'application/json'
         , payload: 'payload'
         })
 
-        const result = getError(() => DAO.deleteItemWithCheck(storeId, itemId, 'bad-rev'))
+        const result = getError(() => DAO.deleteItemWithCheck(storeId, itemId, 'bad-revision'))
 
         expect(result).toBeInstanceOf(IncorrectRevision)
         expect(hasRawItem(storeId, itemId)).toBeTrue()
@@ -93,9 +93,9 @@ describe('deleteItemWithCheck(storeId: string, itemId: string, rev: string): voi
     it('throw NotFound', async () => {
       const storeId = 'test'
       const itemId = 'itemId'
-      const rev = 'rev'
+      const revision = 'revision'
 
-      const result = getError(() => DAO.deleteItemWithCheck(storeId, itemId, rev))
+      const result = getError(() => DAO.deleteItemWithCheck(storeId, itemId, revision))
 
       expect(result).toBeInstanceOf(NotFound)
       expect(hasRawItem(storeId, itemId)).toBeFalse()

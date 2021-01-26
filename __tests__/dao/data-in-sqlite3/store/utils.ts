@@ -5,7 +5,7 @@ interface IRawItem {
   item_id: string
   type: string
   payload: string
-  rev: string
+  revision: string
 }
 
 export function setRawItem(props: IRawItem): void {
@@ -15,14 +15,14 @@ export function setRawItem(props: IRawItem): void {
     , item_id
     , type
     , payload
-    , rev
+    , revision
     )
     VALUES (
       $store_id
     , $item_id
     , $type
     , $payload
-    , $rev
+    , $revision
     );
   `).run(props)
 }

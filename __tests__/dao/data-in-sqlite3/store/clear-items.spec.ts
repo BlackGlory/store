@@ -22,7 +22,7 @@ describe('clearItems(storeId: string): void', () => {
         store_id: storeId2
       , item_id: itemId
       , payload: 'payload'
-      , rev: 'rev'
+      , revision: 'revision'
       , type: 'text/plain'
       })
 
@@ -42,14 +42,14 @@ describe('clearItems(storeId: string): void', () => {
         store_id: storeId1
       , item_id: itemId
       , payload: 'payload'
-      , rev: 'rev'
+      , revision: 'revision'
       , type: 'text/plain'
       })
       setRawItem({
         store_id: storeId2
       , item_id: itemId
       , payload: 'payload'
-      , rev: 'rev'
+      , revision: 'revision'
       , type: 'text/plain'
       })
 

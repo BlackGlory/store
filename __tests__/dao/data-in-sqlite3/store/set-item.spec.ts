@@ -24,7 +24,7 @@ describe('setItem(storeId: string, itemId: string, type: string, payload: string
 
     expect(result).toBeString()
     expect(item).not.toBeNull()
-    expect(item!.rev).toBe(result)
+    expect(item!.revision).toBe(result)
     expect(item!.payload).toStrictEqual(payload)
   })
 })

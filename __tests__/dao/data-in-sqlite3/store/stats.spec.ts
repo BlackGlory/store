@@ -34,21 +34,21 @@ describe('stats(): IInfo', () => {
       , item_id: 'item-1'
       , type: 'text/plain'
       , payload: 'payload-1'
-      , rev: 'rev-1'
+      , revision: 'revision-1'
       })
       setRawItem({
         store_id: storeId1
       , item_id: 'item-2'
       , type: 'text/plain'
       , payload: 'payload-2'
-      , rev: 'rev-2'
+      , revision: 'revision-2'
       })
       setRawItem({
         store_id: storeId2
       , item_id: 'item-1'
       , type: 'text/plain'
       , payload: 'payload-1'
-      , rev: 'rev-1'
+      , revision: 'revision-1'
       })
 
       const result = DAO.stats(storeId1)

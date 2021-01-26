@@ -32,7 +32,7 @@ describe('listAllStoreIds(): Iterable<string>', () => {
       , item_id: itemId
       , type: 'text/plain'
       , payload: 'payload-1'
-      , rev: 'rev-1'
+      , revision: 'revision-1'
       })
 
       const iter = DAO.listAllStoreIds()

@@ -20,10 +20,10 @@ export async function clear(store: string): Promise<void> {
 /**
  * @throws {IncorrectRevision}
  */
-export async function set(store: string, id: string, type: string, payload: string, rev?: IRevision): Promise<IRevision> {
+export async function set(store: string, id: string, type: string, payload: string, revision?: IRevision): Promise<IRevision> {
   try {
-    if (rev) {
-      return await StoreDAO.updateItemWithCheck(store, id, type, rev, payload)
+    if (revision) {
+      return await StoreDAO.updateItemWithCheck(store, id, type, revision, payload)
     } else {
       const policies = await RevisionPolicyDAO.getRevisionPolicies(store)
       const updateRevisionRequired = policies.updateRevisionRequired
@@ -44,10 +44,10 @@ export async function set(store: string, id: string, type: string, payload: stri
  * @throws {NotFound}
  * @throws {IncorrectRevision}
  */
-export async function del(store: string, id: string, rev?: IRevision): Promise<void> {
+export async function del(store: string, id: string, revision?: IRevision): Promise<void> {
   try {
-    if (rev) {
-      return await StoreDAO.deleteItemWithCheck(store, id, rev)
+    if (revision) {
+      return await StoreDAO.deleteItemWithCheck(store, id, revision)
     } else {
       const policies = await RevisionPolicyDAO.getRevisionPolicies(store)
       const deleteRevisionRequired = policies.deleteRevisionRequired

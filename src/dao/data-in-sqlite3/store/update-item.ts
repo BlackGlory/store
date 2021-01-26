@@ -20,12 +20,12 @@ export function updateItem(storeId: string, itemId: string, type: string, payloa
  * @throws {NotFound}
  * @throws {IncorrectRevision}
  */
-export function updateItemWithCheck(storeId: string, itemId: string, type: string, rev: IRevision, payload: string): IRevision {
+export function updateItemWithCheck(storeId: string, itemId: string, type: string, revision: IRevision, payload: string): IRevision {
   return getDatabase().transaction(() => {
     const item = getItem(storeId, itemId)
     if (!item) throw new NotFound(storeId, itemId)
 
-    if (validateRevision(item, rev)) {
+    if (validateRevision(item, revision)) {
       return update(storeId, itemId, type, payload)
     } else {
       throw new IncorrectRevision(storeId, itemId)
@@ -34,12 +34,12 @@ export function updateItemWithCheck(storeId: string, itemId: string, type: strin
 }
 
 function update(storeId: string, itemId: string, type: string, payload: string): IRevision {
-  const rev = uuid()
+  const revision = uuid()
   getDatabase().prepare(`
     UPDATE store_item
         SET type = $type
           , payload = $payload
-          , rev = $rev
+          , revision = $revision
       WHERE store_id = $storeId
         AND item_id = $itemId
   `).run({
@@ -47,7 +47,7 @@ function update(storeId: string, itemId: string, type: string, payload: string):
   , itemId
   , type
   , payload
-  , rev
+  , revision
   })
-  return rev
+  return revision
 }

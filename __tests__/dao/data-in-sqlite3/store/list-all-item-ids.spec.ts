@@ -35,14 +35,14 @@ describe('listAllItemIds(storeId: string): Iterable<string>', () => {
       , item_id: itemId1
       , type: 'text/plain'
       , payload: 'payload-1'
-      , rev: 'rev-1'
+      , revision: 'revision-1'
       })
       setRawItem({
         store_id: storeId
       , item_id: itemId2
       , type: 'text/plain'
       , payload: 'payload-2'
-      , rev: 'rev-2'
+      , revision: 'revision-2'
       })
 
       const iter = DAO.listAllItemIds(storeId)

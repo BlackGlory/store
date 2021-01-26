@@ -8,7 +8,7 @@ interface Stats {
 }
 
 interface IItem {
-  rev: IRevision
+  revision: IRevision
   type: string
   payload: string
 }
@@ -33,13 +33,13 @@ interface ICore {
     /**
      * @throws {IncorrectionRevision}
      */
-    set(store: string, id: string, type: string, payload: string, rev?: IRevision): Promise<IRevision>
+    set(store: string, id: string, type: string, payload: string, revision?: IRevision): Promise<IRevision>
 
     /**
      * @throws {NotFound}
      * @throws {IncorrectRevision}
      */
-    del(store: string, id: string, rev?: IRevision): Promise<void>
+    del(store: string, id: string, revision?: IRevision): Promise<void>
 
     NotFound: new (namespace: string, id: string) => CustomError
     IncorrectRevision: new (namespace: string, id: string) => CustomError

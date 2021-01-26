@@ -19,13 +19,13 @@ describe('revision', () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
         const server = await buildServer()
-        const rev = await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
+        const revision = await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
 
         const res = await server.inject({
           method: 'PUT'
         , url: `/store/${storeId}/items/${itemId}`
         , headers: {
-            'if-match': rev
+            'if-match': revision
           , 'content-type': 'text/plain'
           }
         , payload: 'new document'
@@ -46,7 +46,7 @@ describe('revision', () => {
           method: 'PUT'
         , url: `/store/${storeId}/items/${itemId}`
         , headers: {
-            'if-match': 'bad-rev'
+            'if-match': 'bad-revision'
           , 'content-type': 'text/plain'
           }
         , payload: 'new document'
@@ -81,14 +81,14 @@ describe('revision', () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
         const server = await buildServer()
-        const rev = await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
+        const revision = await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
         await RevisionPolicyDAO.setUpdateRevisionRequired(storeId, true)
 
         const res = await server.inject({
           method: 'PUT'
         , url: `/store/${storeId}/items/${itemId}`
         , headers: {
-            'if-match': rev
+            'if-match': revision
           , 'content-type': 'text/plain'
           }
         , payload: 'new document'
@@ -110,7 +110,7 @@ describe('revision', () => {
           method: 'PUT'
         , url: `/store/${storeId}/items/${itemId}`
         , headers: {
-            'if-match': 'bad-rev'
+            'if-match': 'bad-revision'
           , 'content-type': 'text/plain'
           }
         , payload: 'new document'

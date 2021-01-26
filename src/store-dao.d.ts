@@ -19,7 +19,7 @@ interface IStoreDAO {
     storeId: string
   , itemId: string
   , type: string
-  , rev: IRevision
+  , revision: IRevision
   , payload: string
   ): Promise<IRevision>
 
@@ -32,7 +32,7 @@ interface IStoreDAO {
    * @throws {NotFound}
    * @throws {IncorrectRevision}
    */
-  deleteItemWithCheck(storeId: string, itemId: string, rev: IRevision): Promise<void>
+  deleteItemWithCheck(storeId: string, itemId: string, revision: IRevision): Promise<void>
 
   clearItems(storeId: string): Promise<void>
 

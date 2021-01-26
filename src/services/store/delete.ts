@@ -26,7 +26,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       const storeId = req.params.storeId
       const itemId = req.params.itemId
       const token = req.query.token
-      const rev = req.headers['if-match']
+      const revision = req.headers['if-match']
 
       try {
         await Core.Blacklist.check(storeId)
@@ -40,7 +40,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       }
 
       try {
-        await Core.Store.del(storeId, itemId, rev)
+        await Core.Store.del(storeId, itemId, revision)
         reply.status(204).send()
       } catch (e) {
         if (e instanceof Core.Store.NotFound) return reply.status(204).send()
