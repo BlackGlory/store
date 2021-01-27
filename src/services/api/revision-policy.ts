@@ -30,13 +30,13 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       , response: {
           200: {
             updateRevisionRequired: {
-              oneOf: [
+              anyOf: [
                 { type: 'boolean' }
               , { type: 'null' }
               ]
             }
           , deleteRevisionRequired: {
-              oneOf: [
+              anyOf: [
                 { type: 'boolean' }
               , { type: 'null' }
               ]
