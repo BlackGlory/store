@@ -6,5 +6,6 @@ export function listAllStoreIds(): Iterable<string> {
     SELECT DISTINCT store_id
       FROM store_item;
   `).iterate()
+
   return map(iter, row => row['store_id'])
 }

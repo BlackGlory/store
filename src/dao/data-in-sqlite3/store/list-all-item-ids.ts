@@ -7,5 +7,6 @@ export function listAllItemIds(storeId: string): Iterable<string> {
       FROM store_item
      WHERE store_id = $storeId;
   `).iterate({ storeId })
+
   return map(iter, row => row['item_id'])
 }
