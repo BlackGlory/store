@@ -5,8 +5,8 @@ import { hasItem } from './has-item'
 import { updateItem, updateItemWithCheck } from './update-item'
 import { deleteItem, deleteItemWithCheck } from './delete-item'
 import { clearItems } from './clear-items'
-import { listAllItemIds } from './list-all-item-ids'
-import { listAllStoreIds } from './list-all-store-ids'
+import { getAllItemIds } from './get-all-item-ids'
+import { getAllStoreIds } from './get-all-store-ids'
 import { stats } from './stats'
 
 export const StoreDAO: IStoreDAO = {
@@ -22,8 +22,8 @@ export const StoreDAO: IStoreDAO = {
 , deleteItemWithCheck: asyncify(deleteItemWithCheck)
 , clearItems: asyncify(clearItems)
 
-, listAllItemIds: asyncifyIterable(listAllItemIds)
-, listAllStoreIds: asyncifyIterable(listAllStoreIds)
+, getAllItemIds: asyncifyIterable(getAllItemIds)
+, getAllStoreIds: asyncifyIterable(getAllStoreIds)
 
 , NotFound
 , IncorrectRevision

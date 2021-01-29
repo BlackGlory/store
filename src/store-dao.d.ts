@@ -36,8 +36,8 @@ interface IStoreDAO {
 
   clearItems(storeId: string): Promise<void>
 
-  listAllItemIds(storeId: string): AsyncIterable<string>
-  listAllStoreIds(): AsyncIterable<string>
+  getAllItemIds(storeId: string): AsyncIterable<string>
+  getAllStoreIds(): AsyncIterable<string>
 
   NotFound: new (storeId: string, itemId: string) => CustomError
   IncorrectRevision: new (storeId: string, itemId: string) => CustomError

@@ -25,8 +25,8 @@ interface ICore {
   Store: {
     has(store: string, id: string): Promise<boolean>
     get(store: string, id: string): Promise<IItem | null>
-    listItems(store: string): AsyncIterable<string>
-    listStores(): AsyncIterable<string>
+    getAllItemIds(store: string): AsyncIterable<string>
+    getAllStoreIds(): AsyncIterable<string>
     clear(store: string): Promise<void>
     stats(store: string): Promise<Stats>
 

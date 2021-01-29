@@ -62,12 +62,12 @@ export async function del(store: string, id: string, revision?: IRevision): Prom
   }
 }
 
-export function listItems(store: string): AsyncIterable<string> {
-  return StoreDAO.listAllItemIds(store)
+export function getAllItemIds(store: string): AsyncIterable<string> {
+  return StoreDAO.getAllItemIds(store)
 }
 
-export function listStores(): AsyncIterable<string> {
-  return StoreDAO.listAllStoreIds()
+export function getAllStoreIds(): AsyncIterable<string> {
+  return StoreDAO.getAllStoreIds()
 }
 
 export class IncorrectRevision extends StoreDAO.IncorrectRevision {}

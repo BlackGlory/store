@@ -1,4 +1,4 @@
-import * as DAO from '@dao/data-in-sqlite3/store/list-all-store-ids'
+import * as DAO from '@dao/data-in-sqlite3/store/get-all-item-ids'
 import { toArray } from 'iterable-operator'
 import { setRawItem } from './utils'
 import { resetDatabases, resetEnvironment } from '@test/utils'
@@ -12,10 +12,12 @@ beforeEach(async () => {
   await resetDatabases()
 })
 
-describe('listAllStoreIds(): Iterable<string>', () => {
+describe('getAllItemIds(storeId: string): Iterable<string>', () => {
   describe('empty', () => {
     it('return Iterable<string>', () => {
-      const iter = DAO.listAllStoreIds()
+      const storeId = 'store-id'
+
+      const iter = DAO.getAllItemIds(storeId)
       const result = toArray(iter)
 
       expect(iter).toBeIterable()
@@ -26,20 +28,28 @@ describe('listAllStoreIds(): Iterable<string>', () => {
   describe('not empty', () => {
     it('return Iterable<string>', () => {
       const storeId = 'store-id'
-      const itemId = 'item-1'
+      const itemId1 = 'item-1'
+      const itemId2 = 'item-2'
       setRawItem({
         store_id: storeId
-      , item_id: itemId
+      , item_id: itemId1
       , type: 'text/plain'
       , payload: 'payload-1'
       , revision: 'revision-1'
       })
+      setRawItem({
+        store_id: storeId
+      , item_id: itemId2
+      , type: 'text/plain'
+      , payload: 'payload-2'
+      , revision: 'revision-2'
+      })
 
-      const iter = DAO.listAllStoreIds()
+      const iter = DAO.getAllItemIds(storeId)
       const result = toArray(iter)
 
       expect(iter).toBeIterable()
-      expect(result).toStrictEqual([storeId])
+      expect(result).toStrictEqual([itemId1, itemId2])
     })
   })
 })

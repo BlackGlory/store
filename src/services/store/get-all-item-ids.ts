@@ -33,7 +33,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
         throw e
       }
 
-      const items = Core.Store.listItems(storeId)
+      const items = Core.Store.getAllItemIds(storeId)
 
       const accept = req.accepts().type(['application/json', 'application/x-ndjson'])
       if (accept === 'application/x-ndjson') {

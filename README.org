@@ -171,7 +171,7 @@ curl "http://localhost:8080/store/$db/items/$id"
 await fetch(`http://localhost:8080/store/${db}/items/${id}`)
 #+END_SRC
 
-**** list items
+**** list all item ids
 =GET /store/<db>/items=
 
 获取所有项目的id, 返回 =string[]=.
@@ -190,7 +190,7 @@ curl "http://localhost:8080/store/$db/items"
 await fetch(`http://localhost:8080/store/${db}/items`).then(res => res.json())
 #+END_SRC
 
-**** list stores
+**** list all store ids
 =GET /store=
 
 列出所有的store id.
