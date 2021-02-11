@@ -32,7 +32,7 @@ export function remove(id: string): Promise<void> {
  */
 export async function validate(id: string, payload: string): Promise<void> {
   const [err, json] = getErrorResult(() => JSON.parse(payload))
-  if (err) throw new InvalidPayload(err)
+  if (err) throw new InvalidPayload(err.message)
 
   const jsonSchema= await JsonSchemaDAO.getJsonSchema(id)
   const schema = jsonSchema ? JSON.parse(jsonSchema) : DEFAULT_JSON_SCHEMA()
