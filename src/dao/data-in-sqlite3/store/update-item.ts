@@ -35,13 +35,14 @@ export function updateItemWithCheck(storeId: string, itemId: string, type: strin
 
 function update(storeId: string, itemId: string, type: string, payload: string): IRevision {
   const revision = uuid()
+
   getDatabase().prepare(`
     UPDATE store_item
-        SET type = $type
-          , payload = $payload
-          , revision = $revision
-      WHERE store_id = $storeId
-        AND item_id = $itemId
+       SET type = $type
+         , payload = $payload
+         , revision = $revision
+     WHERE store_id = $storeId
+       AND item_id = $itemId
   `).run({
     storeId
   , itemId
@@ -49,5 +50,6 @@ function update(storeId: string, itemId: string, type: string, payload: string):
   , payload
   , revision
   })
+
   return revision
 }

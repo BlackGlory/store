@@ -9,5 +9,6 @@ export function hasItem(storeId: string, itemId: string): boolean {
                 AND item_id = $itemId
            ) AS matched;
   `).get({ storeId, itemId })
+
   return row['matched'] === 1
 }

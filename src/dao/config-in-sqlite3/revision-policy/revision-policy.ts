@@ -5,6 +5,7 @@ export function getAllIdsWithRevisionPolicies(): string[] {
     SELECT store_id
       FROM store_revision_policy;
   `).all()
+
   return result.map(x => x['store_id'])
 }
 
@@ -21,18 +22,17 @@ export function getRevisionPolicies(id: string): {
       FROM store_revision_policy
      WHERE store_id = $id;
   `).get({ id })
+
   if (row) {
     const updateRevisionRequired = row['update_revision_required']
     const deleteRevisionRequired = row['delete_revision_required']
     return {
-      updateRevisionRequired:
-        updateRevisionRequired === null
-        ? null
-        : numberToBoolean(updateRevisionRequired)
-    , deleteRevisionRequired:
-        deleteRevisionRequired === null
-        ? null
-        : numberToBoolean(deleteRevisionRequired)
+      updateRevisionRequired: updateRevisionRequired === null
+                              ? null
+                              : numberToBoolean(updateRevisionRequired)
+    , deleteRevisionRequired: deleteRevisionRequired === null
+                              ? null
+                              : numberToBoolean(deleteRevisionRequired)
     }
   } else {
     return {
@@ -59,6 +59,7 @@ export function unsetUpdateRevisionRequired(id: string): void {
          SET update_revision_required = NULL
        WHERE store_id = $id;
     `).run({ id })
+
     deleteNoPoliciesRow(id)
   })()
 }
@@ -80,6 +81,7 @@ export function unsetDeleteRevisionRequired(id: string): void {
          SET delete_revision_required = NULL
        WHERE store_id = $id;
     `).run({ id })
+
     deleteNoPoliciesRow(id)
   })()
 }

@@ -5,6 +5,7 @@ export function getAllIdsWithTokenPolicies(): string[] {
     SELECT store_id
       FROM store_token_policy;
   `).all()
+
   return result.map(x => x['store_id'])
 }
 
@@ -24,23 +25,21 @@ export function getTokenPolicies(id: string): {
       FROM store_token_policy
      WHERE store_id = $id;
   `).get({ id })
+
   if (row) {
     const writeTokenRequired = row['write_token_required']
     const readTokenRequired = row['read_token_required']
     const deleteTokenRequired = row['delete_token_required']
     return {
-      writeTokenRequired:
-        writeTokenRequired === null
-        ? null
-        : numberToBoolean(writeTokenRequired)
-    , readTokenRequired:
-        readTokenRequired === null
-        ? null
-        : numberToBoolean(readTokenRequired)
-    , deleteTokenRequired:
-        deleteTokenRequired === null
-        ? null
-        : numberToBoolean(deleteTokenRequired)
+      writeTokenRequired: writeTokenRequired === null
+                          ? null
+                          : numberToBoolean(writeTokenRequired)
+    , readTokenRequired: readTokenRequired === null
+                         ? null
+                         : numberToBoolean(readTokenRequired)
+    , deleteTokenRequired: deleteTokenRequired === null
+                           ? null
+                           : numberToBoolean(deleteTokenRequired)
     }
   } else {
     return {
@@ -68,6 +67,7 @@ export function unsetWriteTokenRequired(id: string): void {
          SET write_token_required = NULL
        WHERE store_id = $id;
     `).run({ id })
+
     deleteNoPoliciesRow(id)
   })()
 }
@@ -89,6 +89,7 @@ export function unsetReadTokenRequired(id: string): void {
          SET read_token_required = NULL
        WHERE store_id = $id;
     `).run({ id })
+
     deleteNoPoliciesRow(id)
   })()
 }
@@ -110,6 +111,7 @@ export function unsetDeleteTokenRequired(id: string): void {
          SET delete_token_required = NULL
        WHERE store_id = $id;
     `).run({ id })
+
     deleteNoPoliciesRow(id)
   })()
 }
