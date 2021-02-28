@@ -8,7 +8,7 @@ interface IRawItem {
   revision: string
 }
 
-export function setRawItem(props: IRawItem): void {
+export function setRawItem(item: IRawItem): IRawItem {
   getDatabase().prepare(`
     INSERT INTO store_item (
       store_id
@@ -24,7 +24,9 @@ export function setRawItem(props: IRawItem): void {
     , $payload
     , $revision
     );
-  `).run(props)
+  `).run(item)
+
+  return item
 }
 
 export function hasRawItem(storeId: string, itemId: string): boolean {

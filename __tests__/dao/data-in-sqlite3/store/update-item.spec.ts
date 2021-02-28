@@ -35,9 +35,10 @@ describe('updateItem(storeId: string, itemId: string, type: string, payload: str
 
       expect(result).toBeString()
       expect(result).not.toBe(revision)
-      expect(updatedItem).not.toBeNull()
-      expect(updatedItem!.payload).toBe(newPayload)
-      expect(updatedItem!.revision).toBe(result)
+      expect(updatedItem).toMatchObject({
+        payload: newPayload
+      , revision: result
+      })
     })
   })
 
@@ -77,9 +78,10 @@ describe('updateItemWithCheck(storeId: string, itemId: string, type: string, rev
 
         expect(result).toBeString()
         expect(result).not.toBe(revision)
-        expect(updatedItem).not.toBeNull()
-        expect(updatedItem!.payload).toBe(newPayload)
-        expect(updatedItem!.revision).toBe(result)
+        expect(updatedItem).toMatchObject({
+          payload: newPayload
+        , revision: result
+        })
       })
     })
 

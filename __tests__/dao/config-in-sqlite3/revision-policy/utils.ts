@@ -6,7 +6,7 @@ interface IRawRevisionPolicy {
   delete_revision_required: number | null
 }
 
-export function setRawRevisionPolicy(props: IRawRevisionPolicy): void {
+export function setRawRevisionPolicy<T extends IRawRevisionPolicy>(item: T): T {
   getDatabase().prepare(`
     INSERT INTO store_revision_policy (
       store_id
@@ -18,7 +18,9 @@ export function setRawRevisionPolicy(props: IRawRevisionPolicy): void {
     , $update_revision_required
     , $delete_revision_required
     );
-  `).run(props)
+  `).run(item)
+
+  return item
 }
 
 export function hasRawRevisionPolicy(id: string): boolean {
