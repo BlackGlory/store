@@ -850,7 +850,7 @@ curl \
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/api/store/${id}/tokens/$token/log`, {
+await fetch(`http://localhost:8080/api/store/${id}/tokens/${token}/log`, {
   method: 'PUT'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -898,7 +898,7 @@ curl \
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/api/store/${id}/tokens/$token/read`, {
+await fetch(`http://localhost:8080/api/store/${id}/tokens/${token}/read`, {
   method: 'PUT'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -946,7 +946,7 @@ curl \
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/api/store/${id}/tokens/$token/delete`, {
+await fetch(`http://localhost:8080/api/store/${id}/tokens/${token}/delete`, {
   method: 'PUT'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -990,7 +990,7 @@ Store支持HTTP/2, 以多路复用反向代理时的连接, 可通过设置环�
 设置环境变量 =STORE_SET_PAYLOAD_LIMIT= 可限制set接受的单个请求的Payload字节数,
 默认值继承自 =STORE_PAYLOAD_LIMIT=.
 
-** 用例展柜
+** 特殊用例
 *** 作为锁
 可以将Store的一个文档作为锁来使用.
 首先将该文档设置为仅可通过token访问, 接着添加只有read, write和delete权限的token.
