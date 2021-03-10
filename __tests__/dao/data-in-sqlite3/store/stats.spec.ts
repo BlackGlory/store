@@ -1,15 +1,13 @@
 import * as DAO from '@dao/data-in-sqlite3/store/stats'
 import { setRawItem } from './utils'
-import { resetDatabases, resetEnvironment } from '@test/utils'
+import { initializeDatabases, clearDatabases } from '@test/utils'
 import '@blackglory/jest-matchers'
 
 jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
 
-beforeEach(async () => {
-  resetEnvironment()
-  await resetDatabases()
-})
+beforeEach(initializeDatabases)
+afterEach(clearDatabases)
 
 describe('stats(): IInfo', () => {
   describe('empty', () => {

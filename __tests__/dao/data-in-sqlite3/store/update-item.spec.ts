@@ -1,6 +1,6 @@
 import * as DAO from '@dao/data-in-sqlite3/store/update-item'
 import { NotFound, IncorrectRevision } from '@dao/data-in-sqlite3/store/error'
-import { resetDatabases, resetEnvironment } from '@test/utils'
+import { initializeDatabases, clearDatabases } from '@test/utils'
 import { getError } from 'return-style'
 import { getRawItem, setRawItem } from './utils'
 import '@blackglory/jest-matchers'
@@ -9,10 +9,8 @@ import 'jest-extended'
 jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
 
-beforeEach(async () => {
-  resetEnvironment()
-  await resetDatabases()
-})
+beforeEach(initializeDatabases)
+afterEach(clearDatabases)
 
 describe('updateItem(storeId: string, itemId: string, type: string, payload: string): IRevision', () => {
   describe('it exists', () => {

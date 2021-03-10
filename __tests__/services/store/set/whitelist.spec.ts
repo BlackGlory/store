@@ -1,5 +1,4 @@
-import { buildServer } from '@src/server'
-import { resetDatabases, resetEnvironment } from '@test/utils'
+import { startService, stopService, getServer } from '@test/utils'
 import { matchers } from 'jest-json-schema'
 import { AccessControlDAO, StoreDAO } from '@dao'
 import 'jest-extended'
@@ -8,10 +7,8 @@ jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
 expect.extend(matchers)
 
-beforeEach(async () => {
-  resetEnvironment()
-  await resetDatabases()
-})
+beforeEach(startService)
+afterEach(stopService)
 
 describe('whitelist', () => {
   describe('enabled', () => {
@@ -21,7 +18,7 @@ describe('whitelist', () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
         const payload = 'document'
-        const server = await buildServer()
+        const server = getServer()
         await AccessControlDAO.addWhitelistItem(storeId)
 
         const res = await server.inject({
@@ -41,7 +38,7 @@ describe('whitelist', () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
         const payload = 'document'
-        const server = await buildServer()
+        const server = getServer()
 
         const res = await server.inject({
           method: 'PUT'
@@ -61,7 +58,7 @@ describe('whitelist', () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
         const payload = 'document'
-        const server = await buildServer()
+        const server = getServer()
 
         const res = await server.inject({
           method: 'PUT'

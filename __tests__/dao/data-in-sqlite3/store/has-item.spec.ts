@@ -1,5 +1,5 @@
 import * as DAO from '@dao/data-in-sqlite3/store/has-item'
-import { resetDatabases, resetEnvironment } from '@test/utils'
+import { initializeDatabases, clearDatabases } from '@test/utils'
 import { setRawItem } from './utils'
 import '@blackglory/jest-matchers'
 import 'jest-extended'
@@ -7,10 +7,8 @@ import 'jest-extended'
 jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
 
-beforeEach(async () => {
-  resetEnvironment()
-  await resetDatabases()
-})
+beforeEach(initializeDatabases)
+afterEach(clearDatabases)
 
 describe('hasItem(storeId: string, itemId: string): boolean', () => {
   describe('it exists', () => {

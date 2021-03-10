@@ -1,7 +1,7 @@
 import * as DAO from '@dao/data-in-sqlite3/store/delete-item'
 import { NotFound, IncorrectRevision } from '@dao/data-in-sqlite3/store/error'
 import { getError } from 'return-style'
-import { resetDatabases, resetEnvironment } from '@test/utils'
+import { initializeDatabases, clearDatabases } from '@test/utils'
 import { hasRawItem, setRawItem } from './utils'
 import '@blackglory/jest-matchers'
 import 'jest-extended'
@@ -9,10 +9,8 @@ import 'jest-extended'
 jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
 
-beforeEach(async () => {
-  resetEnvironment()
-  await resetDatabases()
-})
+beforeEach(initializeDatabases)
+afterEach(clearDatabases)
 
 describe('deleteItem(storeId: string, itemId: string): void', () => {
   describe('it exists', () => {

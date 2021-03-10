@@ -16,12 +16,6 @@ interface IItem {
 interface ICore {
   isAdmin(password: string): boolean
 
-  metrics(): {
-    memoryUsage: NodeJS.MemoryUsage
-    cpuUsage: NodeJS.CpuUsage
-    resourceUsage: NodeJS.ResourceUsage
-  }
-
   Store: {
     has(store: string, id: string): Promise<boolean>
     get(store: string, id: string): Promise<IItem | null>
