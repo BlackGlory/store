@@ -1,6 +1,9 @@
-import { startService, stopService, getServer } from '@test/utils'
+import { startService, stopService, getAddress } from '@test/utils'
 import { matchers } from 'jest-json-schema'
-import { AccessControlDAO, StoreDAO } from '@dao'
+import { AccessControlDAO } from '@dao'
+import { fetch } from 'extra-fetch'
+import { put } from 'extra-request'
+import { url, pathname, text, searchParam } from 'extra-request/lib/es2018/transformers'
 import 'jest-extended'
 
 jest.mock('@dao/config-in-sqlite3/database')
@@ -20,19 +23,17 @@ describe('token-based access control', () => {
           const itemId = 'item-id'
           const token = 'token'
           const payload = 'document'
-          const server = getServer()
           await AccessControlDAO.setWriteTokenRequired(storeId, true)
           await AccessControlDAO.setWriteToken({ id: storeId, token })
 
-          const res = await server.inject({
-            method: 'PUT'
-          , url: `/store/${storeId}/items/${itemId}`
-          , query: { token }
-          , headers: { "content-type": 'text/plain' }
-          , payload
-          })
+          const res = await fetch(put(
+            url(getAddress())
+          , pathname(`/store/${storeId}/items/${itemId}`)
+          , searchParam('token', token)
+          , text(payload)
+          ))
 
-          expect(res.statusCode).toBe(204)
+          expect(res.status).toBe(204)
         })
       })
 
@@ -43,18 +44,16 @@ describe('token-based access control', () => {
           const itemId = 'item-id'
           const token = 'token'
           const payload = 'document'
-          const server = getServer()
           await AccessControlDAO.setWriteTokenRequired(storeId, true)
           await AccessControlDAO.setWriteToken({ id: storeId, token })
 
-          const res = await server.inject({
-            method: 'PUT'
-          , url: `/store/${storeId}/items/${itemId}`
-          , headers: { "content-type": 'text/plain' }
-          , payload
-          })
+          const res = await fetch(put(
+            url(getAddress())
+          , pathname(`/store/${storeId}/items/${itemId}`)
+          , text(payload)
+          ))
 
-          expect(res.statusCode).toBe(401)
+          expect(res.status).toBe(401)
         })
       })
 
@@ -65,18 +64,16 @@ describe('token-based access control', () => {
           const itemId = 'item-id'
           const token = 'token'
           const payload = 'document'
-          const server = getServer()
           await AccessControlDAO.setWriteTokenRequired(storeId, true)
           await AccessControlDAO.setWriteToken({ id: storeId, token })
 
-          const res = await server.inject({
-            method: 'PUT'
-          , url: `/store/${storeId}/items/${itemId}`
-          , headers: { "content-type": 'text/plain' }
-          , payload
-          })
+          const res = await fetch(put(
+            url(getAddress())
+          , pathname(`/store/${storeId}/items/${itemId}`)
+          , text(payload)
+          ))
 
-          expect(res.statusCode).toBe(401)
+          expect(res.status).toBe(401)
         })
       })
     })
@@ -89,16 +86,14 @@ describe('token-based access control', () => {
           const storeId = 'store-id'
           const itemId = 'item-id'
           const payload = 'document'
-          const server = getServer()
 
-          const res = await server.inject({
-            method: 'PUT'
-          , url: `/store/${storeId}/items/${itemId}`
-          , headers: { "content-type": 'text/plain' }
-          , payload
-          })
+          const res = await fetch(put(
+            url(getAddress())
+          , pathname(`/store/${storeId}/items/${itemId}`)
+          , text(payload)
+          ))
 
-          expect(res.statusCode).toBe(401)
+          expect(res.status).toBe(401)
         })
       })
 
@@ -108,16 +103,14 @@ describe('token-based access control', () => {
           const storeId = 'store-id'
           const itemId = 'item-id'
           const payload = 'document'
-          const server = getServer()
 
-          const res = await server.inject({
-            method: 'PUT'
-          , url: `/store/${storeId}/items/${itemId}`
-          , headers: { "content-type": 'text/plain' }
-          , payload
-          })
+          const res = await fetch(put(
+            url(getAddress())
+          , pathname(`/store/${storeId}/items/${itemId}`)
+          , text(payload)
+          ))
 
-          expect(res.statusCode).toBe(204)
+          expect(res.status).toBe(204)
         })
       })
     })
@@ -131,18 +124,16 @@ describe('token-based access control', () => {
           const itemId = 'item-id'
           const token = 'token'
           const payload = 'document'
-          const server = getServer()
           await AccessControlDAO.setWriteTokenRequired(storeId, true)
           await AccessControlDAO.setWriteToken({ id: storeId, token })
 
-          const res = await server.inject({
-            method: 'PUT'
-          , url: `/store/${storeId}/items/${itemId}`
-          , headers: { "content-type": 'text/plain' }
-          , payload
-          })
+          const res = await fetch(put(
+            url(getAddress())
+          , pathname(`/store/${storeId}/items/${itemId}`)
+          , text(payload)
+          ))
 
-          expect(res.statusCode).toBe(204)
+          expect(res.status).toBe(204)
         })
       })
     })
@@ -155,18 +146,16 @@ describe('token-based access control', () => {
           const itemId = 'item-id'
           const token = 'token'
           const payload = 'document'
-          const server = getServer()
           await AccessControlDAO.setWriteTokenRequired(storeId, true)
           await AccessControlDAO.setWriteToken({ id: storeId, token })
 
-          const res = await server.inject({
-            method: 'PUT'
-          , url: `/store/${storeId}/items/${itemId}`
-          , headers: { "content-type": 'text/plain' }
-          , payload
-          })
+          const res = await fetch(put(
+            url(getAddress())
+          , pathname(`/store/${storeId}/items/${itemId}`)
+          , text(payload)
+          ))
 
-          expect(res.statusCode).toBe(204)
+          expect(res.status).toBe(204)
         })
       })
     })

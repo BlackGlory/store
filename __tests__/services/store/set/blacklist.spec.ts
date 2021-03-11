@@ -1,6 +1,9 @@
-import { startService, stopService, getServer } from '@test/utils'
+import { startService, stopService, getAddress } from '@test/utils'
 import { matchers } from 'jest-json-schema'
-import { AccessControlDAO, StoreDAO } from '@dao'
+import { AccessControlDAO } from '@dao'
+import { fetch } from 'extra-fetch'
+import { put } from 'extra-request'
+import { url, pathname, text } from 'extra-request/lib/es2018/transformers'
 
 jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
@@ -17,17 +20,15 @@ describe('blacklist', () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
         const payload = 'document'
-        const server = getServer()
         await AccessControlDAO.addBlacklistItem(storeId)
 
-        const res = await server.inject({
-          method: 'PUT'
-        , url: `/store/${storeId}/items/${itemId}`
-        , headers: { "content-type": 'text/plain' }
-        , payload
-        })
+        const res = await fetch(put(
+          url(getAddress())
+        , pathname(`/store/${storeId}/items/${itemId}`)
+        , text(payload)
+        ))
 
-        expect(res.statusCode).toBe(403)
+        expect(res.status).toBe(403)
       })
     })
 
@@ -37,16 +38,14 @@ describe('blacklist', () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
         const payload = 'document'
-        const server = getServer()
 
-        const res = await server.inject({
-          method: 'PUT'
-        , url: `/store/${storeId}/items/${itemId}`
-        , headers: { "content-type": 'text/plain' }
-        , payload
-        })
+        const res = await fetch(put(
+          url(getAddress())
+        , pathname(`/store/${storeId}/items/${itemId}`)
+        , text(payload)
+        ))
 
-        expect(res.statusCode).toBe(204)
+        expect(res.status).toBe(204)
       })
     })
   })
@@ -56,16 +55,16 @@ describe('blacklist', () => {
       it('204', async () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
-        const server = getServer()
+        const payload = 'document'
         await AccessControlDAO.addBlacklistItem(storeId)
 
-        const res = await server.inject({
-          method: 'PUT'
-        , url: `/store/${storeId}/items/${itemId}`
-        , headers: { "content-type": 'text/plain' }
-        })
+        const res = await fetch(put(
+          url(getAddress())
+        , pathname(`/store/${storeId}/items/${itemId}`)
+        , text(payload)
+        ))
 
-        expect(res.statusCode).toBe(204)
+        expect(res.status).toBe(204)
       })
     })
   })

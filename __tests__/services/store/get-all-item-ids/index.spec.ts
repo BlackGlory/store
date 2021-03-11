@@ -1,6 +1,10 @@
-import { startService, stopService, getServer } from '@test/utils'
+import { startService, stopService, getAddress } from '@test/utils'
 import { matchers } from 'jest-json-schema'
 import { prepareItems } from './utils'
+import { fetch } from 'extra-fetch'
+import { get } from 'extra-request'
+import { url, pathname } from 'extra-request/lib/es2018/transformers'
+import { toJSON } from 'extra-response'
 
 jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
@@ -11,17 +15,16 @@ afterEach(stopService)
 
 describe('no access control', () => {
   it('200', async () => {
-    const server = getServer()
     const storeId = 'store-id'
     const itemIds = ['item-id']
     await prepareItems(storeId, itemIds)
 
-    const res = await server.inject({
-      method: 'GET'
-    , url: `/store/${storeId}/items`
-    })
+    const res = await fetch(get(
+      url(getAddress())
+    , pathname(`/store/${storeId}/items`)
+    ))
 
-    expect(res.statusCode).toBe(200)
-    expect(res.json()).toStrictEqual(itemIds)
+    expect(res.status).toBe(200)
+    expect(await toJSON(res)).toStrictEqual(itemIds)
   })
 })

@@ -1,5 +1,9 @@
-import { startService, stopService, getServer } from '@test/utils'
+import { startService, stopService, getAddress } from '@test/utils'
 import { matchers } from 'jest-json-schema'
+import { fetch } from 'extra-fetch'
+import { get, put, del } from 'extra-request'
+import { url, pathname, headers, json } from 'extra-request/lib/es2018/transformers'
+import { toJSON } from 'extra-response'
 
 jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
@@ -13,16 +17,15 @@ describe('RevisionPolicy', () => {
     describe('auth', () => {
       it('200', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const server = getServer()
 
-        const res = await server.inject({
-          method: 'GET'
-        , url: '/api/store-with-revision-policies'
-        , headers: createAuthHeaders()
-        })
+        const res = await fetch(get(
+          url(getAddress())
+        , pathname('/api/store-with-revision-policies')
+        , headers(createAuthHeaders())
+        ))
 
-        expect(res.statusCode).toBe(200)
-        expect(res.json()).toMatchSchema({
+        expect(res.status).toBe(200)
+        expect(await toJSON(res)).toMatchSchema({
           type: 'array'
         , items: { type: 'string' }
         })
@@ -31,29 +34,26 @@ describe('RevisionPolicy', () => {
 
     describe('no admin password', () => {
       it('401', async () => {
-        const server = getServer()
+        const res = await fetch(get(
+          url(getAddress())
+        , pathname('/api/store-with-revision-policies')
+        ))
 
-        const res = await server.inject({
-          method: 'GET'
-        , url: '/api/store-with-revision-policies'
-        })
-
-        expect(res.statusCode).toBe(401)
+        expect(res.status).toBe(401)
       })
     })
 
     describe('bad auth', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const server = getServer()
 
-        const res = await server.inject({
-          method: 'GET'
-        , url: '/api/store-with-revision-policies'
-        , headers: createAuthHeaders('bad')
-        })
+        const res = await fetch(get(
+          url(getAddress())
+        , pathname('/api/store-with-revision-policies')
+        , headers(createAuthHeaders('bad'))
+        ))
 
-        expect(res.statusCode).toBe(401)
+        expect(res.status).toBe(401)
       })
     })
   })
@@ -62,17 +62,16 @@ describe('RevisionPolicy', () => {
     describe('auth', () => {
       it('200', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const server = getServer()
         const id = 'id'
 
-        const res = await server.inject({
-          method: 'GET'
-        , url: `/api/store/${id}/revision-policies`
-        , headers: createAuthHeaders()
-        })
+        const res = await fetch(get(
+          url(getAddress())
+        , pathname(`/api/store/${id}/revision-policies`)
+        , headers(createAuthHeaders())
+        ))
 
-        expect(res.statusCode).toBe(200)
-        expect(res.json()).toMatchSchema({
+        expect(res.status).toBe(200)
+        expect(await toJSON(res)).toMatchSchema({
           type: 'object'
         , properties: {
             writeTokenRequired: {
@@ -94,31 +93,29 @@ describe('RevisionPolicy', () => {
 
     describe('no admin password', () => {
       it('401', async () => {
-        const server = getServer()
         const id = 'id'
 
-        const res = await server.inject({
-          method: 'GET'
-        , url: `/api/store/${id}/revision-policies`
-        })
+        const res = await fetch(get(
+          url(getAddress())
+        , pathname(`/api/store/${id}/revision-policies`)
+        ))
 
-        expect(res.statusCode).toBe(401)
+        expect(res.status).toBe(401)
       })
     })
 
     describe('bad auth', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const server = getServer()
         const id = 'id'
 
-        const res = await server.inject({
-          method: 'GET'
-        , url: `/api/store/${id}/revision-policies`
-        , headers: createAuthHeaders('bad')
-        })
+        const res = await fetch(get(
+          url(getAddress())
+        , pathname(`/api/store/${id}/revision-policies`)
+        , headers(createAuthHeaders('bad'))
+        ))
 
-        expect(res.statusCode).toBe(401)
+        expect(res.status).toBe(401)
       })
     })
   })
@@ -127,61 +124,49 @@ describe('RevisionPolicy', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const server = getServer()
         const id = 'id'
         const val = true
 
-        const res = await server.inject({
-          method: 'PUT'
-        , url: `/api/store/${id}/revision-policies/update-revision-required`
-        , payload: JSON.stringify(val)
-        , headers: {
-            ...createJsonHeaders()
-          , ...createAuthHeaders()
-          }
-        })
+        const res = await fetch(put(
+          url(getAddress())
+        , pathname(`/api/store/${id}/revision-policies/update-revision-required`)
+        , headers(createAuthHeaders())
+        , json(val)
+        ))
 
-        expect(res.statusCode).toBe(204)
+        expect(res.status).toBe(204)
       })
     })
 
     describe('no admin password', () => {
       it('401', async () => {
-        const server = getServer()
         const id = 'id'
         const val = true
 
-        const res = await server.inject({
-          method: 'PUT'
-        , url: `/api/store/${id}/revision-policies/update-revision-required`
-        , payload: JSON.stringify(val)
-        , headers: {
-            ...createJsonHeaders()
-          }
-        })
+        const res = await fetch(put(
+          url(getAddress())
+        , pathname(`/api/store/${id}/revision-policies/update-revision-required`)
+        , json(val)
+        ))
 
-        expect(res.statusCode).toBe(401)
+        expect(res.status).toBe(401)
       })
     })
 
     describe('bad auth', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const server = getServer()
         const id = 'id'
         const val = true
 
-        const res = await server.inject({
-          method: 'PUT'
-        , url: `/api/store/${id}/revision-policies/update-revision-required`
-        , payload: JSON.stringify(val)
-        , headers: {
-            ...createJsonHeaders()
-          , ...createAuthHeaders('bad')
-          }
-        })
+        const res = await fetch(put(
+          url(getAddress())
+        , pathname(`/api/store/${id}/revision-policies/update-revision-required`)
+        , headers(createAuthHeaders('bad'))
+        , json(val)
+        ))
 
-        expect(res.statusCode).toBe(401)
+        expect(res.status).toBe(401)
       })
     })
   })
@@ -190,59 +175,49 @@ describe('RevisionPolicy', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const server = getServer()
         const id = 'id'
         const val = true
 
-        const res = await server.inject({
-          method: 'PUT'
-        , url: `/api/store/${id}/revision-policies/delete-revision-required`
-        , payload: JSON.stringify(val)
-        , headers: {
-            ...createJsonHeaders()
-          , ...createAuthHeaders()
-          }
-        })
+        const res = await fetch(put(
+          url(getAddress())
+        , pathname(`/api/store/${id}/revision-policies/delete-revision-required`)
+        , headers(createAuthHeaders())
+        , json(val)
+        ))
 
-        expect(res.statusCode).toBe(204)
+        expect(res.status).toBe(204)
       })
     })
 
     describe('no admin password', () => {
       it('401', async () => {
-        const server = getServer()
         const id = 'id'
         const val = true
 
-        const res = await server.inject({
-          method: 'PUT'
-        , url: `/api/store/${id}/revision-policies/delete-revision-required`
-        , payload: JSON.stringify(val)
-        , headers: createJsonHeaders()
-        })
+        const res = await fetch(put(
+          url(getAddress())
+        , pathname(`/api/store/${id}/revision-policies/delete-revision-required`)
+        , json(val)
+        ))
 
-        expect(res.statusCode).toBe(401)
+        expect(res.status).toBe(401)
       })
     })
 
     describe('bad auth', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const server = getServer()
         const id = 'id'
         const val = true
 
-        const res = await server.inject({
-          method: 'PUT'
-        , url: `/api/store/${id}/revision-policies/delete-revision-required`
-        , payload: JSON.stringify(val)
-        , headers: {
-            ...createJsonHeaders()
-          , ...createAuthHeaders('bad')
-          }
-        })
+        const res = await fetch(put(
+          url(getAddress())
+        , pathname(`/api/store/${id}/revision-policies/delete-revision-required`)
+        , headers(createAuthHeaders('bad'))
+        , json(val)
+        ))
 
-        expect(res.statusCode).toBe(401)
+        expect(res.status).toBe(401)
       })
     })
   })
@@ -251,46 +226,43 @@ describe('RevisionPolicy', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const server = getServer()
         const id = 'id'
 
-        const res = await server.inject({
-          method: 'DELETE'
-        , url: `/api/store/${id}/revision-policies/update-revision-required`
-        , headers: createAuthHeaders()
-        })
+        const res = await fetch(del(
+          url(getAddress())
+        , pathname(`/api/store/${id}/revision-policies/update-revision-required`)
+        , headers(createAuthHeaders())
+        ))
 
-        expect(res.statusCode).toBe(204)
+        expect(res.status).toBe(204)
       })
     })
 
     describe('no admin password', () => {
       it('401', async () => {
-        const server = getServer()
         const id = 'id'
 
-        const res = await server.inject({
-          method: 'DELETE'
-        , url: `/api/store/${id}/revision-policies/update-revision-required`
-        })
+        const res = await fetch(del(
+          url(getAddress())
+        , pathname(`/api/store/${id}/revision-policies/update-revision-required`)
+        ))
 
-        expect(res.statusCode).toBe(401)
+        expect(res.status).toBe(401)
       })
     })
 
     describe('bad auth', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const server = getServer()
         const id = 'id'
 
-        const res = await server.inject({
-          method: 'DELETE'
-        , url: `/api/store/${id}/revision-policies/update-revision-required`
-        , headers: createAuthHeaders('bad')
-        })
+        const res = await fetch(del(
+          url(getAddress())
+        , pathname(`/api/store/${id}/revision-policies/update-revision-required`)
+        , headers(createAuthHeaders('bad'))
+        ))
 
-        expect(res.statusCode).toBe(401)
+        expect(res.status).toBe(401)
       })
     })
   })
@@ -299,46 +271,43 @@ describe('RevisionPolicy', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const server = getServer()
         const id = 'id'
 
-        const res = await server.inject({
-          method: 'DELETE'
-        , url: `/api/store/${id}/revision-policies/delete-revision-required`
-        , headers: createAuthHeaders()
-        })
+        const res = await fetch(del(
+          url(getAddress())
+        , pathname(`/api/store/${id}/revision-policies/delete-revision-required`)
+        , headers(createAuthHeaders())
+        ))
 
-        expect(res.statusCode).toBe(204)
+        expect(res.status).toBe(204)
       })
     })
 
     describe('no admin password', () => {
       it('401', async () => {
-        const server = getServer()
         const id = 'id'
 
-        const res = await server.inject({
-          method: 'DELETE'
-        , url: `/api/store/${id}/revision-policies/delete-revision-required`
-        })
+        const res = await fetch(del(
+          url(getAddress())
+        , pathname(`/api/store/${id}/revision-policies/delete-revision-required`)
+        ))
 
-        expect(res.statusCode).toBe(401)
+        expect(res.status).toBe(401)
       })
     })
 
     describe('bad auth', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const server = getServer()
         const id = 'id'
 
-        const res = await server.inject({
-          method: 'DELETE'
-        , url: `/api/store/${id}/revision-policies/delete-revision-required`
-        , headers: createAuthHeaders('bad')
-        })
+        const res = await fetch(del(
+          url(getAddress())
+        , pathname(`/api/store/${id}/revision-policies/delete-revision-required`)
+        , headers(createAuthHeaders('bad'))
+        ))
 
-        expect(res.statusCode).toBe(401)
+        expect(res.status).toBe(401)
       })
     })
   })
@@ -347,11 +316,5 @@ describe('RevisionPolicy', () => {
 function createAuthHeaders(adminPassword?: string) {
   return {
     'Authorization': `Bearer ${ adminPassword ?? process.env.STORE_ADMIN_PASSWORD }`
-  }
-}
-
-function createJsonHeaders() {
-  return {
-    'Content-Type': 'application/json'
   }
 }

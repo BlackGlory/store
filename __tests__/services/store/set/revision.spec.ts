@@ -1,6 +1,9 @@
-import { startService, stopService, getServer } from '@test/utils'
+import { startService, stopService, getAddress } from '@test/utils'
 import { matchers } from 'jest-json-schema'
 import { RevisionPolicyDAO, StoreDAO } from '@dao'
+import { fetch } from 'extra-fetch'
+import { put } from 'extra-request'
+import { url, pathname, header, text } from 'extra-request/lib/es2018/transformers'
 
 jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
@@ -15,20 +18,16 @@ describe('revision', () => {
       it('204', async () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
-        const server = getServer()
         const revision = await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
 
-        const res = await server.inject({
-          method: 'PUT'
-        , url: `/store/${storeId}/items/${itemId}`
-        , headers: {
-            'if-match': revision
-          , 'content-type': 'text/plain'
-          }
-        , payload: 'new document'
-        })
+        const res = await fetch(put(
+          url(getAddress())
+        , pathname(`/store/${storeId}/items/${itemId}`)
+        , header('If-Match', revision)
+        , text('new document')
+        ))
 
-        expect(res.statusCode).toBe(204)
+        expect(res.status).toBe(204)
       })
     })
 
@@ -36,20 +35,16 @@ describe('revision', () => {
       it('412', async () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
-        const server = getServer()
         await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
 
-        const res = await server.inject({
-          method: 'PUT'
-        , url: `/store/${storeId}/items/${itemId}`
-        , headers: {
-            'if-match': 'bad-revision'
-          , 'content-type': 'text/plain'
-          }
-        , payload: 'new document'
-        })
+        const res = await fetch(put(
+          url(getAddress())
+        , pathname(`/store/${storeId}/items/${itemId}`)
+        , header('If-Match', 'bad-revision')
+        , text('new document')
+        ))
 
-        expect(res.statusCode).toBe(412)
+        expect(res.status).toBe(412)
       })
     })
 
@@ -57,17 +52,15 @@ describe('revision', () => {
       it('204', async () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
-        const server = getServer()
         await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
 
-        const res = await server.inject({
-          method: 'PUT'
-        , url: `/store/${storeId}/items/${itemId}`
-        , headers: { 'content-type': 'text/plain' }
-        , payload: 'new document'
-        })
+        const res = await fetch(put(
+          url(getAddress())
+        , pathname(`/store/${storeId}/items/${itemId}`)
+        , text('new document')
+        ))
 
-        expect(res.statusCode).toBe(204)
+        expect(res.status).toBe(204)
       })
     })
   })
@@ -77,21 +70,17 @@ describe('revision', () => {
       it('204', async () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
-        const server = getServer()
         const revision = await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
         await RevisionPolicyDAO.setUpdateRevisionRequired(storeId, true)
 
-        const res = await server.inject({
-          method: 'PUT'
-        , url: `/store/${storeId}/items/${itemId}`
-        , headers: {
-            'if-match': revision
-          , 'content-type': 'text/plain'
-          }
-        , payload: 'new document'
-        })
+        const res = await fetch(put(
+          url(getAddress())
+        , pathname(`/store/${storeId}/items/${itemId}`)
+        , header('If-Match', revision)
+        , text('new document')
+        ))
 
-        expect(res.statusCode).toBe(204)
+        expect(res.status).toBe(204)
       })
     })
 
@@ -99,21 +88,17 @@ describe('revision', () => {
       it('412', async () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
-        const server = getServer()
         await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
         await RevisionPolicyDAO.setUpdateRevisionRequired(storeId, true)
 
-        const res = await server.inject({
-          method: 'PUT'
-        , url: `/store/${storeId}/items/${itemId}`
-        , headers: {
-            'if-match': 'bad-revision'
-          , 'content-type': 'text/plain'
-          }
-        , payload: 'new document'
-        })
+        const res = await fetch(put(
+          url(getAddress())
+        , pathname(`/store/${storeId}/items/${itemId}`)
+        , header('If-Match', 'bad-revision')
+        , text('new document')
+        ))
 
-        expect(res.statusCode).toBe(412)
+        expect(res.status).toBe(412)
       })
     })
 
@@ -121,18 +106,16 @@ describe('revision', () => {
       it('412', async () => {
         const storeId = 'store-id'
         const itemId = 'item-id'
-        const server = getServer()
         await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
         await RevisionPolicyDAO.setUpdateRevisionRequired(storeId, true)
 
-        const res = await server.inject({
-          method: 'PUT'
-        , url: `/store/${storeId}/items/${itemId}`
-        , headers: { 'content-type': 'text/plain' }
-        , payload: 'new document'
-        })
+        const res = await fetch(put(
+          url(getAddress())
+        , pathname(`/store/${storeId}/items/${itemId}`)
+        , text('new document')
+        ))
 
-        expect(res.statusCode).toBe(412)
+        expect(res.status).toBe(412)
       })
     })
   })

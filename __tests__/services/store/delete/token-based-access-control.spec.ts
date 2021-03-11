@@ -1,6 +1,9 @@
-import { startService, stopService, getServer } from '@test/utils'
+import { startService, stopService, getAddress } from '@test/utils'
 import { matchers } from 'jest-json-schema'
 import { AccessControlDAO } from '@dao'
+import { fetch } from 'extra-fetch'
+import { del } from 'extra-request'
+import { url, pathname, searchParam } from 'extra-request/lib/es2018/transformers'
 
 jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
@@ -18,17 +21,16 @@ describe('token-based access control', () => {
           const storeId = 'store-id'
           const itemId = 'item-id'
           const token = 'token'
-          const server = getServer()
           await AccessControlDAO.setDeleteTokenRequired(storeId, true)
           await AccessControlDAO.setDeleteToken({ id: storeId, token })
 
-          const res = await server.inject({
-            method: 'DELETE'
-          , url: `/store/${storeId}/items/${itemId}`
-          , query: { token }
-          })
+          const res = await fetch(del(
+            url(getAddress())
+          , pathname(`/store/${storeId}/items/${itemId}`)
+          , searchParam('token', token)
+          ))
 
-          expect(res.statusCode).toBe(204)
+          expect(res.status).toBe(204)
         })
       })
 
@@ -38,16 +40,15 @@ describe('token-based access control', () => {
           const storeId = 'store-id'
           const itemId = 'item-id'
           const token = 'token'
-          const server = getServer()
           await AccessControlDAO.setDeleteTokenRequired(storeId, true)
           await AccessControlDAO.setDeleteToken({ id: storeId, token })
 
-          const res = await server.inject({
-            method: 'DELETE'
-          , url: `/store/${storeId}/items/${itemId}`
-          })
+          const res = await fetch(del(
+            url(getAddress())
+          , pathname(`/store/${storeId}/items/${itemId}`)
+          ))
 
-          expect(res.statusCode).toBe(401)
+          expect(res.status).toBe(401)
         })
       })
 
@@ -57,16 +58,15 @@ describe('token-based access control', () => {
           const storeId = 'store-id'
           const itemId = 'item-id'
           const token = 'token'
-          const server = getServer()
           await AccessControlDAO.setDeleteTokenRequired(storeId, true)
           await AccessControlDAO.setDeleteToken({ id: storeId, token })
 
-          const res = await server.inject({
-            method: 'DELETE'
-          , url: `/store/${storeId}/items/${itemId}`
-          })
+          const res = await fetch(del(
+            url(getAddress())
+          , pathname(`/store/${storeId}/items/${itemId}`)
+          ))
 
-          expect(res.statusCode).toBe(401)
+          expect(res.status).toBe(401)
         })
       })
     })
@@ -78,14 +78,13 @@ describe('token-based access control', () => {
           process.env.STORE_DELETE_TOKEN_REQUIRED = 'true'
           const storeId = 'store-id'
           const itemId = 'item-id'
-          const server = getServer()
 
-          const res = await server.inject({
-            method: 'DELETE'
-          , url: `/store/${storeId}/items/${itemId}`
-          })
+          const res = await fetch(del(
+            url(getAddress())
+          , pathname(`/store/${storeId}/items/${itemId}`)
+          ))
 
-          expect(res.statusCode).toBe(401)
+          expect(res.status).toBe(401)
         })
       })
 
@@ -94,14 +93,13 @@ describe('token-based access control', () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
           const storeId = 'store-id'
           const itemId = 'item-id'
-          const server = getServer()
 
-          const res = await server.inject({
-            method: 'DELETE'
-          , url: `/store/${storeId}/items/${itemId}`
-          })
+          const res = await fetch(del(
+            url(getAddress())
+          , pathname(`/store/${storeId}/items/${itemId}`)
+          ))
 
-          expect(res.statusCode).toBe(204)
+          expect(res.status).toBe(204)
         })
       })
     })
@@ -114,16 +112,15 @@ describe('token-based access control', () => {
           const storeId = 'store-id'
           const itemId = 'item-id'
           const token = 'token'
-          const server = getServer()
           await AccessControlDAO.setDeleteTokenRequired(storeId, true)
           await AccessControlDAO.setDeleteToken({ id: storeId, token })
 
-          const res = await server.inject({
-            method: 'DELETE'
-          , url: `/store/${storeId}/items/${itemId}`
-          })
+          const res = await fetch(del(
+            url(getAddress())
+          , pathname(`/store/${storeId}/items/${itemId}`)
+          ))
 
-          expect(res.statusCode).toBe(204)
+          expect(res.status).toBe(204)
         })
       })
     })
@@ -135,16 +132,15 @@ describe('token-based access control', () => {
           const storeId = 'store-id'
           const itemId = 'item-id'
           const token = 'token'
-          const server = getServer()
           await AccessControlDAO.setDeleteTokenRequired(storeId, true)
           await AccessControlDAO.setDeleteToken({ id: storeId, token })
 
-          const res = await server.inject({
-            method: 'DELETE'
-          , url: `/store/${storeId}/items/${itemId}`
-          })
+          const res = await fetch(del(
+            url(getAddress())
+          , pathname(`/store/${storeId}/items/${itemId}`)
+          ))
 
-          expect(res.statusCode).toBe(204)
+          expect(res.status).toBe(204)
         })
       })
     })
