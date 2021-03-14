@@ -1,9 +1,8 @@
 import { startService, stopService, getAddress } from '@test/utils'
 import { matchers } from 'jest-json-schema'
-import { tokenSchema } from '@src/schema'
 import { fetch } from 'extra-fetch'
 import { get, put, del } from 'extra-request'
-import { url, pathname, headers } from 'extra-request/lib/es2018/transformers'
+import { url, pathname, headers, json } from 'extra-request/lib/es2018/transformers'
 import { toJSON } from 'extra-response'
 
 jest.mock('@dao/config-in-sqlite3/database')
@@ -13,15 +12,15 @@ expect.extend(matchers)
 beforeEach(startService)
 afterEach(stopService)
 
-describe('TBAC', () => {
-  describe('GET /api/store-with-tokens', () => {
+describe('TokenPolicy', () => {
+  describe('GET /admin/store-with-token-policies', () => {
     describe('auth', () => {
       it('200', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname('/api/store-with-tokens')
+        , pathname('/admin/store-with-token-policies')
         , headers(createAuthHeaders())
         ))
 
@@ -37,7 +36,7 @@ describe('TBAC', () => {
       it('401', async () => {
         const res = await fetch(get(
           url(getAddress())
-        , pathname('/api/store-with-tokens')
+        , pathname('/admin/store-with-token-policies')
         ))
 
         expect(res.status).toBe(401)
@@ -50,7 +49,7 @@ describe('TBAC', () => {
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname('/api/store-with-tokens')
+        , pathname('/admin/store-with-token-policies')
         , headers(createAuthHeaders('bad'))
         ))
 
@@ -59,7 +58,7 @@ describe('TBAC', () => {
     })
   })
 
-  describe('GET /api/store/:id/tokens', () => {
+  describe('GET /admin/store/:id/token-policies', () => {
     describe('auth', () => {
       it('200', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
@@ -67,20 +66,25 @@ describe('TBAC', () => {
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens`)
+        , pathname(`/admin/store/${id}/token-policies`)
         , headers(createAuthHeaders())
         ))
 
         expect(res.status).toBe(200)
         expect(await toJSON(res)).toMatchSchema({
-          type: 'array'
-        , items: {
-            type: 'object'
-          , properties: {
-              token: tokenSchema
-            , write: { type: 'boolean' }
-            , read: { type: 'boolean' }
-            , delete: { type: 'boolean' }
+          type: 'object'
+        , properties: {
+            writeTokenRequired: {
+              oneOf: [
+                { type: 'boolean' }
+              , { type: 'null' }
+              ]
+            }
+          , readTokenRequired: {
+              oneOf: [
+                { type: 'boolean' }
+              , { type: 'null' }
+              ]
             }
           }
         })
@@ -93,7 +97,7 @@ describe('TBAC', () => {
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens`)
+        , pathname(`/admin/store/${id}/token-policies`)
         ))
 
         expect(res.status).toBe(401)
@@ -107,7 +111,7 @@ describe('TBAC', () => {
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens`)
+        , pathname(`/admin/store/${id}/token-policies`)
         , headers(createAuthHeaders('bad'))
         ))
 
@@ -116,17 +120,18 @@ describe('TBAC', () => {
     })
   })
 
-  describe('PUT /api/store/:id/tokens/:token/write', () => {
+  describe('PUT /admin/store/:id/token-policies/write-token-required', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
         const id = 'id'
-        const token = 'token'
+        const val = true
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/write`)
+        , pathname(`/admin/store/${id}/token-policies/write-token-required`)
         , headers(createAuthHeaders())
+        , json(val)
         ))
 
         expect(res.status).toBe(204)
@@ -136,11 +141,12 @@ describe('TBAC', () => {
     describe('no admin password', () => {
       it('401', async () => {
         const id = 'id'
-        const token = 'token'
+        const val = true
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/write`)
+        , pathname(`/admin/store/${id}/token-policies/write-token-required`)
+        , json(val)
         ))
 
         expect(res.status).toBe(401)
@@ -151,12 +157,13 @@ describe('TBAC', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
         const id = 'id'
-        const token = 'token'
+        const val = true
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/write`)
+        , pathname(`/admin/store/${id}/token-policies/write-token-required`)
         , headers(createAuthHeaders('bad'))
+        , json(val)
         ))
 
         expect(res.status).toBe(401)
@@ -164,17 +171,18 @@ describe('TBAC', () => {
     })
   })
 
-  describe('DELETE /api/store/:id/tokens/:token/write', () => {
+  describe('PUT /admin/store/:id/token-policies/read-token-required', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
         const id = 'id'
-        const token = 'token'
+        const val = true
 
-        const res = await fetch(del(
+        const res = await fetch(put(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/write`)
+        , pathname(`/admin/store/${id}/token-policies/read-token-required`)
         , headers(createAuthHeaders())
+        , json(val)
         ))
 
         expect(res.status).toBe(204)
@@ -184,11 +192,12 @@ describe('TBAC', () => {
     describe('no admin password', () => {
       it('401', async () => {
         const id = 'id'
-        const token = 'token'
+        const val = true
 
-        const res = await fetch(del(
+        const res = await fetch(put(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/write`)
+        , pathname(`/admin/store/${id}/token-policies/read-token-required`)
+        , json(val)
         ))
 
         expect(res.status).toBe(401)
@@ -199,11 +208,12 @@ describe('TBAC', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
         const id = 'id'
-        const token = 'token'
+        const val = true
 
-        const res = await fetch(del(
+        const res = await fetch(put(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/write`)
+        , pathname(`/admin/store/${id}/token-policies/read-token-required`)
+        , json(val)
         , headers(createAuthHeaders('bad'))
         ))
 
@@ -212,17 +222,18 @@ describe('TBAC', () => {
     })
   })
 
-  describe('PUT /api/store/:id/tokens/:token/read', () => {
+  describe('PUT /admin/store/:id/token-policies/delete-token-required', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
         const id = 'id'
-        const token = 'token'
+        const val = true
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/read`)
+        , pathname(`/admin/store/${id}/token-policies/delete-token-required`)
         , headers(createAuthHeaders())
+        , json(val)
         ))
 
         expect(res.status).toBe(204)
@@ -232,11 +243,12 @@ describe('TBAC', () => {
     describe('no admin password', () => {
       it('401', async () => {
         const id = 'id'
-        const token = 'token'
+        const val = true
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/read`)
+        , pathname(`/admin/store/${id}/token-policies/delete-token-required`)
+        , json(val)
         ))
 
         expect(res.status).toBe(401)
@@ -247,12 +259,13 @@ describe('TBAC', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
         const id = 'id'
-        const token = 'token'
+        const val = true
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/read`)
+        , pathname(`/admin/store/${id}/token-policies/delete-token-required`)
         , headers(createAuthHeaders('bad'))
+        , json(val)
         ))
 
         expect(res.status).toBe(401)
@@ -260,16 +273,15 @@ describe('TBAC', () => {
     })
   })
 
-  describe('DELETE /api/store/:id/tokens/:token/read', () => {
+  describe('DELETE /admin/store/:id/token-policies/write-token-required', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
         const id = 'id'
-        const token = 'token'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/read`)
+        , pathname(`/admin/store/${id}/token-policies/write-token-required`)
         , headers(createAuthHeaders())
         ))
 
@@ -280,11 +292,10 @@ describe('TBAC', () => {
     describe('no admin password', () => {
       it('401', async () => {
         const id = 'id'
-        const token = 'token'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/read`)
+        , pathname(`/admin/store/${id}/token-policies/write-token-required`)
         ))
 
         expect(res.status).toBe(401)
@@ -295,11 +306,10 @@ describe('TBAC', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
         const id = 'id'
-        const token = 'token'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/read`)
+        , pathname(`/admin/store/${id}/token-policies/write-token-required`)
         , headers(createAuthHeaders('bad'))
         ))
 
@@ -308,16 +318,15 @@ describe('TBAC', () => {
     })
   })
 
-  describe('PUT /api/store/:id/tokens/:token/delete', () => {
+  describe('DELETE /admin/store/:id/token-policies/read-token-required', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
         const id = 'id'
-        const token = 'token'
 
-        const res = await fetch(put(
+        const res = await fetch(del(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/delete`)
+        , pathname(`/admin/store/${id}/token-policies/read-token-required`)
         , headers(createAuthHeaders())
         ))
 
@@ -328,11 +337,10 @@ describe('TBAC', () => {
     describe('no admin password', () => {
       it('401', async () => {
         const id = 'id'
-        const token = 'token'
 
-        const res = await fetch(put(
+        const res = await fetch(del(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/delete`)
+        , pathname(`/admin/store/${id}/token-policies/read-token-required`)
         ))
 
         expect(res.status).toBe(401)
@@ -343,11 +351,10 @@ describe('TBAC', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
         const id = 'id'
-        const token = 'token'
 
-        const res = await fetch(put(
+        const res = await fetch(del(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/delete`)
+        , pathname(`/admin/store/${id}/token-policies/read-token-required`)
         , headers(createAuthHeaders('bad'))
         ))
 
@@ -356,16 +363,15 @@ describe('TBAC', () => {
     })
   })
 
-  describe('DELETE /api/store/:id/tokens/:token/delete', () => {
+  describe('DELETE /admin/store/:id/token-policies/delete-token-required', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
         const id = 'id'
-        const token = 'token'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/delete`)
+        , pathname(`/admin/store/${id}/token-policies/delete-token-required`)
         , headers(createAuthHeaders())
         ))
 
@@ -376,11 +382,10 @@ describe('TBAC', () => {
     describe('no admin password', () => {
       it('401', async () => {
         const id = 'id'
-        const token = 'token'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/delete`)
+        , pathname(`/admin/store/${id}/token-policies/delete-token-required`)
         ))
 
         expect(res.status).toBe(401)
@@ -391,11 +396,10 @@ describe('TBAC', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
         const id = 'id'
-        const token = 'token'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/api/store/${id}/tokens/${token}/delete`)
+        , pathname(`/admin/store/${id}/token-policies/delete-token-required`)
         , headers(createAuthHeaders('bad'))
         ))
 

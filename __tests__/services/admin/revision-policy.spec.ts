@@ -13,14 +13,14 @@ beforeEach(startService)
 afterEach(stopService)
 
 describe('RevisionPolicy', () => {
-  describe('GET /api/store-with-revision-policies', () => {
+  describe('GET /admin/store-with-revision-policies', () => {
     describe('auth', () => {
       it('200', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname('/api/store-with-revision-policies')
+        , pathname('/admin/store-with-revision-policies')
         , headers(createAuthHeaders())
         ))
 
@@ -36,7 +36,7 @@ describe('RevisionPolicy', () => {
       it('401', async () => {
         const res = await fetch(get(
           url(getAddress())
-        , pathname('/api/store-with-revision-policies')
+        , pathname('/admin/store-with-revision-policies')
         ))
 
         expect(res.status).toBe(401)
@@ -49,7 +49,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname('/api/store-with-revision-policies')
+        , pathname('/admin/store-with-revision-policies')
         , headers(createAuthHeaders('bad'))
         ))
 
@@ -58,7 +58,7 @@ describe('RevisionPolicy', () => {
     })
   })
 
-  describe('GET /api/store/:id/revision-policies', () => {
+  describe('GET /admin/store/:id/revision-policies', () => {
     describe('auth', () => {
       it('200', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
@@ -66,7 +66,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/api/store/${id}/revision-policies`)
+        , pathname(`/admin/store/${id}/revision-policies`)
         , headers(createAuthHeaders())
         ))
 
@@ -97,7 +97,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/api/store/${id}/revision-policies`)
+        , pathname(`/admin/store/${id}/revision-policies`)
         ))
 
         expect(res.status).toBe(401)
@@ -111,7 +111,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/api/store/${id}/revision-policies`)
+        , pathname(`/admin/store/${id}/revision-policies`)
         , headers(createAuthHeaders('bad'))
         ))
 
@@ -120,7 +120,7 @@ describe('RevisionPolicy', () => {
     })
   })
 
-  describe('PUT /api/store/:id/revision-policies/update-revision-required', () => {
+  describe('PUT /admin/store/:id/revision-policies/update-revision-required', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
@@ -129,7 +129,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/api/store/${id}/revision-policies/update-revision-required`)
+        , pathname(`/admin/store/${id}/revision-policies/update-revision-required`)
         , headers(createAuthHeaders())
         , json(val)
         ))
@@ -145,7 +145,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/api/store/${id}/revision-policies/update-revision-required`)
+        , pathname(`/admin/store/${id}/revision-policies/update-revision-required`)
         , json(val)
         ))
 
@@ -161,7 +161,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/api/store/${id}/revision-policies/update-revision-required`)
+        , pathname(`/admin/store/${id}/revision-policies/update-revision-required`)
         , headers(createAuthHeaders('bad'))
         , json(val)
         ))
@@ -171,7 +171,7 @@ describe('RevisionPolicy', () => {
     })
   })
 
-  describe('PUT /api/store/:id/revision-policies/delete-revision-required', () => {
+  describe('PUT /admin/store/:id/revision-policies/delete-revision-required', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
@@ -180,7 +180,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/api/store/${id}/revision-policies/delete-revision-required`)
+        , pathname(`/admin/store/${id}/revision-policies/delete-revision-required`)
         , headers(createAuthHeaders())
         , json(val)
         ))
@@ -196,7 +196,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/api/store/${id}/revision-policies/delete-revision-required`)
+        , pathname(`/admin/store/${id}/revision-policies/delete-revision-required`)
         , json(val)
         ))
 
@@ -212,7 +212,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/api/store/${id}/revision-policies/delete-revision-required`)
+        , pathname(`/admin/store/${id}/revision-policies/delete-revision-required`)
         , headers(createAuthHeaders('bad'))
         , json(val)
         ))
@@ -222,7 +222,7 @@ describe('RevisionPolicy', () => {
     })
   })
 
-  describe('DELETE /api/store/:id/revision-policies/update-revision-required', () => {
+  describe('DELETE /admin/store/:id/revision-policies/update-revision-required', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
@@ -230,7 +230,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/api/store/${id}/revision-policies/update-revision-required`)
+        , pathname(`/admin/store/${id}/revision-policies/update-revision-required`)
         , headers(createAuthHeaders())
         ))
 
@@ -244,7 +244,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/api/store/${id}/revision-policies/update-revision-required`)
+        , pathname(`/admin/store/${id}/revision-policies/update-revision-required`)
         ))
 
         expect(res.status).toBe(401)
@@ -258,7 +258,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/api/store/${id}/revision-policies/update-revision-required`)
+        , pathname(`/admin/store/${id}/revision-policies/update-revision-required`)
         , headers(createAuthHeaders('bad'))
         ))
 
@@ -267,7 +267,7 @@ describe('RevisionPolicy', () => {
     })
   })
 
-  describe('DELETE /api/store/:id/revision-policies/delete-revision-required', () => {
+  describe('DELETE /admin/store/:id/revision-policies/delete-revision-required', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
@@ -275,7 +275,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/api/store/${id}/revision-policies/delete-revision-required`)
+        , pathname(`/admin/store/${id}/revision-policies/delete-revision-required`)
         , headers(createAuthHeaders())
         ))
 
@@ -289,7 +289,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/api/store/${id}/revision-policies/delete-revision-required`)
+        , pathname(`/admin/store/${id}/revision-policies/delete-revision-required`)
         ))
 
         expect(res.status).toBe(401)
@@ -303,7 +303,7 @@ describe('RevisionPolicy', () => {
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/api/store/${id}/revision-policies/delete-revision-required`)
+        , pathname(`/admin/store/${id}/revision-policies/delete-revision-required`)
         , headers(createAuthHeaders('bad'))
         ))
 

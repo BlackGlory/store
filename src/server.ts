@@ -2,7 +2,7 @@ import fastify from 'fastify'
 import cors from 'fastify-cors'
 import metricsPlugin = require('fastify-metrics')
 import { Registry } from 'prom-client'
-import { routes as api } from '@services/api'
+import { routes as admin } from '@services/admin'
 import { routes as store } from '@services/store'
 import { routes as robots } from '@services/robots'
 import { HTTP2, PAYLOAD_LIMIT, NODE_ENV, NodeEnv } from '@env'
@@ -24,7 +24,7 @@ export function buildServer() {
   })
 
   server.register(cors, { origin: true })
-  server.register(api, { Core })
+  server.register(admin, { Core })
   server.register(store, { Core })
   server.register(robots)
 
