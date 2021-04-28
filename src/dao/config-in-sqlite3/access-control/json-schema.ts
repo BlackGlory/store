@@ -1,35 +1,35 @@
 import { getDatabase } from '../database'
 
-export function getAllIdsWithJsonSchema(): string[] {
+export function getAllNamespacesWithJsonSchema(): string[] {
   const result = getDatabase().prepare(`
-    SELECT store_id
+    SELECT namespace
       FROM store_json_schema
   `).all()
 
-  return result.map(x => x['store_id'])
+  return result.map(x => x['namespace'])
 }
 
-export function getJsonSchema(id: string): string | null {
+export function getJsonSchema(namespace: string): string | null {
   const result = getDatabase().prepare(`
     SELECT json_schema FROM store_json_schema
-     WHERE store_id = $id;
-  `).get({ id })
+     WHERE namespace = $namespace;
+  `).get({ namespace })
 
   return result ? result['json_schema'] : null
 }
 
-export function setJsonSchema({ id, schema }: { id: string; schema: string }): void {
+export function setJsonSchema({ namespace, schema }: { namespace: string; schema: string }): void {
   getDatabase().prepare(`
-    INSERT INTO store_json_schema (store_id, json_schema)
-    VALUES ($id, $schema)
-        ON CONFLICT(store_id)
+    INSERT INTO store_json_schema (namespace, json_schema)
+    VALUES ($namespace, $schema)
+        ON CONFLICT(namespace)
         DO UPDATE SET json_schema = $schema;
-  `).run({ id, schema })
+  `).run({ namespace, schema })
 }
 
-export function removeJsonSchema(id: string): void {
+export function removeJsonSchema(namespace: string): void {
   getDatabase().prepare(`
     DELETE FROM store_json_schema
-     WHERE store_id = $id;
-  `).run({ id })
+     WHERE namespace = $namespace;
+  `).run({ namespace })
 }

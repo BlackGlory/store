@@ -2,8 +2,8 @@ type Json = import('justypes').Json
 type CustomErrorConstructor = import('@blackglory/errors').CustomErrorConstructor
 type IRevision = string
 
-interface Stats {
-  id: string
+interface IStats {
+  namespace: string
   items: number
 }
 
@@ -17,81 +17,81 @@ interface ICore {
   isAdmin(password: string): boolean
 
   Store: {
-    has(store: string, id: string): Promise<boolean>
-    get(store: string, id: string): Promise<IItem | null>
-    getAllItemIds(store: string): AsyncIterable<string>
-    getAllStoreIds(): AsyncIterable<string>
-    clear(store: string): Promise<void>
-    stats(store: string): Promise<Stats>
+    has(namespace: string, id: string): Promise<boolean>
+    get(namespace: string, id: string): Promise<IItem | null>
+    getAllItemIds(namespace: string): AsyncIterable<string>
+    getAllNamespaces(): AsyncIterable<string>
+    clear(namespace: string): Promise<void>
+    stats(namespace: string): Promise<IStats>
 
     /**
      * @throws {IncorrectionRevision}
      */
-    set(store: string, id: string, type: string, payload: string, revision?: IRevision): Promise<IRevision>
+    set(namespace: string, id: string, type: string, payload: string, revision?: IRevision): Promise<IRevision>
 
     /**
      * @throws {NotFound}
      * @throws {IncorrectRevision}
      */
-    del(store: string, id: string, revision?: IRevision): Promise<void>
+    del(namespace: string, id: string, revision?: IRevision): Promise<void>
 
     NotFound: new (namespace: string, id: string) => CustomError
     IncorrectRevision: new (namespace: string, id: string) => CustomError
   }
 
   RevisionPolicy: {
-    getAllIds(): Promise<string[]>
-    get(id: string): Promise<{
+    getAllNamespaces(): Promise<string[]>
+    get(namespace: string): Promise<{
       updateRevisionRequired: boolean | null
       deleteRevisionRequired: boolean | null
     }>
 
-    setUpdateRevisionRequired(id: string, val: boolean): Promise<void>
-    unsetUpdateRevisionRequired(id: string): Promise<void>
+    setUpdateRevisionRequired(namespace: string, val: boolean): Promise<void>
+    unsetUpdateRevisionRequired(namespace: string): Promise<void>
 
-    setDeleteRevisionRequired(id: string, val: boolean): Promise<void>
-    unsetDeleteRevisionRequired(id: string): Promise<void>
+    setDeleteRevisionRequired(namespace: string, val: boolean): Promise<void>
+    unsetDeleteRevisionRequired(namespace: string): Promise<void>
   }
 
   Blacklist: {
     isEnabled(): boolean
-    isBlocked(id: string): Promise<boolean>
+    isBlocked(namespace: string): Promise<boolean>
     getAll(): Promise<string[]>
-    add(id: string): Promise<void>
-    remove(id: string): Promise<void>
+    add(namespace: string): Promise<void>
+    remove(namespace: string): Promise<void>
 
     /**
      * @throws {Forbidden}
      */
-    check(id: string): Promise<void>
+    check(namespace: string): Promise<void>
     Forbidden: CustomErrorConstructor
   }
 
   Whitelist: {
     isEnabled(): boolean
-    isBlocked(id: string): Promise<boolean>
+    isBlocked(namespace: string): Promise<boolean>
     getAll(): Promise<string[]>
-    add(id: string): Promise<void>
-    remove(id: string): Promise<void>
+    add(namespace: string): Promise<void>
+    remove(namespace: string): Promise<void>
 
     /**
      * @throws {Forbidden}
      */
-    check(id: string): Promise<void>
+    check(namespace: string): Promise<void>
     Forbidden: CustomErrorConstructor
   }
 
   JsonSchema: {
     isEnabled(): boolean
-    getAllIds(): Promise<string[]>
-    get(id: string): Promise<string | null>
-    set(id: string, schema: Json): Promise<void>
-    remove(id: string): Promise<void>
+    getAllNamespaces(): Promise<string[]>
+    get(namespace: string): Promise<string | null>
+    set(namespace: string, schema: Json): Promise<void>
+    remove(namespace: string): Promise<void>
 
     /**
      * @throws {InvalidPayload}
      */
-    validate(id: string, payload: Json): Promise<void>
+    validate(namespace: string, payload: Json): Promise<void>
     InvalidPayload: CustomErrorConstructor
   }
 
@@ -101,54 +101,54 @@ interface ICore {
     /**
      * @throws {Unauthorized}
      */
-    checkWritePermission(id: string, token?: string): Promise<void>
+    checkWritePermission(namespace: string, token?: string): Promise<void>
 
     /**
      * @throws {Unauthorized}
      */
-    checkReadPermission(id: string, token?: string): Promise<void>
+    checkReadPermission(namespace: string, token?: string): Promise<void>
 
     /**
      * @throws {Unauthorized}
      */
-    checkDeletePermission(id: string, token?: string): Promise<void>
+    checkDeletePermission(namespace: string, token?: string): Promise<void>
 
     Unauthorized: CustomErrorConstructor
 
     Token: {
-      getAllIds(): Promise<string[]>
-      getAll(id: string): Promise<Array<{
+      getAllNamespaces(): Promise<string[]>
+      getAll(namespace: string): Promise<Array<{
         token: string
         write: boolean
         read: boolean
         delete: boolean
       }>>
 
-      setWriteToken(id: string, token: string): Promise<void>
-      unsetWriteToken(id: string, token: string): Promise<void>
+      setWriteToken(namespace: string, token: string): Promise<void>
+      unsetWriteToken(namespace: string, token: string): Promise<void>
 
-      setReadToken(id: string, token: string): Promise<void>
-      unsetReadToken(id: string, token: string): Promise<void>
+      setReadToken(namespace: string, token: string): Promise<void>
+      unsetReadToken(namespace: string, token: string): Promise<void>
 
-      setDeleteToken(id: string, token: string): Promise<void>
-      unsetDeleteToken(id: string, token: string): Promise<void>
+      setDeleteToken(namespace: string, token: string): Promise<void>
+      unsetDeleteToken(namespace: string, token: string): Promise<void>
     }
 
     TokenPolicy: {
-      getAllIds(): Promise<string[]>
-      get(id: string): Promise<{
+      getAllNamespaces(): Promise<string[]>
+      get(namespace: string): Promise<{
         writeTokenRequired: boolean | null
         readTokenRequired: boolean | null
       }>
 
-      setWriteTokenRequired(id: string, val: boolean): Promise<void>
-      unsetWriteTokenRequired(id: string): Promise<void>
+      setWriteTokenRequired(namespace: string, val: boolean): Promise<void>
+      unsetWriteTokenRequired(namespace: string): Promise<void>
 
-      setReadTokenRequired(id: string, val: boolean): Promise<void>
-      unsetReadTokenRequired(id: string): Promise<void>
+      setReadTokenRequired(namespace: string, val: boolean): Promise<void>
+      unsetReadTokenRequired(namespace: string): Promise<void>
 
-      setDeleteTokenRequired(id: string, val: boolean): Promise<void>
-      unsetDeleteTokenRequired(id: string): Promise<void>
+      setDeleteTokenRequired(namespace: string, val: boolean): Promise<void>
+      unsetDeleteTokenRequired(namespace: string): Promise<void>
     }
   }
 }

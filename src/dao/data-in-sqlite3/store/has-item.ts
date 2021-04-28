@@ -1,14 +1,14 @@
 import { getDatabase } from '../database'
 
-export function hasItem(storeId: string, itemId: string): boolean {
+export function hasItem(namespace: string, id: string): boolean {
   const row = getDatabase().prepare(`
     SELECT EXISTS(
-             SELECT *
+             SELECT 1
                FROM store_item
-              WHERE store_id = $storeId
-                AND item_id = $itemId
+              WHERE namespace = $namespace
+                AND id = $id
            ) AS matched;
-  `).get({ storeId, itemId })
+  `).get({ namespace, id })
 
   return row['matched'] === 1
 }

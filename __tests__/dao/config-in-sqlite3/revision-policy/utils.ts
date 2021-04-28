@@ -1,7 +1,7 @@
 import { getDatabase } from '@dao/config-in-sqlite3/database'
 
 interface IRawRevisionPolicy {
-  store_id: string
+  namespace: string
   update_revision_required: number | null
   delete_revision_required: number | null
 }
@@ -9,12 +9,12 @@ interface IRawRevisionPolicy {
 export function setRawRevisionPolicy<T extends IRawRevisionPolicy>(item: T): T {
   getDatabase().prepare(`
     INSERT INTO store_revision_policy (
-      store_id
+      namespace
     , update_revision_required
     , delete_revision_required
     )
     VALUES (
-      $store_id
+      $namespace
     , $update_revision_required
     , $delete_revision_required
     );
@@ -23,14 +23,14 @@ export function setRawRevisionPolicy<T extends IRawRevisionPolicy>(item: T): T {
   return item
 }
 
-export function hasRawRevisionPolicy(id: string): boolean {
-  return !!getRawRevisionPolicy(id)
+export function hasRawRevisionPolicy(namespace: string): boolean {
+  return !!getRawRevisionPolicy(namespace)
 }
 
-export function getRawRevisionPolicy(id: string): IRawRevisionPolicy | null {
+export function getRawRevisionPolicy(namespace: string): IRawRevisionPolicy | null {
   return getDatabase().prepare(`
     SELECT *
       FROM store_revision_policy
-     WHERE store_id = $id;
-  `).get({ id })
+     WHERE namespace = $namespace;
+  `).get({ namespace })
 }

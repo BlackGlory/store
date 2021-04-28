@@ -1,20 +1,20 @@
 import { FastifyPluginAsync } from 'fastify'
-import { idSchema, tokenSchema } from '@src/schema'
+import { namespaceSchema, idSchema, tokenSchema } from '@src/schema'
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
   server.delete<{
     Params: {
-      storeId: string
-      itemId: string
+      namespace: string
+      id: string
     }
     Querystring: { token?: string }
   }>(
-    '/store/:storeId/items/:itemId'
+    '/store/:namespace/items/:id'
   , {
       schema: {
         params: {
-          storeId: idSchema
-        , itemId: idSchema
+          namespace: namespaceSchema
+        , id: idSchema
         }
       , querystring: { token: tokenSchema }
       , headers: {
@@ -23,15 +23,15 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       }
     }
   , async (req, reply) => {
-      const storeId = req.params.storeId
-      const itemId = req.params.itemId
+      const namespace = req.params.namespace
+      const itemId = req.params.id
       const token = req.query.token
       const revision = req.headers['if-match']
 
       try {
-        await Core.Blacklist.check(storeId)
-        await Core.Whitelist.check(storeId)
-        await Core.TBAC.checkDeletePermission(storeId, token)
+        await Core.Blacklist.check(namespace)
+        await Core.Whitelist.check(namespace)
+        await Core.TBAC.checkDeletePermission(namespace, token)
       } catch (e) {
         if (e instanceof Core.Blacklist.Forbidden) return reply.status(403).send()
         if (e instanceof Core.Whitelist.Forbidden) return reply.status(403).send()
@@ -40,7 +40,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       }
 
       try {
-        await Core.Store.del(storeId, itemId, revision)
+        await Core.Store.del(namespace, itemId, revision)
         reply.status(204).send()
       } catch (e) {
         if (e instanceof Core.Store.NotFound) return reply.status(204).send()

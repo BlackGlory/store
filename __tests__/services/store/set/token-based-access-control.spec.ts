@@ -15,20 +15,20 @@ afterEach(stopService)
 
 describe('token-based access control', () => {
   describe('enabled', () => {
-    describe('id need delete tokens', () => {
+    describe('namespace need delete tokens', () => {
       describe('token matched', () => {
         it('204', async () => {
           process.env.STORTOKEN_BASED_ACCESS_CONTROL = 'true'
-          const storeId = 'store-id'
-          const itemId = 'item-id'
+          const namespace = 'namespace'
+          const id = 'id'
           const token = 'token'
           const payload = 'document'
-          await AccessControlDAO.setWriteTokenRequired(storeId, true)
-          await AccessControlDAO.setWriteToken({ id: storeId, token })
+          await AccessControlDAO.setWriteTokenRequired(namespace, true)
+          await AccessControlDAO.setWriteToken({ namespace, token })
 
           const res = await fetch(put(
             url(getAddress())
-          , pathname(`/store/${storeId}/items/${itemId}`)
+          , pathname(`/store/${namespace}/items/${id}`)
           , searchParam('token', token)
           , text(payload)
           ))
@@ -40,16 +40,16 @@ describe('token-based access control', () => {
       describe('token does not matched', () => {
         it('401', async () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
-          const storeId = 'store-id'
-          const itemId = 'item-id'
+          const namespace = 'namespace'
+          const id = 'id'
           const token = 'token'
           const payload = 'document'
-          await AccessControlDAO.setWriteTokenRequired(storeId, true)
-          await AccessControlDAO.setWriteToken({ id: storeId, token })
+          await AccessControlDAO.setWriteTokenRequired(namespace, true)
+          await AccessControlDAO.setWriteToken({ namespace, token })
 
           const res = await fetch(put(
             url(getAddress())
-          , pathname(`/store/${storeId}/items/${itemId}`)
+          , pathname(`/store/${namespace}/items/${id}`)
           , text(payload)
           ))
 
@@ -60,16 +60,16 @@ describe('token-based access control', () => {
       describe('no token', () => {
         it('401', async () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
-          const storeId = 'store-id'
-          const itemId = 'item-id'
+          const namespace = 'namespace'
+          const id = 'id'
           const token = 'token'
           const payload = 'document'
-          await AccessControlDAO.setWriteTokenRequired(storeId, true)
-          await AccessControlDAO.setWriteToken({ id: storeId, token })
+          await AccessControlDAO.setWriteTokenRequired(namespace, true)
+          await AccessControlDAO.setWriteToken({ namespace, token })
 
           const res = await fetch(put(
             url(getAddress())
-          , pathname(`/store/${storeId}/items/${itemId}`)
+          , pathname(`/store/${namespace}/items/${id}`)
           , text(payload)
           ))
 
@@ -78,18 +78,18 @@ describe('token-based access control', () => {
       })
     })
 
-    describe('id does not need delete tokens', () => {
+    describe('namespace does not need delete tokens', () => {
       describe('WRITE_TOKEN_REQUIRED=true', () => {
         it('401', async () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
           process.env.STORE_WRITE_TOKEN_REQUIRED = 'true'
-          const storeId = 'store-id'
-          const itemId = 'item-id'
+          const namespace = 'namespace'
+          const id = 'id'
           const payload = 'document'
 
           const res = await fetch(put(
             url(getAddress())
-          , pathname(`/store/${storeId}/items/${itemId}`)
+          , pathname(`/store/${namespace}/items/${id}`)
           , text(payload)
           ))
 
@@ -100,13 +100,13 @@ describe('token-based access control', () => {
       describe('WRITE_TOKEN_REQUIRED=false', () => {
         it('204', async () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
-          const storeId = 'store-id'
-          const itemId = 'item-id'
+          const namespace = 'namespace'
+          const id = 'id'
           const payload = 'document'
 
           const res = await fetch(put(
             url(getAddress())
-          , pathname(`/store/${storeId}/items/${itemId}`)
+          , pathname(`/store/${namespace}/items/${id}`)
           , text(payload)
           ))
 
@@ -117,19 +117,19 @@ describe('token-based access control', () => {
   })
 
   describe('disabled', () => {
-    describe('id need delete tokens', () => {
+    describe('namespace need delete tokens', () => {
       describe('no token', () => {
         it('204', async () => {
-          const storeId = 'store-id'
-          const itemId = 'item-id'
+          const namespace = 'namespace'
+          const id = 'id'
           const token = 'token'
           const payload = 'document'
-          await AccessControlDAO.setWriteTokenRequired(storeId, true)
-          await AccessControlDAO.setWriteToken({ id: storeId, token })
+          await AccessControlDAO.setWriteTokenRequired(namespace, true)
+          await AccessControlDAO.setWriteToken({ namespace, token })
 
           const res = await fetch(put(
             url(getAddress())
-          , pathname(`/store/${storeId}/items/${itemId}`)
+          , pathname(`/store/${namespace}/items/${id}`)
           , text(payload)
           ))
 
@@ -138,20 +138,20 @@ describe('token-based access control', () => {
       })
     })
 
-    describe('id does not need delete tokens', () => {
+    describe('namespace does not need delete tokens', () => {
       describe('WRITE_TOKEN_REQUIRED=true', () => {
         it('204', async () => {
           process.env.STORE_WRITE_TOKEN_REQUIRED = 'true'
-          const storeId = 'store-id'
-          const itemId = 'item-id'
+          const namespace = 'namespace'
+          const id = 'id'
           const token = 'token'
           const payload = 'document'
-          await AccessControlDAO.setWriteTokenRequired(storeId, true)
-          await AccessControlDAO.setWriteToken({ id: storeId, token })
+          await AccessControlDAO.setWriteTokenRequired(namespace, true)
+          await AccessControlDAO.setWriteToken({ namespace, token })
 
           const res = await fetch(put(
             url(getAddress())
-          , pathname(`/store/${storeId}/items/${itemId}`)
+          , pathname(`/store/${namespace}/items/${id}`)
           , text(payload)
           ))
 

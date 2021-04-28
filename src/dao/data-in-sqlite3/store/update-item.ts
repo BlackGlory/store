@@ -8,11 +8,11 @@ import { hasItem } from './has-item'
 /**
  * @throws {NotFound}
  */
-export function updateItem(storeId: string, itemId: string, type: string, payload: string): IRevision {
+export function updateItem(namespace: string, id: string, type: string, payload: string): IRevision {
   return getDatabase().transaction(() => {
-    if (!hasItem(storeId, itemId)) throw new NotFound(storeId, itemId)
+    if (!hasItem(namespace, id)) throw new NotFound(namespace, id)
 
-    return update(storeId, itemId, type, payload)
+    return update(namespace, id, type, payload)
   })()
 }
 
@@ -20,20 +20,20 @@ export function updateItem(storeId: string, itemId: string, type: string, payloa
  * @throws {NotFound}
  * @throws {IncorrectRevision}
  */
-export function updateItemWithCheck(storeId: string, itemId: string, type: string, revision: IRevision, payload: string): IRevision {
+export function updateItemWithCheck(namespace: string, id: string, type: string, revision: IRevision, payload: string): IRevision {
   return getDatabase().transaction(() => {
-    const item = getItem(storeId, itemId)
-    if (!item) throw new NotFound(storeId, itemId)
+    const item = getItem(namespace, id)
+    if (!item) throw new NotFound(namespace, id)
 
     if (validateRevision(item, revision)) {
-      return update(storeId, itemId, type, payload)
+      return update(namespace, id, type, payload)
     } else {
-      throw new IncorrectRevision(storeId, itemId)
+      throw new IncorrectRevision(namespace, id)
     }
   })()
 }
 
-function update(storeId: string, itemId: string, type: string, payload: string): IRevision {
+function update(namespace: string, id: string, type: string, payload: string): IRevision {
   const revision = uuid()
 
   getDatabase().prepare(`
@@ -41,11 +41,11 @@ function update(storeId: string, itemId: string, type: string, payload: string):
        SET type = $type
          , payload = $payload
          , revision = $revision
-     WHERE store_id = $storeId
-       AND item_id = $itemId
+     WHERE namespace = $namespace
+       AND id = $id
   `).run({
-    storeId
-  , itemId
+    namespace
+  , id
   , type
   , payload
   , revision

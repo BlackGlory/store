@@ -13,11 +13,11 @@ afterEach(stopService)
 
 describe('no access control', () => {
   it('204', async () => {
-    const storeId = 'store-id'
+    const namespace = 'namespace'
 
     const res = await fetch(del(
       url(getAddress())
-    , pathname(`/store/${storeId}`)
+    , pathname(`/store/${namespace}`)
     ))
 
     expect(res.status).toBe(204)

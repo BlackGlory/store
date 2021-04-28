@@ -14,18 +14,18 @@ afterEach(stopService)
 
 describe('token-based access control', () => {
   describe('enabled', () => {
-    describe('id need delete tokens', () => {
+    describe('namespace need delete tokens', () => {
       describe('token matched', () => {
         it('200', async () => {
           process.env.STORTOKEN_BASED_ACCESS_CONTROL = 'true'
-          const storeId = 'store-id'
+          const namespace = 'namespace'
           const token = 'token'
-          await AccessControlDAO.setReadTokenRequired(storeId, true)
-          await AccessControlDAO.setReadToken({ id: storeId, token })
+          await AccessControlDAO.setReadTokenRequired(namespace, true)
+          await AccessControlDAO.setReadToken({ namespace, token })
 
           const res = await fetch(get(
             url(getAddress())
-          , pathname(`/store/${storeId}/items`)
+          , pathname(`/store/${namespace}/items`)
           , searchParam('token', token)
           ))
 
@@ -36,14 +36,14 @@ describe('token-based access control', () => {
       describe('token does not matched', () => {
         it('401', async () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
-          const storeId = 'store-id'
+          const namespace = 'namespace'
           const token = 'token'
-          await AccessControlDAO.setReadTokenRequired(storeId, true)
-          await AccessControlDAO.setReadToken({ id: storeId, token })
+          await AccessControlDAO.setReadTokenRequired(namespace, true)
+          await AccessControlDAO.setReadToken({ namespace, token })
 
           const res = await fetch(get(
             url(getAddress())
-          , pathname(`/store/${storeId}/items`)
+          , pathname(`/store/${namespace}/items`)
           ))
 
           expect(res.status).toBe(401)
@@ -53,14 +53,14 @@ describe('token-based access control', () => {
       describe('no token', () => {
         it('401', async () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
-          const storeId = 'store-id'
+          const namespace = 'namespace'
           const token = 'token'
-          await AccessControlDAO.setReadTokenRequired(storeId, true)
-          await AccessControlDAO.setReadToken({ id: storeId, token })
+          await AccessControlDAO.setReadTokenRequired(namespace, true)
+          await AccessControlDAO.setReadToken({ namespace, token })
 
           const res = await fetch(get(
             url(getAddress())
-          , pathname(`/store/${storeId}/items`)
+          , pathname(`/store/${namespace}/items`)
           ))
 
           expect(res.status).toBe(401)
@@ -68,16 +68,16 @@ describe('token-based access control', () => {
       })
     })
 
-    describe('id does not need delete tokens', () => {
+    describe('namespace does not need delete tokens', () => {
       describe('READ_TOKEN_REQUIRED=true', () => {
         it('401', async () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
           process.env.STORE_READ_TOKEN_REQUIRED = 'true'
-          const storeId = 'store-id'
+          const namespace = 'namespace'
 
           const res = await fetch(get(
             url(getAddress())
-          , pathname(`/store/${storeId}/items`)
+          , pathname(`/store/${namespace}/items`)
           ))
 
           expect(res.status).toBe(401)
@@ -87,11 +87,11 @@ describe('token-based access control', () => {
       describe('READ_TOKEN_REQUIRED=false', () => {
         it('200', async () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
-          const storeId = 'store-id'
+          const namespace = 'namespace'
 
           const res = await fetch(get(
             url(getAddress())
-          , pathname(`/store/${storeId}/items`)
+          , pathname(`/store/${namespace}/items`)
           ))
 
           expect(res.status).toBe(200)
@@ -101,17 +101,17 @@ describe('token-based access control', () => {
   })
 
   describe('disabled', () => {
-    describe('id need delete tokens', () => {
+    describe('namespace need delete tokens', () => {
       describe('no token', () => {
         it('200', async () => {
-          const storeId = 'store-id'
+          const namespace = 'namespace'
           const token = 'token'
-          await AccessControlDAO.setReadTokenRequired(storeId, true)
-          await AccessControlDAO.setReadToken({ id: storeId, token })
+          await AccessControlDAO.setReadTokenRequired(namespace, true)
+          await AccessControlDAO.setReadToken({ namespace, token })
 
           const res = await fetch(get(
             url(getAddress())
-          , pathname(`/store/${storeId}/items`)
+          , pathname(`/store/${namespace}/items`)
           ))
 
           expect(res.status).toBe(200)
@@ -119,18 +119,18 @@ describe('token-based access control', () => {
       })
     })
 
-    describe('id does not need delete tokens', () => {
+    describe('namespace does not need delete tokens', () => {
       describe('READ_TOKEN_REQUIRED=true', () => {
         it('200', async () => {
           process.env.STORE_READ_TOKEN_REQUIRED = 'true'
-          const storeId = 'store-id'
+          const namespace = 'namespace'
           const token = 'token'
-          await AccessControlDAO.setReadTokenRequired(storeId, true)
-          await AccessControlDAO.setReadToken({ id: storeId, token })
+          await AccessControlDAO.setReadTokenRequired(namespace, true)
+          await AccessControlDAO.setReadToken({ namespace, token })
 
           const res = await fetch(get(
             url(getAddress())
-          , pathname(`/store/${storeId}/items`)
+          , pathname(`/store/${namespace}/items`)
           ))
 
           expect(res.status).toBe(200)

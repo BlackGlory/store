@@ -1,12 +1,12 @@
 import { getDatabase } from '../database'
 import { map } from 'iterable-operator'
 
-export function getAllItemIds(storeId: string): Iterable<string> {
+export function getAllItemIds(namespace: string): Iterable<string> {
   const iter = getDatabase().prepare(`
-    SELECT item_id
+    SELECT id
       FROM store_item
-     WHERE store_id = $storeId;
-  `).iterate({ storeId })
+     WHERE namespace = $namespace;
+  `).iterate({ namespace })
 
-  return map(iter, row => row['item_id'])
+  return map(iter, row => row['id'])
 }

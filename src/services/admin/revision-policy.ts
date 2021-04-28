@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { idSchema } from '@src/schema'
+import { namespaceSchema } from '@src/schema'
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
   server.get(
@@ -15,18 +15,18 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       }
     }
   , async (req, reply) => {
-      const result = await Core.RevisionPolicy.getAllIds()
+      const result = await Core.RevisionPolicy.getAllNamespaces()
       reply.send(result)
     }
   )
 
   server.get<{
-    Params: { id: string }
+    Params: { namespace: string }
   }>(
-    '/store/:id/revision-policies'
+    '/store/:namespace/revision-policies'
   , {
       schema: {
-        params: { id: idSchema }
+        params: { namespace: namespaceSchema }
       , response: {
           200: {
             updateRevisionRequired: {
@@ -46,20 +46,20 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       }
     }
   , async (req, reply) => {
-      const id = req.params.id
-      const result = await Core.RevisionPolicy.get(id)
+      const namespace = req.params.namespace
+      const result = await Core.RevisionPolicy.get(namespace)
       reply.send(result)
     }
   )
 
   server.put<{
-    Params: { id: string }
+    Params: { namespace: string }
     Body: boolean
   }>(
-    '/store/:id/revision-policies/update-revision-required'
+    '/store/:namespace/revision-policies/update-revision-required'
   , {
       schema: {
-        params: { id: idSchema }
+        params: { namespace: namespaceSchema }
       , body: { type: 'boolean' }
       , response: {
           204: { type: 'null' }
@@ -67,40 +67,40 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       }
     }
   , async (req, reply) => {
-      const id = req.params.id
+      const namespace = req.params.namespace
       const val = req.body
-      await Core.RevisionPolicy.setUpdateRevisionRequired(id, val)
+      await Core.RevisionPolicy.setUpdateRevisionRequired(namespace, val)
       reply.status(204).send()
     }
   )
 
   server.delete<{
-    Params: { id: string }
+    Params: { namespace: string }
   }>(
-    '/store/:id/revision-policies/update-revision-required'
+    '/store/:namespace/revision-policies/update-revision-required'
   , {
       schema: {
-        params: { id: idSchema }
+        params: { namespace: namespaceSchema }
       , response: {
           204: { type: 'null' }
         }
       }
     }
   , async (req, reply) => {
-      const id = req.params.id
-      await Core.RevisionPolicy.unsetUpdateRevisionRequired(id)
+      const namespace = req.params.namespace
+      await Core.RevisionPolicy.unsetUpdateRevisionRequired(namespace)
       reply.status(204).send()
     }
   )
 
   server.put<{
-    Params: { id: string }
+    Params: { namespace: string }
     Body: boolean
   }>(
-    '/store/:id/revision-policies/delete-revision-required'
+    '/store/:namespace/revision-policies/delete-revision-required'
   , {
       schema: {
-        params: { id: idSchema }
+        params: { namespace: namespaceSchema }
       , body: { type: 'boolean' }
       , response: {
           204: { type: 'null' }
@@ -108,28 +108,28 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       }
     }
   , async (req, reply) => {
-      const id = req.params.id
+      const namespace = req.params.namespace
       const val = req.body
-      await Core.RevisionPolicy.setDeleteRevisionRequired(id, val)
+      await Core.RevisionPolicy.setDeleteRevisionRequired(namespace, val)
       reply.status(204).send()
     }
   )
 
   server.delete<{
-    Params: { id: string }
+    Params: { namespace: string }
   }>(
-    '/store/:id/revision-policies/delete-revision-required'
+    '/store/:namespace/revision-policies/delete-revision-required'
   , {
       schema: {
-        params: { id: idSchema }
+        params: { namespace: namespaceSchema }
       , response: {
           204: { type: 'null' }
         }
       }
     }
   , async (req, reply) => {
-      const id = req.params.id
-      await Core.RevisionPolicy.unsetDeleteRevisionRequired(id)
+      const namespace = req.params.namespace
+      await Core.RevisionPolicy.unsetDeleteRevisionRequired(namespace)
       reply.status(204).send()
     }
   )

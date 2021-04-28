@@ -12,24 +12,24 @@ jest.mock('@dao/data-in-sqlite3/database')
 beforeEach(initializeDatabases)
 afterEach(clearDatabases)
 
-describe('updateItem(storeId: string, itemId: string, type: string, payload: string): IRevision', () => {
+describe('updateItem(namespace: string, id: string, type: string, payload: string): IRevision', () => {
   describe('it exists', () => {
     it('update item and return new revision', () => {
-      const storeId = 'test'
-      const itemId = 'itemId'
+      const namespace = 'test'
+      const id = 'id'
       const type = 'application/json'
       const revision = 'revision'
       setRawItem({
-        store_id: storeId
-      , item_id: itemId
+        namespace
+      , id
       , revision
       , type
       , payload: 'payload'
       })
       const newPayload = 'new-payload'
 
-      const result = DAO.updateItem(storeId, itemId, type, newPayload)
-      const updatedItem = getRawItem(storeId, itemId)
+      const result = DAO.updateItem(namespace, id, type, newPayload)
+      const updatedItem = getRawItem(namespace, id)
 
       expect(result).toBeString()
       expect(result).not.toBe(revision)
@@ -42,37 +42,45 @@ describe('updateItem(storeId: string, itemId: string, type: string, payload: str
 
   describe('it does not exist', () => {
     it('throw NotFound', () => {
-      const storeId = 'test'
-      const itemId = 'itemId-1'
+      const namespace = 'test'
+      const id = 'id-1'
       const type = 'application/json'
       const payload = 'payload'
 
-      const err = getError(() => DAO.updateItem(storeId, itemId, type, payload))
+      const err = getError(() => DAO.updateItem(namespace, id, type, payload))
 
       expect(err).toBeInstanceOf(NotFound)
     })
   })
 })
 
-describe('updateItemWithCheck(storeId: string, itemId: string, type: string, revision: string, payload: string): IRevision', () => {
+describe(`
+  updateItemWithCheck(
+    namespace: string
+  , id: string
+  , type: string
+  , revision: string
+  , payload: string
+  ): IRevision
+`, () => {
   describe('it exists', () => {
     describe('correct revision', () => {
       it('update item and return new revision', () => {
-        const storeId = 'test'
-        const itemId = 'itemId'
+        const namespace = 'test'
+        const id = 'id'
         const revision = 'revision'
         const type = 'application/json'
         const newPayload = 'new-payload'
         setRawItem({
-          store_id: storeId
-        , item_id: itemId
+          namespace
+        , id
         , revision: revision
         , type
         , payload: 'payload'
         })
 
-        const result = DAO.updateItemWithCheck(storeId, itemId, type, revision, newPayload)
-        const updatedItem = getRawItem(storeId, itemId)
+        const result = DAO.updateItemWithCheck(namespace, id, type, revision, newPayload)
+        const updatedItem = getRawItem(namespace, id)
 
         expect(result).toBeString()
         expect(result).not.toBe(revision)
@@ -85,12 +93,12 @@ describe('updateItemWithCheck(storeId: string, itemId: string, type: string, rev
 
     describe('incorrect revision', () => {
       it('throw IncorrectRevision', () => {
-        const storeId = 'test'
-        const itemId = 'itemId'
+        const namespace = 'test'
+        const id = 'id'
         const type = 'application/json'
         const rawItem = {
-          store_id: storeId
-        , item_id: itemId
+          namespace
+        , id
         , revision: 'revision'
         , type
         , payload: 'payload'
@@ -99,9 +107,9 @@ describe('updateItemWithCheck(storeId: string, itemId: string, type: string, rev
         const newPayload = 'new-payload'
 
         const result = getError(
-          () => DAO.updateItemWithCheck(storeId, itemId, type, 'bad-revision', newPayload)
+          () => DAO.updateItemWithCheck(namespace, id, type, 'bad-revision', newPayload)
         )
-        const existingItem = getRawItem(storeId, itemId)
+        const existingItem = getRawItem(namespace, id)
 
         expect(result).toBeInstanceOf(IncorrectRevision)
         expect(existingItem).toEqual(rawItem)
@@ -111,13 +119,13 @@ describe('updateItemWithCheck(storeId: string, itemId: string, type: string, rev
 
   describe('it does not exist', () => {
     it('throw NotFound', () => {
-      const storeId = 'test'
-      const itemId = 'itemId-1'
+      const namespace = 'test'
+      const id = 'id-1'
       const type = 'application/json'
       const payload = 'payload'
       const revision = 'revision'
 
-      const result = getError(() => DAO.updateItemWithCheck(storeId, itemId, type, revision, payload))
+      const result = getError(() => DAO.updateItemWithCheck(namespace, id, type, revision, payload))
 
       expect(result).toBeInstanceOf(NotFound)
     })

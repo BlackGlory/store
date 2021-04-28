@@ -14,29 +14,29 @@ afterEach(stopService)
 
 describe('blacklist', () => {
   describe('enabled', () => {
-    describe('id in blacklist', () => {
+    describe('namespace in blacklist', () => {
       it('403', async () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'blacklist'
-        const storeId = 'store-id'
-        await AccessControlDAO.addBlacklistItem(storeId)
+        const namespace = 'namespace'
+        await AccessControlDAO.addBlacklistItem(namespace)
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/store/${storeId}/items`)
+        , pathname(`/store/${namespace}/items`)
         ))
 
         expect(res.status).toBe(403)
       })
     })
 
-    describe('id not in blacklist', () => {
+    describe('namespace not in blacklist', () => {
       it('200', async () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'blacklist'
-        const storeId = 'store-id'
+        const namespace = 'namespace'
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/store/${storeId}/items`)
+        , pathname(`/store/${namespace}/items`)
         ))
 
         expect(res.status).toBe(200)
@@ -45,14 +45,14 @@ describe('blacklist', () => {
   })
 
   describe('disabled', () => {
-    describe('id in blacklist', () => {
+    describe('namespace in blacklist', () => {
       it('200', async () => {
-        const storeId = 'store-id'
-        await AccessControlDAO.addBlacklistItem(storeId)
+        const namespace = 'namespace'
+        await AccessControlDAO.addBlacklistItem(namespace)
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/store/${storeId}/items`)
+        , pathname(`/store/${namespace}/items`)
         ))
 
         expect(res.status).toBe(200)

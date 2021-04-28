@@ -58,15 +58,15 @@ describe('RevisionPolicy', () => {
     })
   })
 
-  describe('GET /admin/store/:id/revision-policies', () => {
+  describe('GET /admin/store/:namespace/revision-policies', () => {
     describe('auth', () => {
       it('200', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const id = 'id'
+        const namespace = 'namespace'
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/admin/store/${id}/revision-policies`)
+        , pathname(`/admin/store/${namespace}/revision-policies`)
         , headers(createAuthHeaders())
         ))
 
@@ -93,11 +93,11 @@ describe('RevisionPolicy', () => {
 
     describe('no admin password', () => {
       it('401', async () => {
-        const id = 'id'
+        const namespace = 'namespace'
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/admin/store/${id}/revision-policies`)
+        , pathname(`/admin/store/${namespace}/revision-policies`)
         ))
 
         expect(res.status).toBe(401)
@@ -107,11 +107,11 @@ describe('RevisionPolicy', () => {
     describe('bad auth', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const id = 'id'
+        const namespace = 'namespace'
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/admin/store/${id}/revision-policies`)
+        , pathname(`/admin/store/${namespace}/revision-policies`)
         , headers(createAuthHeaders('bad'))
         ))
 
@@ -120,16 +120,16 @@ describe('RevisionPolicy', () => {
     })
   })
 
-  describe('PUT /admin/store/:id/revision-policies/update-revision-required', () => {
+  describe('PUT /admin/store/:namespace/revision-policies/update-revision-required', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const id = 'id'
+        const namespace = 'namespace'
         const val = true
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/admin/store/${id}/revision-policies/update-revision-required`)
+        , pathname(`/admin/store/${namespace}/revision-policies/update-revision-required`)
         , headers(createAuthHeaders())
         , json(val)
         ))
@@ -140,12 +140,12 @@ describe('RevisionPolicy', () => {
 
     describe('no admin password', () => {
       it('401', async () => {
-        const id = 'id'
+        const namespace = 'namespace'
         const val = true
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/admin/store/${id}/revision-policies/update-revision-required`)
+        , pathname(`/admin/store/${namespace}/revision-policies/update-revision-required`)
         , json(val)
         ))
 
@@ -156,12 +156,12 @@ describe('RevisionPolicy', () => {
     describe('bad auth', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const id = 'id'
+        const namespace = 'namespace'
         const val = true
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/admin/store/${id}/revision-policies/update-revision-required`)
+        , pathname(`/admin/store/${namespace}/revision-policies/update-revision-required`)
         , headers(createAuthHeaders('bad'))
         , json(val)
         ))
@@ -171,16 +171,16 @@ describe('RevisionPolicy', () => {
     })
   })
 
-  describe('PUT /admin/store/:id/revision-policies/delete-revision-required', () => {
+  describe('PUT /admin/store/:namespace/revision-policies/delete-revision-required', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const id = 'id'
+        const namespace = 'namespace'
         const val = true
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/admin/store/${id}/revision-policies/delete-revision-required`)
+        , pathname(`/admin/store/${namespace}/revision-policies/delete-revision-required`)
         , headers(createAuthHeaders())
         , json(val)
         ))
@@ -191,12 +191,12 @@ describe('RevisionPolicy', () => {
 
     describe('no admin password', () => {
       it('401', async () => {
-        const id = 'id'
+        const namespace = 'namespace'
         const val = true
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/admin/store/${id}/revision-policies/delete-revision-required`)
+        , pathname(`/admin/store/${namespace}/revision-policies/delete-revision-required`)
         , json(val)
         ))
 
@@ -207,12 +207,12 @@ describe('RevisionPolicy', () => {
     describe('bad auth', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const id = 'id'
+        const namespace = 'namespace'
         const val = true
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/admin/store/${id}/revision-policies/delete-revision-required`)
+        , pathname(`/admin/store/${namespace}/revision-policies/delete-revision-required`)
         , headers(createAuthHeaders('bad'))
         , json(val)
         ))
@@ -222,15 +222,15 @@ describe('RevisionPolicy', () => {
     })
   })
 
-  describe('DELETE /admin/store/:id/revision-policies/update-revision-required', () => {
+  describe('DELETE /admin/store/:namespace/revision-policies/update-revision-required', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const id = 'id'
+        const namespace = 'namespace'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/admin/store/${id}/revision-policies/update-revision-required`)
+        , pathname(`/admin/store/${namespace}/revision-policies/update-revision-required`)
         , headers(createAuthHeaders())
         ))
 
@@ -240,11 +240,11 @@ describe('RevisionPolicy', () => {
 
     describe('no admin password', () => {
       it('401', async () => {
-        const id = 'id'
+        const namespace = 'namespace'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/admin/store/${id}/revision-policies/update-revision-required`)
+        , pathname(`/admin/store/${namespace}/revision-policies/update-revision-required`)
         ))
 
         expect(res.status).toBe(401)
@@ -254,11 +254,11 @@ describe('RevisionPolicy', () => {
     describe('bad auth', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const id = 'id'
+        const namespace = 'namespace'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/admin/store/${id}/revision-policies/update-revision-required`)
+        , pathname(`/admin/store/${namespace}/revision-policies/update-revision-required`)
         , headers(createAuthHeaders('bad'))
         ))
 
@@ -267,15 +267,15 @@ describe('RevisionPolicy', () => {
     })
   })
 
-  describe('DELETE /admin/store/:id/revision-policies/delete-revision-required', () => {
+  describe('DELETE /admin/store/:namespace/revision-policies/delete-revision-required', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const id = 'id'
+        const namespace = 'namespace'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/admin/store/${id}/revision-policies/delete-revision-required`)
+        , pathname(`/admin/store/${namespace}/revision-policies/delete-revision-required`)
         , headers(createAuthHeaders())
         ))
 
@@ -285,11 +285,11 @@ describe('RevisionPolicy', () => {
 
     describe('no admin password', () => {
       it('401', async () => {
-        const id = 'id'
+        const namespace = 'namespace'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/admin/store/${id}/revision-policies/delete-revision-required`)
+        , pathname(`/admin/store/${namespace}/revision-policies/delete-revision-required`)
         ))
 
         expect(res.status).toBe(401)
@@ -299,11 +299,11 @@ describe('RevisionPolicy', () => {
     describe('bad auth', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const id = 'id'
+        const namespace = 'namespace'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/admin/store/${id}/revision-policies/delete-revision-required`)
+        , pathname(`/admin/store/${namespace}/revision-policies/delete-revision-required`)
         , headers(createAuthHeaders('bad'))
         ))
 

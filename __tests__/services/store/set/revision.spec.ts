@@ -16,13 +16,13 @@ describe('revision', () => {
   describe('update revision optional', () => {
     describe('correct revision', () => {
       it('204', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        const revision = await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
+        const namespace = 'namespace'
+        const id = 'id'
+        const revision = await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , header('If-Match', revision)
         , text('new document')
         ))
@@ -33,13 +33,13 @@ describe('revision', () => {
 
     describe('incorrect revision', () => {
       it('412', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
+        const namespace = 'namespace'
+        const id = 'id'
+        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , header('If-Match', 'bad-revision')
         , text('new document')
         ))
@@ -50,13 +50,13 @@ describe('revision', () => {
 
     describe('no revision', () => {
       it('204', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
+        const namespace = 'namespace'
+        const id = 'id'
+        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , text('new document')
         ))
 
@@ -68,14 +68,14 @@ describe('revision', () => {
   describe('update revision required', () => {
     describe('correct revision', () => {
       it('204', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        const revision = await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
-        await RevisionPolicyDAO.setUpdateRevisionRequired(storeId, true)
+        const namespace = 'namespace'
+        const id = 'id'
+        const revision = await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        await RevisionPolicyDAO.setUpdateRevisionRequired(namespace, true)
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , header('If-Match', revision)
         , text('new document')
         ))
@@ -86,14 +86,14 @@ describe('revision', () => {
 
     describe('incorrect revision', () => {
       it('412', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
-        await RevisionPolicyDAO.setUpdateRevisionRequired(storeId, true)
+        const namespace = 'namespace'
+        const id = 'id'
+        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        await RevisionPolicyDAO.setUpdateRevisionRequired(namespace, true)
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , header('If-Match', 'bad-revision')
         , text('new document')
         ))
@@ -104,14 +104,14 @@ describe('revision', () => {
 
     describe('no revision', () => {
       it('412', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
-        await RevisionPolicyDAO.setUpdateRevisionRequired(storeId, true)
+        const namespace = 'namespace'
+        const id = 'id'
+        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        await RevisionPolicyDAO.setUpdateRevisionRequired(namespace, true)
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , text('new document')
         ))
 

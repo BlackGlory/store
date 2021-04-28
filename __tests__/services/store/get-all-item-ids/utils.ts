@@ -1,7 +1,7 @@
 import { StoreDAO } from '@dao'
 
-export async function prepareItems(storeId: string, itemIds: string[]) {
-  for (const itemId of itemIds) {
-    await StoreDAO.setItem(storeId, itemId, 'type', 'payload')
+export async function prepareItems(namespace: string, itemNamespaces: string[]) {
+  for (const id of itemNamespaces) {
+    await StoreDAO.setItem(namespace, id, 'type', 'payload')
   }
 }

@@ -14,33 +14,33 @@ afterEach(stopService)
 
 describe('whitelist', () => {
   describe('enabled', () => {
-    describe('id in whitelist', () => {
+    describe('namespace in whitelist', () => {
       it('200', async () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'whitelist'
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
-        await AccessControlDAO.addWhitelistItem(storeId)
+        const namespace = 'namespace'
+        const id = 'id'
+        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        await AccessControlDAO.addWhitelistItem(namespace)
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         ))
 
         expect(res.status).toBe(200)
       })
     })
 
-    describe('id not in whitelist', () => {
+    describe('namespace not in whitelist', () => {
       it('403', async () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'whitelist'
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
+        const namespace = 'namespace'
+        const id = 'id'
+        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         ))
 
         expect(res.status).toBe(403)
@@ -49,15 +49,15 @@ describe('whitelist', () => {
   })
 
   describe('disabled', () => {
-    describe('id not in whitelist', () => {
+    describe('namespace not in whitelist', () => {
       it('200', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
+        const namespace = 'namespace'
+        const id = 'id'
+        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         ))
 
         expect(res.status).toBe(200)

@@ -10,52 +10,52 @@ jest.mock('@dao/data-in-sqlite3/database')
 beforeEach(initializeDatabases)
 afterEach(clearDatabases)
 
-describe('clearItems(storeId: string): void', () => {
+describe('clearItems(namespace: string): void', () => {
   describe('empty', () => {
     it('return undefined', () => {
-      const storeId1 = 'store-id1'
-      const storeId2 = 'store-id2'
-      const itemId = 'item-id'
+      const namesapce1 = 'namespace-1'
+      const namesapce2 = 'namespace-2'
+      const id = 'item-id'
       setRawItem({
-        store_id: storeId2
-      , item_id: itemId
+        namespace: namesapce2
+      , id
       , payload: 'payload'
       , revision: 'revision'
       , type: 'text/plain'
       })
 
-      const result = DAO.clearItems(storeId1)
+      const result = DAO.clearItems(namesapce1)
 
       expect(result).toBeUndefined()
-      expect(hasRawItem(storeId2, itemId)).toBeTrue()
+      expect(hasRawItem(namesapce2, id)).toBeTrue()
     })
   })
 
   describe('not empty', () => {
     it('return undefined', () => {
-      const storeId1 = 'store-id1'
-      const storeId2 = 'store-id2'
-      const itemId = 'item-id'
+      const namesapce1 = 'namespace-1'
+      const namesapce2 = 'namespace-2'
+      const id = 'item-id'
       setRawItem({
-        store_id: storeId1
-      , item_id: itemId
+        namespace: namesapce1
+      , id
       , payload: 'payload'
       , revision: 'revision'
       , type: 'text/plain'
       })
       setRawItem({
-        store_id: storeId2
-      , item_id: itemId
+        namespace: namesapce2
+      , id
       , payload: 'payload'
       , revision: 'revision'
       , type: 'text/plain'
       })
 
-      const result = DAO.clearItems(storeId1)
+      const result = DAO.clearItems(namesapce1)
 
       expect(result).toBeUndefined()
-      expect(hasRawItem(storeId1, itemId)).toBeFalse()
-      expect(hasRawItem(storeId2, itemId)).toBeTrue()
+      expect(hasRawItem(namesapce1, id)).toBeFalse()
+      expect(hasRawItem(namesapce2, id)).toBeTrue()
     })
   })
 })

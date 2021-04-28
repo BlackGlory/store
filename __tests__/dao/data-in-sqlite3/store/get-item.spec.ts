@@ -10,25 +10,25 @@ jest.mock('@dao/data-in-sqlite3/database')
 beforeEach(initializeDatabases)
 afterEach(clearDatabases)
 
-describe('getItem(storeId: string, itemId: string): IItem | null', () => {
+describe('getItem(namespace: string, id: string): IItem | null', () => {
   describe('it exists', () => {
     it('return IItem', () => {
-      const storeId = 'test'
-      const itemId = 'itemId-1'
+      const namespace = 'test'
+      const id = 'id-1'
       const item: IItem = {
         revision: 'revision'
       , type: 'application/json'
       , payload: 'payload'
       }
       setRawItem({
-        store_id: storeId
-      , item_id: itemId
+        namespace
+      , id
       , revision: item.revision
       , type: item.type
       , payload: item.payload
       })
 
-      const result = DAO.getItem(storeId, itemId)
+      const result = DAO.getItem(namespace, id)
 
       expect(result).toStrictEqual(item)
     })
@@ -36,10 +36,10 @@ describe('getItem(storeId: string, itemId: string): IItem | null', () => {
 
   describe('it does not exist', () => {
     it('return null', () => {
-      const storeId = 'test'
-      const itemId = 'itemId-1'
+      const namespace = 'test'
+      const id = 'id-1'
 
-      const result = DAO.getItem(storeId, itemId)
+      const result = DAO.getItem(namespace, id)
 
       expect(result).toBeNull()
     })

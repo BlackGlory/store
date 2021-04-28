@@ -12,91 +12,91 @@ jest.mock('@dao/data-in-sqlite3/database')
 beforeEach(initializeDatabases)
 afterEach(clearDatabases)
 
-describe('deleteItem(storeId: string, itemId: string): void', () => {
+describe('deleteItem(namespace: string, id: string): void', () => {
   describe('it exists', () => {
     it('return undefined', () => {
-      const storeId = 'test'
-      const itemId = 'itemId'
+      const namespace = 'test'
+      const id = 'id'
       setRawItem({
-        store_id: storeId
-      , item_id: itemId
+        namespace
+      , id
       , payload: 'payload'
       , revision: 'revision'
       , type: 'application/json'
       })
 
-      const result = DAO.deleteItem(storeId, itemId)
+      const result = DAO.deleteItem(namespace, id)
 
       expect(result).toBeUndefined()
-      expect(hasRawItem(storeId, itemId)).toBeFalse()
+      expect(hasRawItem(namespace, id)).toBeFalse()
     })
   })
 
   describe('it does not exist', () => {
     it('throw NotFound', () => {
-      const storeId = 'test'
-      const itemId = 'itemId'
+      const namespace = 'test'
+      const id = 'id'
 
-      const err = getError(() => DAO.deleteItem(storeId, itemId))
+      const err = getError(() => DAO.deleteItem(namespace, id))
 
       expect(err).toBeInstanceOf(NotFound)
-      expect(hasRawItem(storeId, itemId)).toBeFalse()
+      expect(hasRawItem(namespace, id)).toBeFalse()
     })
   })
 })
 
-describe('deleteItemWithCheck(storeId: string, itemId: string, revision: string): void', () => {
+describe('deleteItemWithCheck(namespace: string, id: string, revision: string): void', () => {
   describe('it exists', () => {
     describe('correct revision', () => {
       it('return undefined', () => {
-        const storeId = 'test'
-        const itemId = 'itemId'
+        const namespace = 'test'
+        const id = 'id'
         const revision = 'revision'
         setRawItem({
-          store_id: storeId
-        , item_id: itemId
+          namespace
+        , id
         , revision
         , type: 'application/json'
         , payload: 'payload'
         })
 
-        const result = DAO.deleteItemWithCheck(storeId, itemId, revision)
+        const result = DAO.deleteItemWithCheck(namespace, id, revision)
 
         expect(result).toBeUndefined()
-        expect(hasRawItem(storeId, itemId)).toBeFalse()
+        expect(hasRawItem(namespace, id)).toBeFalse()
       })
     })
 
     describe('incorrect revision', () => {
       it('throw IncorrectRevision', () => {
-        const storeId = 'test'
-        const itemId = 'itemId'
+        const namespace = 'test'
+        const id = 'id'
         setRawItem({
-          store_id: storeId
-        , item_id: itemId
+          namespace
+        , id
         , revision: 'revision'
         , type: 'application/json'
         , payload: 'payload'
         })
 
-        const result = getError(() => DAO.deleteItemWithCheck(storeId, itemId, 'bad-revision'))
+        const result = getError(() => DAO.deleteItemWithCheck(namespace, id, 'bad-revision'))
 
         expect(result).toBeInstanceOf(IncorrectRevision)
-        expect(hasRawItem(storeId, itemId)).toBeTrue()
+        expect(hasRawItem(namespace, id)).toBeTrue()
       })
     })
   })
 
   describe('it does not exist', () => {
     it('throw NotFound', async () => {
-      const storeId = 'test'
-      const itemId = 'itemId'
+      const namespace = 'test'
+      const id = 'id'
       const revision = 'revision'
 
-      const result = getError(() => DAO.deleteItemWithCheck(storeId, itemId, revision))
+      const result = getError(() => DAO.deleteItemWithCheck(namespace, id, revision))
 
       expect(result).toBeInstanceOf(NotFound)
-      expect(hasRawItem(storeId, itemId)).toBeFalse()
+      expect(hasRawItem(namespace, id)).toBeFalse()
     })
   })
 })

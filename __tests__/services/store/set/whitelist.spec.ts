@@ -15,17 +15,17 @@ afterEach(stopService)
 
 describe('whitelist', () => {
   describe('enabled', () => {
-    describe('id in whitelist', () => {
+    describe('namespace in whitelist', () => {
       it('204', async () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'whitelist'
-        const storeId = 'store-id'
-        const itemId = 'item-id'
+        const namespace = 'namespace'
+        const id = 'id'
         const payload = 'document'
-        await AccessControlDAO.addWhitelistItem(storeId)
+        await AccessControlDAO.addWhitelistItem(namespace)
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , text(payload)
         ))
 
@@ -33,16 +33,16 @@ describe('whitelist', () => {
       })
     })
 
-    describe('id not in whitelist', () => {
+    describe('namespace not in whitelist', () => {
       it('403', async () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'whitelist'
-        const storeId = 'store-id'
-        const itemId = 'item-id'
+        const namespace = 'namespace'
+        const id = 'id'
         const payload = 'document'
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , text(payload)
         ))
 
@@ -52,15 +52,15 @@ describe('whitelist', () => {
   })
 
   describe('disabled', () => {
-    describe('id not in whitelist', () => {
+    describe('namespace not in whitelist', () => {
       it('204', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
+        const namespace = 'namespace'
+        const id = 'id'
         const payload = 'document'
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , text(payload)
         ))
 

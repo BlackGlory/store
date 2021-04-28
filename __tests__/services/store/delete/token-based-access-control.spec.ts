@@ -14,19 +14,19 @@ afterEach(stopService)
 
 describe('token-based access control', () => {
   describe('enabled', () => {
-    describe('id need delete tokens', () => {
+    describe('namespace need delete tokens', () => {
       describe('token matched', () => {
         it('204', async () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
-          const storeId = 'store-id'
-          const itemId = 'item-id'
+          const namespace = 'namespace'
+          const id = 'id'
           const token = 'token'
-          await AccessControlDAO.setDeleteTokenRequired(storeId, true)
-          await AccessControlDAO.setDeleteToken({ id: storeId, token })
+          await AccessControlDAO.setDeleteTokenRequired(namespace, true)
+          await AccessControlDAO.setDeleteToken({ namespace, token })
 
           const res = await fetch(del(
             url(getAddress())
-          , pathname(`/store/${storeId}/items/${itemId}`)
+          , pathname(`/store/${namespace}/items/${id}`)
           , searchParam('token', token)
           ))
 
@@ -37,15 +37,15 @@ describe('token-based access control', () => {
       describe('token does not matched', () => {
         it('401', async () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
-          const storeId = 'store-id'
-          const itemId = 'item-id'
+          const namespace = 'namespace'
+          const id = 'id'
           const token = 'token'
-          await AccessControlDAO.setDeleteTokenRequired(storeId, true)
-          await AccessControlDAO.setDeleteToken({ id: storeId, token })
+          await AccessControlDAO.setDeleteTokenRequired(namespace, true)
+          await AccessControlDAO.setDeleteToken({ namespace, token })
 
           const res = await fetch(del(
             url(getAddress())
-          , pathname(`/store/${storeId}/items/${itemId}`)
+          , pathname(`/store/${namespace}/items/${id}`)
           ))
 
           expect(res.status).toBe(401)
@@ -55,15 +55,15 @@ describe('token-based access control', () => {
       describe('no token', () => {
         it('401', async () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
-          const storeId = 'store-id'
-          const itemId = 'item-id'
+          const namespace = 'namespace'
+          const id = 'id'
           const token = 'token'
-          await AccessControlDAO.setDeleteTokenRequired(storeId, true)
-          await AccessControlDAO.setDeleteToken({ id: storeId, token })
+          await AccessControlDAO.setDeleteTokenRequired(namespace, true)
+          await AccessControlDAO.setDeleteToken({ namespace, token })
 
           const res = await fetch(del(
             url(getAddress())
-          , pathname(`/store/${storeId}/items/${itemId}`)
+          , pathname(`/store/${namespace}/items/${id}`)
           ))
 
           expect(res.status).toBe(401)
@@ -71,17 +71,17 @@ describe('token-based access control', () => {
       })
     })
 
-    describe('id does not need delete tokens', () => {
+    describe('namespace does not need delete tokens', () => {
       describe('DELETE_TOKEN_REQUIRED=true', () => {
         it('401', async () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
           process.env.STORE_DELETE_TOKEN_REQUIRED = 'true'
-          const storeId = 'store-id'
-          const itemId = 'item-id'
+          const namespace = 'namespace'
+          const id = 'id'
 
           const res = await fetch(del(
             url(getAddress())
-          , pathname(`/store/${storeId}/items/${itemId}`)
+          , pathname(`/store/${namespace}/items/${id}`)
           ))
 
           expect(res.status).toBe(401)
@@ -91,12 +91,12 @@ describe('token-based access control', () => {
       describe('DELETE_TOKEN_REQUIRED=false', () => {
         it('204', async () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
-          const storeId = 'store-id'
-          const itemId = 'item-id'
+          const namespace = 'namespace'
+          const id = 'id'
 
           const res = await fetch(del(
             url(getAddress())
-          , pathname(`/store/${storeId}/items/${itemId}`)
+          , pathname(`/store/${namespace}/items/${id}`)
           ))
 
           expect(res.status).toBe(204)
@@ -106,18 +106,18 @@ describe('token-based access control', () => {
   })
 
   describe('disabled', () => {
-    describe('id need delete tokens', () => {
+    describe('namespace need delete tokens', () => {
       describe('no token', () => {
         it('204', async () => {
-          const storeId = 'store-id'
-          const itemId = 'item-id'
+          const namespace = 'namespace'
+          const id = 'id'
           const token = 'token'
-          await AccessControlDAO.setDeleteTokenRequired(storeId, true)
-          await AccessControlDAO.setDeleteToken({ id: storeId, token })
+          await AccessControlDAO.setDeleteTokenRequired(namespace, true)
+          await AccessControlDAO.setDeleteToken({ namespace, token })
 
           const res = await fetch(del(
             url(getAddress())
-          , pathname(`/store/${storeId}/items/${itemId}`)
+          , pathname(`/store/${namespace}/items/${id}`)
           ))
 
           expect(res.status).toBe(204)
@@ -125,19 +125,19 @@ describe('token-based access control', () => {
       })
     })
 
-    describe('id does not need delete tokens', () => {
+    describe('namespace does not need delete tokens', () => {
       describe('DELETE_TOKEN_REQUIRED=true', () => {
         it('204', async () => {
           process.env.STORE_DELETE_TOKEN_REQUIRED = 'true'
-          const storeId = 'store-id'
-          const itemId = 'item-id'
+          const namespace = 'namespace'
+          const id = 'id'
           const token = 'token'
-          await AccessControlDAO.setDeleteTokenRequired(storeId, true)
-          await AccessControlDAO.setDeleteToken({ id: storeId, token })
+          await AccessControlDAO.setDeleteTokenRequired(namespace, true)
+          await AccessControlDAO.setDeleteToken({ namespace, token })
 
           const res = await fetch(del(
             url(getAddress())
-          , pathname(`/store/${storeId}/items/${itemId}`)
+          , pathname(`/store/${namespace}/items/${id}`)
           ))
 
           expect(res.status).toBe(204)

@@ -1,28 +1,28 @@
 import { RevisionPolicyDAO } from '@dao/config-in-sqlite3/revision-policy'
 
-export function getAllIds(): Promise<string[]> {
-  return RevisionPolicyDAO.getAllIdsWithRevisionPolicies()
+export function getAllNamespaces(): Promise<string[]> {
+  return RevisionPolicyDAO.getAllNamespacesWithRevisionPolicies()
 }
 
-export function get(id: string): Promise<{
+export function get(namespace: string): Promise<{
   updateRevisionRequired: boolean | null
   deleteRevisionRequired: boolean | null
 }> {
-  return RevisionPolicyDAO.getRevisionPolicies(id)
+  return RevisionPolicyDAO.getRevisionPolicies(namespace)
 }
 
-export function setUpdateRevisionRequired(id: string, val: boolean): Promise<void> {
-  return RevisionPolicyDAO.setUpdateRevisionRequired(id, val)
+export function setUpdateRevisionRequired(namespace: string, val: boolean): Promise<void> {
+  return RevisionPolicyDAO.setUpdateRevisionRequired(namespace, val)
 }
 
-export function unsetUpdateRevisionRequired(id: string): Promise<void> {
-  return RevisionPolicyDAO.unsetUpdateRevisionRequired(id)
+export function unsetUpdateRevisionRequired(namespace: string): Promise<void> {
+  return RevisionPolicyDAO.unsetUpdateRevisionRequired(namespace)
 }
 
-export function setDeleteRevisionRequired(id: string, val: boolean): Promise<void> {
-  return RevisionPolicyDAO.setDeleteRevisionRequired(id, val)
+export function setDeleteRevisionRequired(namespace: string, val: boolean): Promise<void> {
+  return RevisionPolicyDAO.setDeleteRevisionRequired(namespace, val)
 }
 
-export function unsetDeleteRevisionRequired(id: string): Promise<void> {
-  return RevisionPolicyDAO.unsetDeleteRevisionRequired(id)
+export function unsetDeleteRevisionRequired(namespace: string): Promise<void> {
+  return RevisionPolicyDAO.unsetDeleteRevisionRequired(namespace)
 }

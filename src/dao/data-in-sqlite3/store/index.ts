@@ -6,7 +6,7 @@ import { updateItem, updateItemWithCheck } from './update-item'
 import { deleteItem, deleteItemWithCheck } from './delete-item'
 import { clearItems } from './clear-items'
 import { getAllItemIds } from './get-all-item-ids'
-import { getAllStoreIds } from './get-all-store-ids'
+import { getAllNamespaces } from './get-all-namespaces'
 import { stats } from './stats'
 
 export const StoreDAO: IStoreDAO = {
@@ -23,7 +23,7 @@ export const StoreDAO: IStoreDAO = {
 , clearItems: asyncify(clearItems)
 
 , getAllItemIds: asyncifyIterable(getAllItemIds)
-, getAllStoreIds: asyncifyIterable(getAllStoreIds)
+, getAllNamespaces: asyncifyIterable(getAllNamespaces)
 
 , NotFound
 , IncorrectRevision

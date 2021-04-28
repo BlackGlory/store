@@ -14,31 +14,31 @@ afterEach(stopService)
 
 describe('blacklist', () => {
   describe('enabled', () => {
-    describe('id in blacklist', () => {
+    describe('namespace in blacklist', () => {
       it('403', async () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'blacklist'
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await AccessControlDAO.addBlacklistItem(storeId)
+        const namespace = 'namespace'
+        const id = 'id'
+        await AccessControlDAO.addBlacklistItem(namespace)
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         ))
 
         expect(res.status).toBe(403)
       })
     })
 
-    describe('id not in blacklist', () => {
+    describe('namespace not in blacklist', () => {
       it('204', async () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'blacklist'
-        const storeId = 'store-id'
-        const itemId = 'item-id'
+        const namespace = 'namespace'
+        const id = 'id'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         ))
 
         expect(res.status).toBe(204)
@@ -47,15 +47,15 @@ describe('blacklist', () => {
   })
 
   describe('disabled', () => {
-    describe('id in blacklist', () => {
+    describe('namespace in blacklist', () => {
       it('204', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await AccessControlDAO.addBlacklistItem(storeId)
+        const namespace = 'namespace'
+        const id = 'id'
+        await AccessControlDAO.addBlacklistItem(namespace)
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         ))
 
         expect(res.status).toBe(204)

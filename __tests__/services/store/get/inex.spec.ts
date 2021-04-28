@@ -14,13 +14,13 @@ afterEach(stopService)
 
 describe('no access control', () => {
   it('200', async () => {
-    const storeId = 'store-id'
-    const itemId = 'item-id'
-    await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
+    const namespace = 'namespace'
+    const id = 'id'
+    await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
     const res = await fetch(get(
       url(getAddress())
-    , pathname(`/store/${storeId}/items/${itemId}`)
+    , pathname(`/store/${namespace}/items/${id}`)
     ))
 
     expect(res.status).toBe(200)

@@ -1,27 +1,27 @@
 import { getDatabase } from '@dao/config-in-sqlite3/database'
 
 interface IRawJsonSchema {
-  store_id: string
+  namespace: string
   json_schema: string
 }
 
 export function setRawJsonSchema(item: IRawJsonSchema): IRawJsonSchema {
   getDatabase().prepare(`
-    INSERT INTO store_json_schema (store_id, json_schema)
-    VALUES ($store_id, $json_schema);
+    INSERT INTO store_json_schema (namespace, json_schema)
+    VALUES ($namespace, $json_schema);
   `).run(item)
 
   return item
 }
 
-export function hasRawJsonSchema(id: string): boolean {
-  return !!getRawJsonSchema(id)
+export function hasRawJsonSchema(namespace: string): boolean {
+  return !!getRawJsonSchema(namespace)
 }
 
-export function getRawJsonSchema(id: string): IRawJsonSchema | null {
+export function getRawJsonSchema(namespace: string): IRawJsonSchema | null {
   return getDatabase().prepare(`
     SELECT *
       FROM store_json_schema
-     WHERE store_id = $id;
-  `).get({ id })
+     WHERE namespace = $namespace;
+  `).get({ namespace })
 }

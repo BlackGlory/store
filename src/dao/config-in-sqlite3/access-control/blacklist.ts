@@ -2,37 +2,37 @@ import { getDatabase } from '../database'
 
 export function getAllBlacklistItems(): string[] {
   const result = getDatabase().prepare(`
-    SELECT store_id
+    SELECT namespace
       FROM store_blacklist;
   `).all()
 
-  return result.map(x => x['store_id'])
+  return result.map(x => x['namespace'])
 }
 
-export function inBlacklist(id: string): boolean {
+export function inBlacklist(namespace: string): boolean {
   const result = getDatabase().prepare(`
     SELECT EXISTS(
-             SELECT *
+             SELECT 1
                FROM store_blacklist
-              WHERE store_id = $id
+              WHERE namespace = $namespace
            ) AS exist_in_blacklist;
-  `).get({ id })
+  `).get({ namespace })
 
   return result['exist_in_blacklist'] === 1
 }
 
-export function addBlacklistItem(id: string) {
+export function addBlacklistItem(namespace: string) {
   getDatabase().prepare(`
-    INSERT INTO store_blacklist (store_id)
-    VALUES ($id)
+    INSERT INTO store_blacklist (namespace)
+    VALUES ($namespace)
         ON CONFLICT
         DO NOTHING;
-  `).run({ id })
+  `).run({ namespace })
 }
 
-export function removeBlacklistItem(id: string) {
+export function removeBlacklistItem(namespace: string) {
   getDatabase().prepare(`
     DELETE FROM store_blacklist
-     WHERE store_id = $id;
-  `).run({ id })
+     WHERE namespace = $namespace;
+  `).run({ namespace })
 }

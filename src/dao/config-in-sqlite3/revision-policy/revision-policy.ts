@@ -1,15 +1,15 @@
 import { getDatabase } from '../database'
 
-export function getAllIdsWithRevisionPolicies(): string[] {
+export function getAllNamespacesWithRevisionPolicies(): string[] {
   const result = getDatabase().prepare(`
-    SELECT store_id
+    SELECT namespace
       FROM store_revision_policy;
   `).all()
 
-  return result.map(x => x['store_id'])
+  return result.map(x => x['namespace'])
 }
 
-export function getRevisionPolicies(id: string): {
+export function getRevisionPolicies(namespace: string): {
   updateRevisionRequired: boolean | null
   deleteRevisionRequired: boolean | null
 } {
@@ -20,19 +20,21 @@ export function getRevisionPolicies(id: string): {
     SELECT update_revision_required
          , delete_revision_required
       FROM store_revision_policy
-     WHERE store_id = $id;
-  `).get({ id })
+     WHERE namespace = $namespace;
+  `).get({ namespace })
 
   if (row) {
     const updateRevisionRequired = row['update_revision_required']
     const deleteRevisionRequired = row['delete_revision_required']
     return {
-      updateRevisionRequired: updateRevisionRequired === null
-                              ? null
-                              : numberToBoolean(updateRevisionRequired)
-    , deleteRevisionRequired: deleteRevisionRequired === null
-                              ? null
-                              : numberToBoolean(deleteRevisionRequired)
+      updateRevisionRequired:
+        updateRevisionRequired === null
+        ? null
+        : numberToBoolean(updateRevisionRequired)
+    , deleteRevisionRequired:
+        deleteRevisionRequired === null
+        ? null
+        : numberToBoolean(deleteRevisionRequired)
     }
   } else {
     return {
@@ -42,57 +44,57 @@ export function getRevisionPolicies(id: string): {
   }
 }
 
-export function setUpdateRevisionRequired(id: string, val: boolean): void {
+export function setUpdateRevisionRequired(namespace: string, val: boolean): void {
   getDatabase().prepare(`
-    INSERT INTO store_revision_policy (store_id, update_revision_required)
-    VALUES ($id, $updateRevisionRequired)
-        ON CONFLICT(store_id)
+    INSERT INTO store_revision_policy (namespace, update_revision_required)
+    VALUES ($namespace, $updateRevisionRequired)
+        ON CONFLICT(namespace)
         DO UPDATE SET update_revision_required = $updateRevisionRequired;
-  `).run({ id, updateRevisionRequired: booleanToNumber(val) })
+  `).run({ namespace, updateRevisionRequired: booleanToNumber(val) })
 }
 
-export function unsetUpdateRevisionRequired(id: string): void {
+export function unsetUpdateRevisionRequired(namespace: string): void {
   const db = getDatabase()
   db.transaction(() => {
     db.prepare(`
       UPDATE store_revision_policy
          SET update_revision_required = NULL
-       WHERE store_id = $id;
-    `).run({ id })
+       WHERE namespace = $namespace;
+    `).run({ namespace })
 
-    deleteNoPoliciesRow(id)
+    deleteNoPoliciesRow(namespace)
   })()
 }
 
-export function setDeleteRevisionRequired(id: string, val: boolean): void {
+export function setDeleteRevisionRequired(namespace: string, val: boolean): void {
   getDatabase().prepare(`
-    INSERT INTO store_revision_policy (store_id, delete_revision_required)
-    VALUES ($id, $deleteRevisionRequired)
-        ON CONFLICT(store_id)
+    INSERT INTO store_revision_policy (namespace, delete_revision_required)
+    VALUES ($namespace, $deleteRevisionRequired)
+        ON CONFLICT(namespace)
         DO UPDATE SET delete_revision_required = $deleteRevisionRequired;
-  `).run({ id, deleteRevisionRequired: booleanToNumber(val) })
+  `).run({ namespace, deleteRevisionRequired: booleanToNumber(val) })
 }
 
-export function unsetDeleteRevisionRequired(id: string): void {
+export function unsetDeleteRevisionRequired(namespace: string): void {
   const db = getDatabase()
   db.transaction(() => {
     db.prepare(`
       UPDATE store_revision_policy
          SET delete_revision_required = NULL
-       WHERE store_id = $id;
-    `).run({ id })
+       WHERE namespace = $namespace;
+    `).run({ namespace })
 
-    deleteNoPoliciesRow(id)
+    deleteNoPoliciesRow(namespace)
   })()
 }
 
-function deleteNoPoliciesRow(id: string): void {
+function deleteNoPoliciesRow(namespace: string): void {
   getDatabase().prepare(`
     DELETE FROM store_revision_policy
-     WHERE store_id = $id
+     WHERE namespace = $namespace
        AND update_revision_required = NULL
        AND delete_revision_required = NULL
-  `).run({ id })
+  `).run({ namespace })
 }
 
 function numberToBoolean(val: number): boolean {

@@ -10,32 +10,32 @@ beforeEach(initializeDatabases)
 afterEach(clearDatabases)
 
 describe('RevisionPolicy', () => {
-  describe('getAllIdsWithRevisionPolicies(): string[]', () => {
+  describe('getAllNamespacesWithRevisionPolicies(): string[]', () => {
     it('return string[]', async () => {
-      const id = 'id'
+      const namespace = 'namespace'
       setRawRevisionPolicy({
-        store_id: id
+        namespace
       , update_revision_required: 1
       , delete_revision_required: 1
       })
 
-      const result = DAO.getAllIdsWithRevisionPolicies()
+      const result = DAO.getAllNamespacesWithRevisionPolicies()
 
-      expect(result).toEqual([id])
+      expect(result).toEqual([namespace])
     })
   })
 
-  describe('getRevisionPolicies(storeId: string): { updateRevisionRequired: boolean | null, deleteRevisionRequired: boolean | null', () => {
+  describe('getRevisionPolicies(namespace: string): { updateRevisionRequired: boolean | null, deleteRevisionRequired: boolean | null', () => {
     describe('policy exists', () => {
       it('return', async () => {
-        const id = 'id'
+        const namespace = 'namespace'
         setRawRevisionPolicy({
-          store_id: id
+          namespace
         , update_revision_required: 1
         , delete_revision_required: 1
         })
 
-        const result = DAO.getRevisionPolicies(id)
+        const result = DAO.getRevisionPolicies(namespace)
 
         expect(result).toEqual({
           updateRevisionRequired: true
@@ -46,9 +46,9 @@ describe('RevisionPolicy', () => {
 
     describe('policy does not exist', () => {
       it('return', async () => {
-        const id = 'id'
+        const namespace = 'namespace'
 
-        const result = DAO.getRevisionPolicies(id)
+        const result = DAO.getRevisionPolicies(namespace)
 
         expect(result).toEqual({
           updateRevisionRequired: null
@@ -58,12 +58,12 @@ describe('RevisionPolicy', () => {
     })
   })
 
-  describe('setUpdateRevisionRequired(storeId: string, val: boolean): void', () => {
+  describe('setUpdateRevisionRequired(namespace: string, val: boolean): void', () => {
     it('return undefined', async () => {
-      const id = 'id'
+      const namespace = 'namespace'
 
-      const result = DAO.setUpdateRevisionRequired(id, true)
-      const row = getRawRevisionPolicy(id)
+      const result = DAO.setUpdateRevisionRequired(namespace, true)
+      const row = getRawRevisionPolicy(namespace)
 
       expect(result).toBeUndefined()
       expect(row).not.toBeNull()
@@ -71,18 +71,18 @@ describe('RevisionPolicy', () => {
     })
   })
 
-  describe('unsetUpdateRevisionRequired(storeId: string): void', () => {
+  describe('unsetUpdateRevisionRequired(namespace: string): void', () => {
     describe('policy exists', () => {
       it('return undefined', async () => {
-        const id = 'id'
+        const namespace = 'namespace'
         setRawRevisionPolicy({
-          store_id: id
+          namespace
         , update_revision_required: 1
         , delete_revision_required: 1
         })
 
-        const result = DAO.unsetUpdateRevisionRequired(id)
-        const row = getRawRevisionPolicy(id)
+        const result = DAO.unsetUpdateRevisionRequired(namespace)
+        const row = getRawRevisionPolicy(namespace)
 
         expect(result).toBeUndefined()
         expect(row).not.toBeNull()
@@ -92,22 +92,22 @@ describe('RevisionPolicy', () => {
 
     describe('policy does not exist', () => {
       it('return undefined', async () => {
-        const id = 'id'
+        const namespace = 'namespace'
 
-        const result = DAO.unsetUpdateRevisionRequired(id)
+        const result = DAO.unsetUpdateRevisionRequired(namespace)
 
         expect(result).toBeUndefined()
-        expect(hasRawRevisionPolicy(id)).toBeFalse()
+        expect(hasRawRevisionPolicy(namespace)).toBeFalse()
       })
     })
   })
 
-  describe('setDeleteRevisionRequired(storeId: string, val: boolean): void', () => {
+  describe('setDeleteRevisionRequired(namespace: string, val: boolean): void', () => {
     it('return undefined', async () => {
-      const id = 'id'
+      const namespace = 'namespace'
 
-      const result = DAO.setDeleteRevisionRequired(id, true)
-      const row = getRawRevisionPolicy(id)
+      const result = DAO.setDeleteRevisionRequired(namespace, true)
+      const row = getRawRevisionPolicy(namespace)
 
       expect(result).toBeUndefined()
       expect(row).not.toBeNull()
@@ -115,18 +115,18 @@ describe('RevisionPolicy', () => {
     })
   })
 
-  describe('unsetDeleteRevisionRequired(id: string): void', () => {
+  describe('unsetDeleteRevisionRequired(namespace: string): void', () => {
     describe('policy exists', () => {
       it('return undefined', async () => {
-        const id = 'id'
+        const namespace = 'namespace'
         setRawRevisionPolicy({
-          store_id: id
+          namespace
         , update_revision_required: 1
         , delete_revision_required: 1
         })
 
-        const result = DAO.unsetDeleteRevisionRequired(id)
-        const row = getRawRevisionPolicy(id)
+        const result = DAO.unsetDeleteRevisionRequired(namespace)
+        const row = getRawRevisionPolicy(namespace)
 
         expect(result).toBeUndefined()
         expect(row).not.toBeNull()
@@ -136,12 +136,12 @@ describe('RevisionPolicy', () => {
 
     describe('policy does not exist', () => {
       it('return undefined', async () => {
-        const id = 'id'
+        const namespace = 'namespace'
 
-        const result = DAO.unsetDeleteRevisionRequired(id)
+        const result = DAO.unsetDeleteRevisionRequired(namespace)
 
         expect(result).toBeUndefined()
-        expect(hasRawRevisionPolicy(id)).toBeFalse()
+        expect(hasRawRevisionPolicy(namespace)).toBeFalse()
       })
     })
   })

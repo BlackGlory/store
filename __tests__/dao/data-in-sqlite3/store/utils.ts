@@ -1,8 +1,8 @@
 import { getDatabase } from '@dao/data-in-sqlite3/database'
 
 interface IRawItem {
-  store_id: string
-  item_id: string
+  namespace: string
+  id: string
   type: string
   payload: string
   revision: string
@@ -11,15 +11,15 @@ interface IRawItem {
 export function setRawItem(item: IRawItem): IRawItem {
   getDatabase().prepare(`
     INSERT INTO store_item (
-      store_id
-    , item_id
+      namespace
+    , id
     , type
     , payload
     , revision
     )
     VALUES (
-      $store_id
-    , $item_id
+      $namespace
+    , $id
     , $type
     , $payload
     , $revision
@@ -29,15 +29,15 @@ export function setRawItem(item: IRawItem): IRawItem {
   return item
 }
 
-export function hasRawItem(storeId: string, itemId: string): boolean {
-  return !!getRawItem(storeId, itemId)
+export function hasRawItem(namespace: string, id: string): boolean {
+  return !!getRawItem(namespace, id)
 }
 
-export function getRawItem(storeId: string, itemId: string): IRawItem | null {
+export function getRawItem(namespace: string, id: string): IRawItem | null {
   return getDatabase().prepare(`
     SELECT *
       FROM store_item
-     WHERE store_id = $storeId
-       AND item_id = $itemId;
-  `).get({ storeId, itemId })
+     WHERE namespace = $namespace
+       AND id = $id;
+  `).get({ namespace, id })
 }

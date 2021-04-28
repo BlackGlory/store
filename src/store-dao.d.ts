@@ -1,23 +1,23 @@
 type CustomError = import('@blackglory/errors').CustomError
 
 interface IStoreDAO {
-  hasItem(storeId: string, itemId: string): Promise<boolean>
-  getItem(storeId: string, itemId: string): Promise<IItem | null>
-  setItem(storeId: string, itemId: string, type: string, payload: string): Promise<IRevision>
-  stats(storeId: string): Promise<Stats>
+  hasItem(namespace: string, id: string): Promise<boolean>
+  getItem(namespace: string, id: string): Promise<IItem | null>
+  setItem(namespace: string, id: string, type: string, payload: string): Promise<IRevision>
+  stats(namespace: string): Promise<IStats>
 
   /**
    * @throws {NotFound}
    */
-  updateItem(storeId: string, itemId: string, type: string, payload: string): Promise<IRevision>
+  updateItem(namespace: string, id: string, type: string, payload: string): Promise<IRevision>
 
   /**
    * @throws {NotFound}
    * @throws {IncorrectRevision}
    */
   updateItemWithCheck(
-    storeId: string
-  , itemId: string
+    namespace: string
+  , id: string
   , type: string
   , revision: IRevision
   , payload: string
@@ -26,19 +26,19 @@ interface IStoreDAO {
   /**
    * @throws {NotFound}
    */
-  deleteItem(storeId: string, itemId: string): Promise<void>
+  deleteItem(namespace: string, id: string): Promise<void>
 
   /**
    * @throws {NotFound}
    * @throws {IncorrectRevision}
    */
-  deleteItemWithCheck(storeId: string, itemId: string, revision: IRevision): Promise<void>
+  deleteItemWithCheck(namespace: string, id: string, revision: IRevision): Promise<void>
 
-  clearItems(storeId: string): Promise<void>
+  clearItems(namespace: string): Promise<void>
 
-  getAllItemIds(storeId: string): AsyncIterable<string>
-  getAllStoreIds(): AsyncIterable<string>
+  getAllItemIds(namespace: string): AsyncIterable<string>
+  getAllNamespaces(): AsyncIterable<string>
 
-  NotFound: new (storeId: string, itemId: string) => CustomError
-  IncorrectRevision: new (storeId: string, itemId: string) => CustomError
+  NotFound: new (namespace: string, id: string) => CustomError
+  IncorrectRevision: new (namespace: string, id: string) => CustomError
 }

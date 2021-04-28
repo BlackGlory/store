@@ -14,17 +14,17 @@ afterEach(stopService)
 
 describe('blacklist', () => {
   describe('enabled', () => {
-    describe('id in blacklist', () => {
+    describe('namespace in blacklist', () => {
       it('403', async () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'blacklist'
-        const storeId = 'store-id'
-        const itemId = 'item-id'
+        const namespace = 'namespace'
+        const id = 'id'
         const payload = 'document'
-        await AccessControlDAO.addBlacklistItem(storeId)
+        await AccessControlDAO.addBlacklistItem(namespace)
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , text(payload)
         ))
 
@@ -32,16 +32,16 @@ describe('blacklist', () => {
       })
     })
 
-    describe('id not in blacklist', () => {
+    describe('namespace not in blacklist', () => {
       it('204', async () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'blacklist'
-        const storeId = 'store-id'
-        const itemId = 'item-id'
+        const namespace = 'namespace'
+        const id = 'id'
         const payload = 'document'
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , text(payload)
         ))
 
@@ -51,16 +51,16 @@ describe('blacklist', () => {
   })
 
   describe('disabled', () => {
-    describe('id in blacklist', () => {
+    describe('namespace in blacklist', () => {
       it('204', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
+        const namespace = 'namespace'
+        const id = 'id'
         const payload = 'document'
-        await AccessControlDAO.addBlacklistItem(storeId)
+        await AccessControlDAO.addBlacklistItem(namespace)
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , text(payload)
         ))
 

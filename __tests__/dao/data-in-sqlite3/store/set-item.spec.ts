@@ -10,15 +10,15 @@ jest.mock('@dao/data-in-sqlite3/database')
 beforeEach(initializeDatabases)
 afterEach(clearDatabases)
 
-describe('setItem(storeId: string, itemId: string, type: string, payload: string): IRevision', () => {
+describe('setItem(namespace: string, id: string, type: string, payload: string): IRevision', () => {
   it('set doc and return hash', () => {
-    const storeId = 'test'
-    const itemId = 'itemId-1'
+    const namespace = 'test'
+    const id = 'id-1'
     const type = 'application/json'
     const payload = 'payload'
 
-    const result = DAO.setItem(storeId, itemId, type, payload)
-    const item = getRawItem(storeId, itemId)
+    const result = DAO.setItem(namespace, id, type, payload)
+    const item = getRawItem(namespace, id)
 
     expect(result).toBeString()
     expect(item).not.toBeNull()

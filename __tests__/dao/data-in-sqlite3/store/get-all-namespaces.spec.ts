@@ -1,4 +1,4 @@
-import * as DAO from '@dao/data-in-sqlite3/store/get-all-store-ids'
+import * as DAO from '@dao/data-in-sqlite3/store/get-all-namespaces'
 import { toArray } from 'iterable-operator'
 import { setRawItem } from './utils'
 import { initializeDatabases, clearDatabases } from '@test/utils'
@@ -10,10 +10,10 @@ jest.mock('@dao/data-in-sqlite3/database')
 beforeEach(initializeDatabases)
 afterEach(clearDatabases)
 
-describe('getAllStoreIds(): Iterable<string>', () => {
+describe('getAllNamespaces(): Iterable<string>', () => {
   describe('empty', () => {
     it('return Iterable<string>', () => {
-      const iter = DAO.getAllStoreIds()
+      const iter = DAO.getAllNamespaces()
       const result = toArray(iter)
 
       expect(iter).toBeIterable()
@@ -23,21 +23,21 @@ describe('getAllStoreIds(): Iterable<string>', () => {
 
   describe('not empty', () => {
     it('return Iterable<string>', () => {
-      const storeId = 'store-id'
-      const itemId = 'item-1'
+      const namespace = 'namespace-'
+      const id = 'item-1'
       setRawItem({
-        store_id: storeId
-      , item_id: itemId
+        namespace
+      , id
       , type: 'text/plain'
       , payload: 'payload-1'
       , revision: 'revision-1'
       })
 
-      const iter = DAO.getAllStoreIds()
+      const iter = DAO.getAllNamespaces()
       const result = toArray(iter)
 
       expect(iter).toBeIterable()
-      expect(result).toStrictEqual([storeId])
+      expect(result).toStrictEqual([namespace])
     })
   })
 })

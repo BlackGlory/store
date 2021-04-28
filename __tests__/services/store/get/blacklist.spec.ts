@@ -15,33 +15,33 @@ afterEach(stopService)
 
 describe('blacklist', () => {
   describe('enabled', () => {
-    describe('id in blacklist', () => {
+    describe('namespace in blacklist', () => {
       it('403', async () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'blacklist'
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
-        await AccessControlDAO.addBlacklistItem(storeId)
+        const namespace = 'namespace'
+        const id = 'id'
+        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        await AccessControlDAO.addBlacklistItem(namespace)
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         ))
 
         expect(res.status).toBe(403)
       })
     })
 
-    describe('id not in blacklist', () => {
+    describe('namespace not in blacklist', () => {
       it('200', async () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'blacklist'
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
+        const namespace = 'namespace'
+        const id = 'id'
+        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         ))
 
         expect(res.status).toBe(200)
@@ -50,16 +50,16 @@ describe('blacklist', () => {
   })
 
   describe('disabled', () => {
-    describe('id in blacklist', () => {
+    describe('namespace in blacklist', () => {
       it('200', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
-        await AccessControlDAO.addBlacklistItem(storeId)
+        const namespace = 'namespace'
+        const id = 'id'
+        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        await AccessControlDAO.addBlacklistItem(namespace)
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         ))
 
         expect(res.status).toBe(200)

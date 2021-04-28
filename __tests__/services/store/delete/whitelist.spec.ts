@@ -14,31 +14,31 @@ afterEach(stopService)
 
 describe('whitelist', () => {
   describe('enabled', () => {
-    describe('id in whitelist', () => {
+    describe('namespace in whitelist', () => {
       it('204', async () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'whitelist'
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await AccessControlDAO.addWhitelistItem(storeId)
+        const namespace = 'namespace'
+        const id = 'id'
+        await AccessControlDAO.addWhitelistItem(namespace)
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         ))
 
         expect(res.status).toBe(204)
       })
     })
 
-    describe('id not in whitelist', () => {
+    describe('namespace not in whitelist', () => {
       it('403', async () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'whitelist'
-        const storeId = 'store-id'
-        const itemId = 'item-id'
+        const namespace = 'namespace'
+        const id = 'id'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         ))
 
         expect(res.status).toBe(403)
@@ -47,14 +47,14 @@ describe('whitelist', () => {
   })
 
   describe('disabled', () => {
-    describe('id not in whitelist', () => {
+    describe('namespace not in whitelist', () => {
       it('204', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
+        const namespace = 'namespace'
+        const id = 'id'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         ))
 
         expect(res.status).toBe(204)

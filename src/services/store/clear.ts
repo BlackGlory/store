@@ -1,29 +1,29 @@
 import { FastifyPluginAsync } from 'fastify'
-import { idSchema, tokenSchema } from '@src/schema'
+import { namespaceSchema, tokenSchema } from '@src/schema'
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
   server.delete<{
     Params: {
-      storeId: string
+      namespace: string
       itemId: string
     }
     Querystring: { token?: string }
   }>(
-    '/store/:storeId'
+    '/store/:namespace'
   , {
       schema: {
-        params: { storeId: idSchema }
+        params: { namespace: namespaceSchema }
       , querystring: { token: tokenSchema }
       }
     }
   , async (req, reply) => {
-      const storeId = req.params.storeId
+      const namespace = req.params.namespace
       const token = req.query.token
 
       try {
-        await Core.Blacklist.check(storeId)
-        await Core.Whitelist.check(storeId)
-        await Core.TBAC.checkDeletePermission(storeId, token)
+        await Core.Blacklist.check(namespace)
+        await Core.Whitelist.check(namespace)
+        await Core.TBAC.checkDeletePermission(namespace, token)
       } catch (e) {
         if (e instanceof Core.Blacklist.Forbidden) return reply.status(403).send()
         if (e instanceof Core.Whitelist.Forbidden) return reply.status(403).send()
@@ -31,7 +31,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
         throw e
       }
 
-      await Core.Store.clear(storeId)
+      await Core.Store.clear(namespace)
       reply.status(204).send()
     }
   )

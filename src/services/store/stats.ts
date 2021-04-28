@@ -1,15 +1,15 @@
 import { FastifyPluginAsync } from 'fastify'
-import { idSchema } from '@src/schema'
+import { namespaceSchema } from '@src/schema'
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
   server.get<{
-    Params: { storeId: string }
+    Params: { namespace: string }
   }>(
-    '/store/:storeId/stats'
+    '/store/:namespace/stats'
   , {
       schema: {
         params: {
-          storeId: idSchema
+          namespace: namespaceSchema
         }
       , response: {
           200: {
@@ -20,9 +20,9 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       }
     }
   , async (req, reply) => {
-      const storeId = req.params.storeId
+      const namespace = req.params.namespace
 
-      const result = await Core.Store.stats(storeId)
+      const result = await Core.Store.stats(namespace)
       reply.send(result)
     }
   )

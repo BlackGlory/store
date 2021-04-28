@@ -7,11 +7,11 @@ import { hasItem } from './has-item'
 /**
  * @throws {NotFound}
  */
-export function deleteItem(storeId: string, itemId: string): void {
+export function deleteItem(namespace: string, id: string): void {
   getDatabase().transaction(() => {
-    if (!hasItem(storeId, itemId)) throw new NotFound(storeId, itemId)
+    if (!hasItem(namespace, id)) throw new NotFound(namespace, id)
 
-    del(storeId, itemId)
+    del(namespace, id)
   })()
 }
 
@@ -19,23 +19,23 @@ export function deleteItem(storeId: string, itemId: string): void {
  * @throws {NotFound}
  * @throws {IncorrectRevision}
  */
-export function deleteItemWithCheck(storeId: string, itemId: string, revision: IRevision): void {
+export function deleteItemWithCheck(namespace: string, id: string, revision: IRevision): void {
   getDatabase().transaction(() => {
-    const item = getItem(storeId, itemId)
-    if (!item) throw new NotFound(storeId, itemId)
+    const item = getItem(namespace, id)
+    if (!item) throw new NotFound(namespace, id)
 
     if (validateRevision(item, revision)) {
-      del(storeId, itemId)
+      del(namespace, id)
     } else {
-      throw new IncorrectRevision(storeId, itemId)
+      throw new IncorrectRevision(namespace, id)
     }
   })()
 }
 
-function del(storeId: string, itemId: string): void {
+function del(namespace: string, id: string): void {
   getDatabase().prepare(`
     DELETE FROM store_item
-     WHERE store_id = $storeId
-       AND item_id = $itemId;
-  `).run({ storeId, itemId })
+     WHERE namespace = $namespace
+       AND id = $id;
+  `).run({ namespace, id })
 }

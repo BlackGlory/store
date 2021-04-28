@@ -64,16 +64,16 @@ describe('json schema', () => {
       describe('exist', () => {
         it('200', async () => {
           process.env.STORE_ADMIN_PASSWORD = 'password'
-          const id = 'id'
+          const namespace = 'namespace'
           const schema = { type: 'number' }
           await JsonSchemaDAO.setJsonSchema({
-            id
+            namespace
           , schema: JSON.stringify(schema)
           })
 
           const res = await fetch(get(
             url(getAddress())
-          , pathname(`/admin/store/${id}/json-schema`)
+          , pathname(`/admin/store/${namespace}/json-schema`)
           , headers(createAuthHeaders())
           ))
 
@@ -85,11 +85,11 @@ describe('json schema', () => {
       describe('not exist', () => {
         it('404', async () => {
           process.env.STORE_ADMIN_PASSWORD = 'password'
-          const id = 'id'
+          const namespace = 'namespace'
 
           const res = await fetch(get(
             url(getAddress())
-          , pathname(`/admin/store/${id}/json-schema`)
+          , pathname(`/admin/store/${namespace}/json-schema`)
           , headers(createAuthHeaders())
           ))
 
@@ -100,11 +100,11 @@ describe('json schema', () => {
 
     describe('no admin password', () => {
       it('401', async () => {
-        const id = 'id'
+        const namespace = 'namespace'
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/admin/store/${id}/json-schema`)
+        , pathname(`/admin/store/${namespace}/json-schema`)
         ))
 
         expect(res.status).toBe(401)
@@ -114,11 +114,11 @@ describe('json schema', () => {
     describe('bad auth', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const id = 'id'
+        const namespace = 'namespace'
 
         const res = await fetch(get(
           url(getAddress())
-        , pathname(`/admin/store/${id}/json-schema`)
+        , pathname(`/admin/store/${namespace}/json-schema`)
         , headers(createAuthHeaders('bad'))
         ))
 
@@ -132,12 +132,12 @@ describe('json schema', () => {
       describe('valid JSON', () => {
         it('204', async () => {
           process.env.STORE_ADMIN_PASSWORD = 'password'
-          const id = 'id'
+          const namespace = 'namespace'
           const schema = { type: 'number' }
 
           const res = await fetch(put(
             url(getAddress())
-          , pathname(`/admin/store/${id}/json-schema`)
+          , pathname(`/admin/store/${namespace}/json-schema`)
           , headers(createAuthHeaders())
           , json(schema)
           ))
@@ -149,11 +149,11 @@ describe('json schema', () => {
       describe('invalid JSON', () => {
         it('400', async () => {
           process.env.STORE_ADMIN_PASSWORD = 'password'
-          const id = 'id'
+          const namespace = 'namespace'
 
           const res = await fetch(put(
             url(getAddress())
-          , pathname(`/admin/store/${id}/json-schema`)
+          , pathname(`/admin/store/${namespace}/json-schema`)
           , headers(createAuthHeaders())
           , text('')
           , header('Content-Type', 'application/json')
@@ -166,12 +166,12 @@ describe('json schema', () => {
 
     describe('no admin password', () => {
       it('401', async () => {
-        const id = 'id'
+        const namespace = 'namespace'
         const schema = { type: 'number' }
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/admin/store/${id}/json-schema`)
+        , pathname(`/admin/store/${namespace}/json-schema`)
         , json(schema)
         ))
 
@@ -182,12 +182,12 @@ describe('json schema', () => {
     describe('bad auth', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const id = 'id'
+        const namespace = 'namespace'
         const schema = { type: 'number' }
 
         const res = await fetch(put(
           url(getAddress())
-        , pathname(`/admin/store/${id}/json-schema`)
+        , pathname(`/admin/store/${namespace}/json-schema`)
         , headers(createAuthHeaders('bad'))
         , json(schema)
         ))
@@ -201,11 +201,11 @@ describe('json schema', () => {
     describe('auth', () => {
       it('204', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const id = 'id'
+        const namespace = 'namespace'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/admin/store/${id}/json-schema`)
+        , pathname(`/admin/store/${namespace}/json-schema`)
         , headers(createAuthHeaders())
         ))
 
@@ -215,11 +215,11 @@ describe('json schema', () => {
 
     describe('no admin password', () => {
       it('401', async () => {
-        const id = 'id'
+        const namespace = 'namespace'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/admin/store/${id}/json-schema`)
+        , pathname(`/admin/store/${namespace}/json-schema`)
         ))
 
         expect(res.status).toBe(401)
@@ -229,11 +229,11 @@ describe('json schema', () => {
     describe('bad auth', () => {
       it('401', async () => {
         process.env.STORE_ADMIN_PASSWORD = 'password'
-        const id = 'id'
+        const namespace = 'namespace'
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/admin/store/${id}/json-schema`)
+        , pathname(`/admin/store/${namespace}/json-schema`)
         , headers(createAuthHeaders('bad'))
         ))
 

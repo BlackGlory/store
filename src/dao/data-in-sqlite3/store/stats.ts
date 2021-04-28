@@ -1,14 +1,14 @@
 import { getDatabase } from '../database'
 
-export function stats(storeId: string): Stats {
+export function stats(namespace: string): IStats {
   const row = getDatabase().prepare(`
     SELECT COUNT(*) AS items
       FROM store_item
-     WHERE store_id = $storeId;
-  `).get({ storeId })
+     WHERE namespace = $namespace;
+  `).get({ namespace })
 
   return {
-    id: storeId
+    namespace: namespace
   , items: row['items']
   }
 }

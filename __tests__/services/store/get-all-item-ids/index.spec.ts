@@ -15,16 +15,16 @@ afterEach(stopService)
 
 describe('no access control', () => {
   it('200', async () => {
-    const storeId = 'store-id'
-    const itemIds = ['item-id']
-    await prepareItems(storeId, itemIds)
+    const namespace = 'namespace'
+    const itemNamespaces = ['id']
+    await prepareItems(namespace, itemNamespaces)
 
     const res = await fetch(get(
       url(getAddress())
-    , pathname(`/store/${storeId}/items`)
+    , pathname(`/store/${namespace}/items`)
     ))
 
     expect(res.status).toBe(200)
-    expect(await toJSON(res)).toStrictEqual(itemIds)
+    expect(await toJSON(res)).toStrictEqual(itemNamespaces)
   })
 })

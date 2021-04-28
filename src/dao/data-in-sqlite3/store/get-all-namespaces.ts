@@ -1,11 +1,11 @@
 import { getDatabase } from '../database'
 import { map } from 'iterable-operator'
 
-export function getAllStoreIds(): Iterable<string> {
+export function getAllNamespaces(): Iterable<string> {
   const iter = getDatabase().prepare(`
-    SELECT DISTINCT store_id
+    SELECT DISTINCT namespace
       FROM store_item;
   `).iterate()
 
-  return map(iter, row => row['store_id'])
+  return map(iter, row => row['namespace'])
 }

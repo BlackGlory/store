@@ -16,13 +16,13 @@ describe('revision', () => {
   describe('delete revision optional', () => {
     describe('correct revision', () => {
       it('204', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        const revision = await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
+        const namespace = 'namespace'
+        const id = 'id'
+        const revision = await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , header('If-Match', revision)
         ))
 
@@ -32,13 +32,13 @@ describe('revision', () => {
 
     describe('incorrect revision', () => {
       it('412', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
+        const namespace = 'namespace'
+        const id = 'id'
+        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , header('If-Match', 'bad-revision')
         ))
 
@@ -48,13 +48,13 @@ describe('revision', () => {
 
     describe('no revision', () => {
       it('204', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
+        const namespace = 'namespace'
+        const id = 'id'
+        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         ))
 
         expect(res.status).toBe(204)
@@ -65,14 +65,14 @@ describe('revision', () => {
   describe('delete revision required', () => {
     describe('correct revision', () => {
       it('204', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        const revision = await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
-        await RevisionPolicyDAO.setDeleteRevisionRequired(storeId, true)
+        const namespace = 'namespace'
+        const id = 'id'
+        const revision = await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        await RevisionPolicyDAO.setDeleteRevisionRequired(namespace, true)
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , header('If-Match', revision)
         ))
 
@@ -82,14 +82,14 @@ describe('revision', () => {
 
     describe('incorrect revision', () => {
       it('412', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
-        await RevisionPolicyDAO.setDeleteRevisionRequired(storeId, true)
+        const namespace = 'namespace'
+        const id = 'id'
+        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        await RevisionPolicyDAO.setDeleteRevisionRequired(namespace, true)
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         , header('If-Match', 'bad-revision')
         ))
 
@@ -99,14 +99,14 @@ describe('revision', () => {
 
     describe('no revision', () => {
       it('412', async () => {
-        const storeId = 'store-id'
-        const itemId = 'item-id'
-        await StoreDAO.setItem(storeId, itemId, 'text/plain', 'document')
-        await RevisionPolicyDAO.setDeleteRevisionRequired(storeId, true)
+        const namespace = 'namespace'
+        const id = 'id'
+        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        await RevisionPolicyDAO.setDeleteRevisionRequired(namespace, true)
 
         const res = await fetch(del(
           url(getAddress())
-        , pathname(`/store/${storeId}/items/${itemId}`)
+        , pathname(`/store/${namespace}/items/${id}`)
         ))
 
         expect(res.status).toBe(412)

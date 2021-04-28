@@ -15,8 +15,8 @@ afterEach(stopService)
 
 describe('no access control', () => {
   it('200', async () => {
-    const storeIds = ['store-id']
-    await prepareStores(storeIds)
+    const storeNamespaces = ['namespace']
+    await prepareStores(storeNamespaces)
 
     const res = await fetch(get(
       url(getAddress())
@@ -24,6 +24,6 @@ describe('no access control', () => {
     ))
 
     expect(res.status).toBe(200)
-    expect(await toJSON(res)).toStrictEqual(storeIds)
+    expect(await toJSON(res)).toStrictEqual(storeNamespaces)
   })
 })

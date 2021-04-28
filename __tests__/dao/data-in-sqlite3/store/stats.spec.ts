@@ -12,12 +12,12 @@ afterEach(clearDatabases)
 describe('stats(): IInfo', () => {
   describe('empty', () => {
     it('return IInfo', () => {
-      const storeId = 'store-1'
+      const namespace = 'namespace'
 
-      const result = DAO.stats(storeId)
+      const result = DAO.stats(namespace)
 
       expect(result).toEqual({
-        id: storeId
+        namespace
       , items: 0
       })
     })
@@ -25,34 +25,34 @@ describe('stats(): IInfo', () => {
 
   describe('not empty', () => {
     it('return IInfo', () => {
-      const storeId1 = 'store-1'
-      const storeId2 = 'store-2'
+      const namespace1 = 'namespace-1'
+      const namespace2 = 'namespace-2'
       setRawItem({
-        store_id: storeId1
-      , item_id: 'item-1'
+        namespace: namespace1
+      , id: 'item-1'
       , type: 'text/plain'
       , payload: 'payload-1'
       , revision: 'revision-1'
       })
       setRawItem({
-        store_id: storeId1
-      , item_id: 'item-2'
+        namespace: namespace1
+      , id: 'item-2'
       , type: 'text/plain'
       , payload: 'payload-2'
       , revision: 'revision-2'
       })
       setRawItem({
-        store_id: storeId2
-      , item_id: 'item-1'
+        namespace: namespace2
+      , id: 'item-1'
       , type: 'text/plain'
       , payload: 'payload-1'
       , revision: 'revision-1'
       })
 
-      const result = DAO.stats(storeId1)
+      const result = DAO.stats(namespace1)
 
       expect(result).toEqual({
-        id: storeId1
+        namespace: namespace1
       , items: 2
       })
     })

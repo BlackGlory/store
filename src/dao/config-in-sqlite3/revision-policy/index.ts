@@ -1,7 +1,7 @@
 import * as RevisionPolicy from './revision-policy'
 
 export const RevisionPolicyDAO: IRevisionPolicyDAO = {
-  getAllIdsWithRevisionPolicies: asyncify(RevisionPolicy.getAllIdsWithRevisionPolicies)
+  getAllNamespacesWithRevisionPolicies: asyncify(RevisionPolicy.getAllNamespacesWithRevisionPolicies)
 , getRevisionPolicies: asyncify(RevisionPolicy.getRevisionPolicies)
 
 , setUpdateRevisionRequired: asyncify(RevisionPolicy.setUpdateRevisionRequired)
