@@ -8,17 +8,17 @@
 #+BEGIN_SRC sh
 docker run --detach --publish 8080:8080 blackglory/store
 
-curl http://localhost:8080/store/my-db/items/my-doc-id \
+curl http://localhost:8080/store/namespace/items/id \
   --request PUT \
   --header 'Content-Type: application/json' \
   --data '{ "message": "Hello World" }'
 
-curl http://localhost:8080/store/my-db/items/my-doc-id
+curl http://localhost:8080/store/namespace/items/id
 # { "message": "Hello World" }
 
-curl http://localhost:8080/store/my-db/items/my-doc-id --request DELETE
+curl http://localhost:8080/store/namespace/items/id --request DELETE
 
-curl http://localhost:8080/store/my-db/items/my-doc-id
+curl http://localhost:8080/store/namespace/items/id
 # 404 Not Found
 #+END_SRC
 
@@ -94,10 +94,10 @@ volumes:
 #+END_SRC
 ** API
 *** Public
-所有API中的store和item的id都需要满足此正则表达式: =^[a-zA-Z0-9\.\-_]{0,255}$=
+所有API中的namespace和id都需要满足此正则表达式: =^[a-zA-Z0-9\.\-_]{0,255}$=
 
 **** set
-=PUT /store/<db>/items/<id>=
+=PUT /store/<namespace>/items/<id>=
 
 在指定的存储器里, 插入/更新特定项目的文档.
 
@@ -113,19 +113,19 @@ revision 是一个由服务器计算出的值, 该值可被用于基于revision�
 curl \
   --request PUT \
   --data "$DOC" \
-  "http://localhost:8080/store/$db/items/$id"
+  "http://localhost:8080/store/$namespace/items/$id"
 #+END_SRC
 
 ****** JavaScript
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/store/${db}/items/${id}`, {
+await fetch(`http://localhost:8080/store/${namespace}/items/${id}`, {
   method: 'PUT'
 , body: doc
 })
 #+END_SRC
 
 **** has
-=HEAD /store/<db>/items/<id>=
+=HEAD /store/<namespace>/items/<id>=
 
 检测文档是否存在, 返回204或404.
 
@@ -139,18 +139,18 @@ await fetch(`http://localhost:8080/store/${db}/items/${id}`, {
 #+BEGIN_SRC sh
 curl \
   --request HEAD \
-  "http://localhost:8080/store/$db/items/$id"
+  "http://localhost:8080/store/$namespace/items/$id"
 #+END_SRC
 
 ****** JavaScript
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/store/${db}/items/${id}`, {
+await fetch(`http://localhost:8080/store/${namespace}/items/${id}`, {
   method: 'HEAD'
 })
 #+END_SRC
 
 **** get
-=GET /store/<db>/items/<id>=
+=GET /store/<namespace>/items/<id>=
 
 获取文档, 返回200或404.
 
@@ -163,16 +163,16 @@ get将原样返回插入/更新时的 =Content-Type=.
 ***** Example
 ****** curl
 #+BEGIN_SRC sh
-curl "http://localhost:8080/store/$db/items/$id"
+curl "http://localhost:8080/store/$namespace/items/$id"
 #+END_SRC
 
 ****** JavaScript
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/store/${db}/items/${id}`)
+await fetch(`http://localhost:8080/store/${namespace}/items/${id}`)
 #+END_SRC
 
 **** get all item ids
-=GET /store/<db>/items=
+=GET /store/<namespace>/items=
 
 获取所有项目的id, 返回 =string[]=.
 
@@ -189,10 +189,10 @@ curl "http://localhost:8080/store/$db/items"
 await fetch(`http://localhost:8080/store/${db}/items`).then(res => res.json())
 #+END_SRC
 
-**** get all store ids
+**** get all namespaces
 =GET /store=
 
-列出所有的store id.
+列出所有的namespaces.
 
 输出JSON =Array<string>=.
 
@@ -210,7 +210,7 @@ await fetch('http://localhost:8080/store').then(res => res.json())
 #+END_SRC
 
 **** delete
-=DELETE /store/<db>/items/<id>=
+=DELETE /store/<namespace>/items/<id>=
 
 删除特定JSON文档, 返回204或404.
 
@@ -222,18 +222,18 @@ await fetch('http://localhost:8080/store').then(res => res.json())
 #+BEGIN_SRC sh
 curl \
   --request DELETE \
-  "http://localhost:8080/store/$db/items/$id"
+  "http://localhost:8080/store/$namespace/items/$id"
 #+END_SRC
 
 ****** JavaScript
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/store/${db}/items/${id}`, {
+await fetch(`http://localhost:8080/store/${namespace}/items/${id}`, {
   method: 'DELETE'
 })
 #+END_SRC
 
 **** clear
-=DELETE /store/<id>=
+=DELETE /store/<namespace>=
 
 清空store内的所有items.
 
@@ -253,12 +253,12 @@ await fetch(`http://localhost:8080/store/${db}`, {
 #+END_SRC
 
 **** stats
-=GET /store/<id>/stats=
+=GET /store/<namespace>/stats=
 
 输出JSON:
 #+BEGIN_SRC ts
 {
-  id: string
+  namespace: string
   items: number
 }
 #+END_SRC
@@ -291,10 +291,10 @@ JSON验证仅用于验证, 不会重新序列化消息, 因此follow得到的pay
 ***** 为Store单独设置JSON Schema
 可单独为store设置JSON Schema, 被设置的store将仅接受 =Content-Type: application/json= 请求.
 
-****** 获取所有具有JSON Schema的StoreId
+****** 获取所有具有JSON Schema的namespace
 =GET /admin/store-with-json-schema=
 
-获取所有具有JSON Schema的StoreId, 返回由JSON表示的字符串数组 =string[]=.
+获取所有具有JSON Schema的namespace, 返回由JSON表示的字符串数组 =string[]=.
 
 ******* Example
 ******** curl
@@ -314,19 +314,19 @@ await fetch('http://localhost:8080/admin/store-with-json-schema', {
 #+END_SRC
 
 ****** 获取JSON Schema
-=GET /admin/store/<id>/json-schema=
+=GET /admin/store/<namespace>/json-schema=
 
 ******* Example
 ******** curl
 #+BEGIN_SRC sh
 curl \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/store/$id/json-schema"
+  "http://localhost:8080/admin/store/$namespace/json-schema"
 #+END_SRC
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${id}/json-schema`, {
+await fetch(`http://localhost:8080/admin/store/${namespace}/json-schema`, {
   headers: {
     'Authorization': `Bearer ${adminPassword}`
   }
@@ -334,7 +334,7 @@ await fetch(`http://localhost:8080/admin/store/${id}/json-schema`, {
 #+END_SRC
 
 ****** 设置JSON Schema
-=PUT /admin/store/<id>/json-schema=
+=PUT /admin/store/<namespace>/json-schema=
 
 ******* Example
 ******** curl
@@ -344,12 +344,12 @@ curl \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
   --header "Content-Type: application/json" \
   --data "$JSON_SCHEMA" \
-  "http://localhost:8080/admin/store/$id/jsonschema"
+  "http://localhost:8080/admin/store/$namespace/jsonschema"
 #+END_SRC
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${id}/json-schema`, {
+await fetch(`http://localhost:8080/admin/store/${namespace}/json-schema`, {
   method: 'PUT'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -360,7 +360,7 @@ await fetch(`http://localhost:8080/admin/store/${id}/json-schema`, {
 #+END_SRC
 
 ****** 移除JSON Schema
-=DELETE /admin/store/<id>/json-schema=
+=DELETE /admin/store/<namespace>/json-schema=
 
 ******* Example
 ******** curl
@@ -368,12 +368,12 @@ await fetch(`http://localhost:8080/admin/store/${id}/json-schema`, {
 curl \
   --request DELETE \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/store/$id/json-schema"
+  "http://localhost:8080/admin/store/$namespace/json-schema"
 #+END_SRC
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${id}/json-schema`, {
+await fetch(`http://localhost:8080/admin/store/${namespace}/json-schema`, {
   method: 'DELETE'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -387,7 +387,7 @@ await fetch(`http://localhost:8080/admin/store/${id}/json-schema`, {
 
 可单独为特定store设置策略以覆盖默认值.
 
-***** 获取所有具有revision策略的Store id
+***** 获取所有具有revision策略的namesapce
 =GET /admin/store-with-revision-policies=
 
 返回由JSON表示的字符串数组 =string[]=.
@@ -410,7 +410,7 @@ await fetch('http://localhost:8080/admin/store-with-revision-policies', {
 #+END_SRC
 
 ***** 获取特定store的revision策略
-=GET /admin/store/<id>/revision-policies=
+=GET /admin/store/<namespace>/revision-policies=
 
 返回JSON:
 #+BEGIN_SRC ts
@@ -426,12 +426,12 @@ await fetch('http://localhost:8080/admin/store-with-revision-policies', {
 #+BEGIN_SRC sh
 curl \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/store/$id/revision-policies"
+  "http://localhost:8080/admin/store/$namespace/revision-policies"
 #+END_SRC
 
 ******* fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${id}/revision-policies`, {
+await fetch(`http://localhost:8080/admin/store/${namespace}/revision-policies`, {
   headers: {
     'Authorization': `Bearer ${adminPassword}`
   }
@@ -439,8 +439,8 @@ await fetch(`http://localhost:8080/admin/store/${id}/revision-policies`, {
 #+END_SRC
 
 ***** 设置revision策略
-=PUT /admin/store/<id>/revision-policies/update-revision-required=
-=PUT /admin/store/<id>/revision-policies/delete-revision-required=
+=PUT /admin/store/<namespace>/revision-policies/update-revision-required=
+=PUT /admin/store/<namespace>/revision-policies/delete-revision-required=
 
 Payload必须是一个布尔值.
 
@@ -452,12 +452,12 @@ curl \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
   --header "Content-Type: application/json" \
   --data "$UPDATE_REVISION_RQUIRED" \
-  "http://localhost:8080/admin/store/$id/revision-policies/update-revision-required"
+  "http://localhost:8080/admin/store/$namespace/revision-policies/update-revision-required"
 #+END_SRC
 
 ******* fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${id}/revision-policies/update-revision-required`, {
+await fetch(`http://localhost:8080/admin/store/${namespace}/revision-policies/update-revision-required`, {
   method: 'PUT'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -468,8 +468,8 @@ await fetch(`http://localhost:8080/admin/store/${id}/revision-policies/update-re
 #+END_SRC
 
 ***** 移除revision策略
-=DELETE /admin/store/<id>/revision-policies/update-revision-required=
-=DELETE /admin/store/<id>/revision-policies/delete-revision-required=
+=DELETE /admin/store/<namespace>/revision-policies/update-revision-required=
+=DELETE /admin/store/<namespace>/revision-policies/delete-revision-required=
 
 ****** Example
 ******* curl
@@ -477,12 +477,12 @@ await fetch(`http://localhost:8080/admin/store/${id}/revision-policies/update-re
 curl \
   --request DELETE \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/store/$id/revision-policies/update-revision-required"
+  "http://localhost:8080/admin/store/$namespace/revision-policies/update-revision-required"
 #+END_SRC
 
 ******* fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${id}/revision-policies/update-revision-required`, {
+await fetch(`http://localhost:8080/admin/store/${namespace}/revision-policies/update-revision-required`, {
   method: 'DELETE'
 })
 #+END_SRC
@@ -509,7 +509,7 @@ Store提供两种可以同时启用的访问控制策略.
 ******* 获取黑名单
 =GET /admin/blacklist=
 
-获取位于黑名单中的所有StoreId, 返回JSON表示的字符串数组 =string[]=.
+获取位于黑名单中的所有namespace, 返回JSON表示的字符串数组 =string[]=.
 
 ******** Example
 ********* curl
@@ -529,7 +529,7 @@ await fetch('http://localhost:8080/admin/blacklist', {
 #+END_SRC
 
 ******* 添加黑名单
-=PUT /admin/blacklist/<id>=
+=PUT /admin/blacklist/<namespace>=
 
 将特定Store加入黑名单.
 
@@ -539,12 +539,12 @@ await fetch('http://localhost:8080/admin/blacklist', {
 curl \
   --request PUT \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/blacklist/$id"
+  "http://localhost:8080/admin/blacklist/$namespace"
 #+END_SRC
 
 ********* fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/blacklist/${id}`, {
+await fetch(`http://localhost:8080/admin/blacklist/${namespace}`, {
   method: 'PUT'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -553,7 +553,7 @@ await fetch(`http://localhost:8080/admin/blacklist/${id}`, {
 #+END_SRC
 
 ******* 移除黑名单
-=DELETE /admin/blacklist/<id>=
+=DELETE /admin/blacklist/<namespace>=
 
 将特定Store从黑名单中移除.
 
@@ -563,12 +563,12 @@ await fetch(`http://localhost:8080/admin/blacklist/${id}`, {
 curl \
   --request DELETE \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/blacklist/$id"
+  "http://localhost:8080/admin/blacklist/$namespace"
 #+END_SRC
 
 ********* fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/blacklist/${id}`, {
+await fetch(`http://localhost:8080/admin/blacklist/${namespace}`, {
   method: 'DELETE'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -580,7 +580,7 @@ await fetch(`http://localhost:8080/admin/blacklist/${id}`, {
 ******* 获取白名单
 =GET /admin/whitelist=
 
-获取位于黑名单中的所有StoreId, 返回JSON表示的字符串数组 =string[]=.
+获取位于黑名单中的所有namespace, 返回JSON表示的字符串数组 =string[]=.
 
 ******** Example
 ********* curl
@@ -600,7 +600,7 @@ await fetch('http://localhost:8080/admin/whitelist', {
 #+END_SRC
 
 ******* 添加白名单
-=PUT /admin/whitelist/<id>=
+=PUT /admin/whitelist/<namespace>=
 
 将特定Store加入白名单.
 
@@ -610,12 +610,12 @@ await fetch('http://localhost:8080/admin/whitelist', {
 curl \
   --request PUT \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/whitelist/$id"
+  "http://localhost:8080/admin/whitelist/$namespace"
 #+END_SRC
 
 ********* fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/whitelist/${id}`, {
+await fetch(`http://localhost:8080/admin/whitelist/${namespace}`, {
   method: 'PUT'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -624,7 +624,7 @@ await fetch(`http://localhost:8080/admin/whitelist/${id}`, {
 #+END_SRC
 
 ******* 移除白名单
-=DELETE /admin/whitelist/<id>=
+=DELETE /admin/whitelist/<namespace>=
 
 将特定Store从白名单中移除.
 
@@ -634,12 +634,12 @@ await fetch(`http://localhost:8080/admin/whitelist/${id}`, {
 curl \
   --request DELETE \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/whitelist/$id"
+  "http://localhost:8080/admin/whitelist/$namespace"
 #+END_SRC
 
 ********* fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/whitelist/${id}`, {
+await fetch(`http://localhost:8080/admin/whitelist/${namespace}`, {
   method: 'DELETE'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -664,10 +664,10 @@ await fetch(`http://localhost:8080/admin/whitelist/${id}`, {
 - token难以被猜测
 - token的意外泄露可以被迅速处理
 
-****** 获取所有具有token策略的频道id
+****** 获取所有具有token策略的namespace
 =GET /admin/store-with-token-policies=
 
-获取所有具有token策略的频道id, 返回由JSON表示的字符串数组 =string[]=.
+获取所有具有token策略的namespace, 返回由JSON表示的字符串数组 =string[]=.
 
 ******* Example
 ******** curl
@@ -683,7 +683,7 @@ await fetch('http://localhost:8080/admin/store-with-token-policies')
 #+END_SRC
 
 ****** 获取特定频道的token策略
-=GET /admin/store/<id>/token-policies=
+=GET /admin/store/<namespace>/token-policies=
 
 返回JSON:
 #+BEGIN_SRC ts
@@ -700,12 +700,12 @@ await fetch('http://localhost:8080/admin/store-with-token-policies')
 #+BEGIN_SRC sh
 curl \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/store/$id/token-policies"
+  "http://localhost:8080/admin/store/$namespace/token-policies"
 #+END_SRC
 
 ******** fetch
 #+BEGIN_SRC js
-await fethc(`http://localhost:8080/admin/store/${id}/token-policies`, {
+await fethc(`http://localhost:8080/admin/store/${namespace}/token-policies`, {
   headers: {
     'Authorization': `Bearer ${adminPassword}`
   }
@@ -713,9 +713,9 @@ await fethc(`http://localhost:8080/admin/store/${id}/token-policies`, {
 #+END_SRC
 
 ****** 设置token策略
-=PUT /admin/store/<id>/token-policies/write-token-required=
-=PUT /admin/store/<id>/token-policies/read-token-required=
-=PUT /admin/store/<id>/token-policies/delete-token-required=
+=PUT /admin/store/<namespace>/token-policies/write-token-required=
+=PUT /admin/store/<namespace>/token-policies/read-token-required=
+=PUT /admin/store/<namespace>/token-policies/delete-token-required=
 
 Payload必须是一个布尔值.
 
@@ -727,12 +727,12 @@ curl \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
   --header "Content-Type: application/json" \
   --data "$WRITE_TOKEN_REQUIRED" \
-  "http://localhost:8080/admin/store/$id/token-policies/write-token-required"
+  "http://localhost:8080/admin/store/$namespace/token-policies/write-token-required"
 #+END_SRC
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${id}/token-policies/write-token-required`, {
+await fetch(`http://localhost:8080/admin/store/${namespace}/token-policies/write-token-required`, {
   method: 'PUT'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -743,9 +743,9 @@ await fetch(`http://localhost:8080/admin/store/${id}/token-policies/write-token-
 #+END_SRC
 
 ****** 移除token策略
-=DELETE /admin/store/<id>/token-policies/write-token-required=
-=DELETE /admin/store/<id>/token-policies/read-token-required=
-=DELETE /admin/store/<id>/token-policies/delete-token-required=
+=DELETE /admin/store/<namespace>/token-policies/write-token-required=
+=DELETE /admin/store/<namespace>/token-policies/read-token-required=
+=DELETE /admin/store/<namespace>/token-policies/delete-token-required=
 
 ******* Example
 ******** curl
@@ -753,12 +753,12 @@ await fetch(`http://localhost:8080/admin/store/${id}/token-policies/write-token-
 curl \
   --request DELETE \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/store/$id/token-policies/write-token-required"
+  "http://localhost:8080/admin/store/$namespace/token-policies/write-token-required"
 #+END_SRC
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${id}/token-policies/write-token-required`, {
+await fetch(`http://localhost:8080/admin/store/${namespace}/token-policies/write-token-required`, {
   method: 'DELETE'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -766,10 +766,10 @@ await fetch(`http://localhost:8080/admin/store/${id}/token-policies/write-token-
 })
 #+END_SRC
 
-****** 获取所有具有token的StoreId
+****** 获取所有具有token的namespace
 =GET /admin/store-with-tokens=
 
-获取所有具有token的StoreId, 返回由JSON表示的字符串数组`string[]`
+获取所有具有token的namespace, 返回由JSON表示的字符串数组`string[]`
 
 ******* Example
 ******** curl
@@ -789,7 +789,7 @@ await fetch(`http://localhost:8080/admin/store-with-tokens`, {
 #+END_SRC
 
 ****** 获取特定Store的所有token信息
-=GET /admin/store/<id>/tokens=
+=GET /admin/store/<namespace>/tokens=
 
 获取特定Store的所有token信息, 返回JSON表示的token信息数组
 =Array<{ token: string, write: boolean, read: boolean, delete: boolean }>=.
@@ -799,12 +799,12 @@ await fetch(`http://localhost:8080/admin/store-with-tokens`, {
 #+BEGIN_SRC sh
 curl \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/store/$id/tokens"
+  "http://localhost:8080/admin/store/$namespace/tokens"
 #+END_SRC
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${id}/tokens`, {
+await fetch(`http://localhost:8080/admin/store/${namespace}/tokens`, {
   headers: {
     'Authorization': `Bearer ${adminPassword}`
   }
@@ -812,7 +812,7 @@ await fetch(`http://localhost:8080/admin/store/${id}/tokens`, {
 #+END_SRC
 
 ****** 为特定Store的token设置write权限
-=PUT /admin/store/<id>/tokens/<token>/write=
+=PUT /admin/store/<namespace>/tokens/<token>/write=
 
 添加/更新token, 为token设置write权限.
 
@@ -822,12 +822,12 @@ await fetch(`http://localhost:8080/admin/store/${id}/tokens`, {
 curl \
   --request PUT \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/store/$id/tokens/$token/log"
+  "http://localhost:8080/admin/store/$namespace/tokens/$token/log"
 #+END_SRC
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${id}/tokens/${token}/log`, {
+await fetch(`http://localhost:8080/admin/store/${namespace}/tokens/${token}/log`, {
   method: 'PUT'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -836,7 +836,7 @@ await fetch(`http://localhost:8080/admin/store/${id}/tokens/${token}/log`, {
 #+END_SRC
 
 ****** 取消特定Store的token的write权限
-=DELETE /admin/store/<id>/tokens/<token>/write=
+=DELETE /admin/store/<namespace>/tokens/<token>/write=
 
 取消token的read权限.
 
@@ -846,12 +846,12 @@ await fetch(`http://localhost:8080/admin/store/${id}/tokens/${token}/log`, {
 curl \
   --request DELETE \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/store/$id/tokens/$token/write"
+  "http://localhost:8080/admin/store/$namespace/tokens/$token/write"
 #+END_SRC
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${id}/tokens/${token}/write`, {
+await fetch(`http://localhost:8080/admin/store/${namespace}/tokens/${token}/write`, {
   method: 'DELETE'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -860,7 +860,7 @@ await fetch(`http://localhost:8080/admin/store/${id}/tokens/${token}/write`, {
 #+END_SRC
 
 ****** 为特定Store的token设置read权限
-=PUT /admin/store/<id>/tokens/<token>/read=
+=PUT /admin/store/<namespace>/tokens/<token>/read=
 
 添加/更新token, 为token设置read权限.
 
@@ -870,12 +870,12 @@ await fetch(`http://localhost:8080/admin/store/${id}/tokens/${token}/write`, {
 curl \
   --request PUT \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/store/$id/tokens/$token/read"
+  "http://localhost:8080/admin/store/$namespace/tokens/$token/read"
 #+END_SRC
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${id}/tokens/${token}/read`, {
+await fetch(`http://localhost:8080/admin/store/${namespace}/tokens/${token}/read`, {
   method: 'PUT'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -884,7 +884,7 @@ await fetch(`http://localhost:8080/admin/store/${id}/tokens/${token}/read`, {
 #+END_SRC
 
 ****** 取消特定Store的token的read权限
-=DELETE /admin/store/<id>/tokens/<token>/read=
+=DELETE /admin/store/<namespace>/tokens/<token>/read=
 
 取消token的read权限.
 
@@ -894,21 +894,12 @@ await fetch(`http://localhost:8080/admin/store/${id}/tokens/${token}/read`, {
 curl \
   --request DELETE \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/store/$id/tokens/$token/read"
+  "http://localhost:8080/admin/store/$namespace/tokens/$token/read"
 #+END_SRC
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${id}/tokens/${token}/read`, {
-  method: 'DELETE'
-, headers: {
-    'Authorization': `Bearer ${adminPassword}`
-  }
-})
-#+END_SRC
-
-****** 为特定Store的token设置delete权限
-=PUT /admin/store/<id>/tokens/<token>/delete=
+await fetch(`http://localhost:8080/admin/store/${namespace>/tokens/<token>/delete=
 
 添加/更新token, 为token设置delete权限.
 
@@ -918,12 +909,12 @@ await fetch(`http://localhost:8080/admin/store/${id}/tokens/${token}/read`, {
 curl \
   --request PUT \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/store/$id/tokens/$token/delete"
+  "http://localhost:8080/admin/store/$namespace/tokens/$token/delete"
 #+END_SRC
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${id}/tokens/${token}/delete`, {
+await fetch(`http://localhost:8080/admin/store/${namespace}/tokens/${token}/delete`, {
   method: 'PUT'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
@@ -932,7 +923,7 @@ await fetch(`http://localhost:8080/admin/store/${id}/tokens/${token}/delete`, {
 #+END_SRC
 
 ****** 取消特定Store的token的delete权限
-=DELETE /admin/store/<id>/tokens/<token>/delete=
+=DELETE /admin/store/<namespace>/tokens/<token>/delete=
 
 取消token的delete权限.
 
@@ -942,12 +933,12 @@ await fetch(`http://localhost:8080/admin/store/${id}/tokens/${token}/delete`, {
 curl \
   --request DELETE \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
-  "http://localhost:8080/admin/store/$id/tokens/$token/delete"
+  "http://localhost:8080/admin/store/$namespace/tokens/$token/delete"
 #+END_SRC
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${id}/tokens/${token}/delete`, {
+await fetch(`http://localhost:8080/admin/store/${namespace}/tokens/${token}/delete`, {
   method: 'DELETE'
 , headers: {
     'Authorization': `Bearer ${adminPassword}`
