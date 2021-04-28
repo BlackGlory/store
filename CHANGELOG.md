@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/BlackGlory/store/compare/v0.2.1...v0.3.0) (2021-04-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* The database scheme has been upgraded.
+
+* rename ([87a0928](https://github.com/BlackGlory/store/commit/87a0928ee7d2422207f2f600f2dae2947fb657f8))
+
 ### [0.2.1](https://github.com/BlackGlory/store/compare/v0.2.0...v0.2.1) (2021-03-17)
 
 ## 0.2.0 (2021-03-14)
