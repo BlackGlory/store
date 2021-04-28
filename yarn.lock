@@ -1060,10 +1060,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.37.tgz#a3dd8da4eb84a996c36e331df98d82abd76b516e"
   integrity sha512-XYmBiy+ohOR4Lh5jE379fV2IU+6Jn4g5qASinhitfyO71b/sCo6MKsMLF5tc7Zf2CE8hViVQyYSobJNke8OvUw==
 
-"@types/node@^15.0.0":
-  version "15.0.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.0.0.tgz#557dd0da4a6dca1407481df3bbacae0cd6f68042"
-  integrity sha512-YN1d+ae2MCb4U0mMa+Zlb5lWTdpFShbAj5nmte6lel27waMMBfivrm0prC16p/Di3DyTrmerrYUT8/145HXxVw==
+"@types/node@^15.0.1":
+  version "15.0.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.0.1.tgz#ef34dea0881028d11398be5bf4e856743e3dc35a"
+  integrity sha512-TMkXt0Ck1y0KKsGr9gJtWGjttxlZnnvDtphxUOSd0bfaR6Q1jle+sPvrzNR1urqYTWMinoKvjKfXUGsumaO1PA==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -1282,10 +1282,20 @@ ajv@^7.2.1:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-ajv@^8.0.5, ajv@^8.1.0:
+ajv@^8.0.5:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.1.0.tgz#45d5d3d36c7cdd808930cc3e603cf6200dbeb736"
   integrity sha512-B/Sk2Ix7A36fs/ZkuGLIR86EdjbgR6fsAcbx9lOP/QBSXujDNbVmIS/U4Itz5k8fPFDeVZl/zQ/gJW4Jrq6XjQ==
+  dependencies:
+    fast-deep-equal "^3.1.1"
+    json-schema-traverse "^1.0.0"
+    require-from-string "^2.0.2"
+    uri-js "^4.2.2"
+
+ajv@^8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.2.0.tgz#c89d3380a784ce81b2085f48811c4c101df4c602"
+  integrity sha512-WSNGFuyWd//XO8n/m/EaOlNLtO0yL8EXT/74LqT4khdhpZjP7lkj/kT5uwRmGitKEVp/Oj7ZUHeGfPtgHhQ5CA==
   dependencies:
     fast-deep-equal "^3.1.1"
     json-schema-traverse "^1.0.0"
@@ -1904,6 +1914,14 @@ chalk@^4.0.0, chalk@^4.1.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
+chalk@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.1.tgz#c80b3fab28bf6371e6863325eee67e618b77e6ad"
+  integrity sha512-diHzdDKxcU+bAsUboHLPEDQiw0qEe0qd7SYUn3HgcFlWgbDcfLGswOHYeGrHKzG9z6UYf01d9VFMfZxPM1xZSg==
+  dependencies:
+    ansi-styles "^4.1.0"
+    supports-color "^7.1.0"
+
 char-regex@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/char-regex/-/char-regex-1.0.2.tgz#d744358226217f981ed58f479b1d6bcc29545dcf"
@@ -2306,7 +2324,7 @@ copy-descriptor@^0.1.0:
   resolved "https://registry.yarnpkg.com/copy-descriptor/-/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
 
-core-js@^3.10.1:
+core-js@^3.11.0:
   version "3.11.0"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.11.0.tgz#05dac6aa70c0a4ad842261f8957b961d36eb8926"
   integrity sha512-bd79DPpx+1Ilh9+30aT5O1sgpQd4Ttg8oqkqi51ZzhedMM1omD2e6IOF48Z/DzDCZ2svp49tN/3vneTK6ZBkXw==
@@ -3051,20 +3069,20 @@ extra-fetch@^1.5.0:
     return-style "^0.12.3"
     value-getter "^0.1.13"
 
-extra-fetch@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/extra-fetch/-/extra-fetch-1.7.0.tgz#88cb38f032a75a6971a559a09e8c2297513cf04f"
-  integrity sha512-vZXEdA4yGgN3YVN9qiaPPTwHpGF95pgmHz+cLFm4pQFpPeaJivy6yDjh9ZUFZtrDCjjs2JM1r7kZ1psMkyw8lg==
+extra-fetch@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/extra-fetch/-/extra-fetch-1.7.1.tgz#6d17dd04e5cdf6298f086374d21c6164ee11f3a5"
+  integrity sha512-/iJeIPg4gBTa46EPbZW3jYcjvvyBT/mjYGvl3RF5gl+4WWM/QUdyBjM8kp7bFs2Bchu30aflkl+i04/veVDfYg==
   dependencies:
     "@blackglory/types" "^0.4.2"
     abort-controller "^3.0.0"
-    chalk "^4.1.0"
-    core-js "^3.10.1"
+    chalk "^4.1.1"
+    core-js "^3.11.0"
     domexception "^2.0.1"
     eventsource "^1.1.0"
-    extra-logger "^0.5.2"
-    fetch-blob "^2.1.1"
-    formdata-node "^3.1.0"
+    extra-logger "^0.5.3"
+    fetch-blob "^2.1.2"
+    formdata-node "^3.1.1"
     node-fetch "https://github.com/BlackGlory/node-fetch#master"
     return-style "^0.12.3"
     value-getter "^0.1.13"
@@ -3084,7 +3102,7 @@ extra-logger@^0.2.1:
     "@blackglory/types" "^0.4.1"
     hotypes "^0.1.4"
 
-extra-logger@^0.5.2:
+extra-logger@^0.5.3:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/extra-logger/-/extra-logger-0.5.3.tgz#44f033367efd253d048cb1bdc445c71f1e95d6e0"
   integrity sha512-RRwAQ+kdfTqd0e01AofKtjQza7ZTM2BvBDjPEq402UXvpEOSk+3HMGk4L3yCFd7NTDTIbNv1DR7dLSvQsXP+WA==
@@ -3107,13 +3125,13 @@ extra-promise@^0.16.2:
     reflect-metadata "^0.1.13"
     return-style "^0.12.3"
 
-extra-request@^2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/extra-request/-/extra-request-2.1.3.tgz#2c28f3c2ef905024248098394b291592bd67db92"
-  integrity sha512-JOC6HP2wJPrY7AN2IrrLjmyFNpvolv8IU+82SDoKbmHRi1JNNaEErWs2zu+ThAEKMxzu9wFHko/wz1UsuSntag==
+extra-request@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/extra-request/-/extra-request-2.1.4.tgz#e5770c41a865e2d2be4d8f147df6046698e5b4b0"
+  integrity sha512-AOHcfhJsOJpBQja7Yp8mub9HKPGaP4OJPGVTiCIZZANZN+UM9HtRQbBbSDwqrxVQxD7Ei9VdRyUlYhZwAoje0A==
   dependencies:
     "@blackglory/errors" "^1.1.2"
-    "@blackglory/types" "^0.4.1"
+    "@blackglory/types" "^0.4.2"
     js-base64 "^3.6.0"
     justypes "^0.1.1"
     papaparse "^5.3.0"
@@ -3306,6 +3324,11 @@ fetch-blob@2.1.1, fetch-blob@^2.1.1:
   resolved "https://registry.yarnpkg.com/fetch-blob/-/fetch-blob-2.1.1.tgz#a54ab0d5ed7ccdb0691db77b6674308b23fb2237"
   integrity sha512-Uf+gxPCe1hTOFXwkxYyckn8iUSk6CFXGy5VENZKifovUTZC9eUODWSBhOBS7zICGrAetKzdwLMr85KhIcePMAQ==
 
+fetch-blob@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/fetch-blob/-/fetch-blob-2.1.2.tgz#a7805db1361bd44c1ef62bb57fb5fe8ea173ef3c"
+  integrity sha512-YKqtUDwqLyfyMnmbw8XD6Q8j9i/HggKtPEI+pZ1+8bvheBu78biSmNaXWusx1TauGqtUUGx/cBb1mKdq2rLYow==
+
 figures@^3.1.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/figures/-/figures-3.2.0.tgz#625c18bd293c604dc4a8ddb2febf0c88341746af"
@@ -3460,7 +3483,7 @@ formdata-node@^2.4.0:
   dependencies:
     mime-types "2.1.27"
 
-formdata-node@^3.1.0:
+formdata-node@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/formdata-node/-/formdata-node-3.1.1.tgz#4cc658ce0931392c02a5b6d69c96d1ce4c4c5ce0"
   integrity sha512-Z1YmZwpAfVIM8bNAF9z4rHTLhUPyAuTmxmy2ODRa7hTQ3zpgbbGw4fnGdJmrJ78xbXdUWSs6R/Rd6kNkVCUOUQ==
