@@ -344,7 +344,7 @@ curl \
   --header "Authorization: Bearer $ADMIN_PASSWORD" \
   --header "Content-Type: application/json" \
   --data "$JSON_SCHEMA" \
-  "http://localhost:8080/admin/store/$namespace/jsonschema"
+  "http://localhost:8080/admin/store/$namespace/json-schema"
 #+END_SRC
 
 ******** fetch
