@@ -1,5 +1,5 @@
 import { getItem } from './get-item'
-import { validateRevision } from './utils/validate-hash'
+import { validateRevision } from './utils/validate-revision'
 import { NotFound, IncorrectRevision } from './error'
 import { getDatabase } from '../database'
 import { hasItem } from './has-item'
@@ -19,7 +19,11 @@ export function deleteItem(namespace: string, id: string): void {
  * @throws {NotFound}
  * @throws {IncorrectRevision}
  */
-export function deleteItemWithCheck(namespace: string, id: string, revision: IRevision): void {
+export function deleteItemWithCheck(
+  namespace: string
+, id: string
+, revision: IRevision
+): void {
   getDatabase().transaction(() => {
     const item = getItem(namespace, id)
     if (!item) throw new NotFound(namespace, id)

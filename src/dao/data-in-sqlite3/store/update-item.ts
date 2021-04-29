@@ -1,4 +1,4 @@
-import { validateRevision } from './utils/validate-hash'
+import { validateRevision } from './utils/validate-revision'
 import { NotFound, IncorrectRevision } from './error'
 import { getItem } from './get-item'
 import { getDatabase } from '../database'
@@ -8,7 +8,12 @@ import { hasItem } from './has-item'
 /**
  * @throws {NotFound}
  */
-export function updateItem(namespace: string, id: string, type: string, payload: string): IRevision {
+export function updateItem(
+  namespace: string
+, id: string
+, type: string
+, payload: string
+): IRevision {
   return getDatabase().transaction(() => {
     if (!hasItem(namespace, id)) throw new NotFound(namespace, id)
 
@@ -20,7 +25,13 @@ export function updateItem(namespace: string, id: string, type: string, payload:
  * @throws {NotFound}
  * @throws {IncorrectRevision}
  */
-export function updateItemWithCheck(namespace: string, id: string, type: string, revision: IRevision, payload: string): IRevision {
+export function updateItemWithCheck(
+  namespace: string
+, id: string
+, type: string
+, revision: IRevision
+, payload: string
+): IRevision {
   return getDatabase().transaction(() => {
     const item = getItem(namespace, id)
     if (!item) throw new NotFound(namespace, id)
@@ -33,7 +44,12 @@ export function updateItemWithCheck(namespace: string, id: string, type: string,
   })()
 }
 
-function update(namespace: string, id: string, type: string, payload: string): IRevision {
+function update(
+  namespace: string
+, id: string
+, type: string
+, payload: string
+): IRevision {
   const revision = uuid()
 
   getDatabase().prepare(`

@@ -1,7 +1,12 @@
 import { getDatabase } from '../database'
 import { uuid } from './utils/uuid'
 
-export function setItem(namespace: string, id: string, type: string, payload: string): IRevision {
+export function setItem(
+  namespace: string
+, id: string
+, type: string
+, payload: string
+): IRevision {
   const revision = uuid()
 
   getDatabase().prepare(`
