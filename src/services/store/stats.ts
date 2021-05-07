@@ -13,8 +13,8 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
         }
       , response: {
           200: {
-            id: { type: 'string' }
-          , items: { type: 'number' }
+            namespace: { type: 'string' }
+          , items: { type: 'integer' }
           }
         }
       }

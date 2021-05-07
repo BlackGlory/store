@@ -21,5 +21,9 @@ describe('no access control', () => {
     ))
 
     expect(res.status).toBe(200)
+    expect(await res.json()).toStrictEqual({
+      namespace
+    , items: 0
+    })
   })
 })
