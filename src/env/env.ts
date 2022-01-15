@@ -176,5 +176,5 @@ function toJsonObject(val: string | undefined): object | undefined {
 }
 
 function shouldBePositive(val: number) {
-  assert(val > 0)
+  assert(val > 0, 'Value must be positive')
 }
