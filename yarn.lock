@@ -528,6 +528,11 @@
     extra-stream "^0.1.3"
     jest-diff "^27.4.2"
 
+"@blackglory/log@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@blackglory/log/-/log-0.1.0.tgz#a1b71c41469e3084a60c6de06fa496678ad10a5b"
+  integrity sha512-BdQhz9YRs1Q0pXNL5Wev6Nh/a+IMIaDuSU5FA3FStxSRZUPX/2/23u6wtbfA/mX7Jtrafee1GSbwvESwm+Jz+Q==
+
 "@blackglory/node-fetch@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@blackglory/node-fetch/-/node-fetch-1.0.0.tgz#e7a4d334b4c5c0adc403d37bf26a24a9c6a77f5b"
@@ -1337,6 +1342,11 @@
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.3.2.tgz#fc8c2825e4ed2142473b4a81064e6e081463d1b3"
   integrity sha512-eI5Yrz3Qv4KPUa/nSIAi0h+qX0XyewOliug5F2QAtuRg6Kjg6jfmxe1GIwoIRhZspD1A0RP8ANrPwvEXXtRFog==
+
+"@types/semver@^7.3.9":
+  version "7.3.9"
+  resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.3.9.tgz#152c6c20a7688c30b967ec1841d31ace569863fc"
+  integrity sha512-L/TMpyURfBkf+o/526Zb6kd/tchUP3iBDEPjqjb+U2MAJhVRxxrmr2fwpe08E7QsV7YLcpq0tUaQ9O9x97ZIxQ==
 
 "@types/stack-utils@^2.0.0":
   version "2.0.1"
