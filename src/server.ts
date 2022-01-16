@@ -24,7 +24,7 @@ export function buildServer() {
   , register: new Registry()
   })
   server.addHook('onRequest', async (req, reply) => {
-    reply.headers({ 'cache-control': 'private, no-cache' })
+    reply.headers({ 'Cache-Control': 'private, no-cache' })
   })
 
   server.register(cors, { origin: true })
