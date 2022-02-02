@@ -29,18 +29,8 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
         params: { namespace: namespaceSchema }
       , response: {
           200: {
-            updateRevisionRequired: {
-              anyOf: [
-                { type: 'boolean' }
-              , { type: 'null' }
-              ]
-            }
-          , deleteRevisionRequired: {
-              anyOf: [
-                { type: 'boolean' }
-              , { type: 'null' }
-              ]
-            }
+            updateRevisionRequired: { type: 'boolean', nullable: true }
+          , deleteRevisionRequired: { type: 'boolean', nullable: true }
           }
         }
       }
