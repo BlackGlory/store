@@ -45,7 +45,6 @@
     "@types/jest": "^27.4.0",
     "@types/jest-json-schema": "^6.1.0",
     "@types/node": "16",
-    "@types/semver": "^7.3.9",
     "@typescript-eslint/eslint-plugin": "^5.10.2",
     "@typescript-eslint/parser": "^5.10.2",
     "cross-env": "^7.0.3",
@@ -82,6 +81,7 @@
     "extra-filesystem": "^0.4.0",
     "extra-generator": "^0.2.15",
     "extra-promise": "^0.21.2",
+    "extra-semver": "^0.1.0",
     "extra-tags": "^0.2.4",
     "fastify": "^3.27.1",
     "fastify-accepts": "^2.1.0",
@@ -95,7 +95,6 @@
     "nanoid": "^3.2.0",
     "prom-client": "^14.0.1",
     "return-style": "^0.12.6",
-    "semver": "^7.3.5",
     "value-getter": "^0.2.2"
   }
 }
