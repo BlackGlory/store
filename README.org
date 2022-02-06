@@ -28,7 +28,7 @@ curl http://localhost:8080/store/namespace/items/id
 
 #+BEGIN_SRC sh
 git clone https://github.com/BlackGlory/store
-cd log
+cd store
 yarn install
 yarn build
 yarn --silent start
@@ -181,12 +181,12 @@ await fetch(`http://localhost:8080/store/${namespace}/items/${id}`)
 ***** Example
 ****** curl
 #+BEGIN_SRC sh
-curl "http://localhost:8080/store/$db/items"
+curl "http://localhost:8080/store/$namespace/items"
 #+END_SRC
 
 ****** JavaScript
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/store/${db}/items`).then(res => res.json())
+await fetch(`http://localhost:8080/store/${namespace}/items`).then(res => res.json())
 #+END_SRC
 
 **** get all namespaces
@@ -242,12 +242,12 @@ await fetch(`http://localhost:8080/store/${namespace}/items/${id}`, {
 #+BEGIN_SRC sh
 curl \
   --request DELETE \
-  "http://localhost:8080/store/$db"
+  "http://localhost:8080/store/$namespace"
 #+END_SRC
 
 ****** JavaScript
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/store/${db}`, {
+await fetch(`http://localhost:8080/store/${namespace}`, {
   method: 'DELETE'
 })
 #+END_SRC
@@ -256,7 +256,7 @@ await fetch(`http://localhost:8080/store/${db}`, {
 =GET /store/<namespace>/stats=
 
 输出JSON:
-#+BEGIN_SRC ts
+#+BEGIN_SRC typescript
 {
   namespace: string
   items: number
@@ -413,7 +413,7 @@ await fetch('http://localhost:8080/admin/store-with-revision-policies', {
 =GET /admin/store/<namespace>/revision-policies=
 
 返回JSON:
-#+BEGIN_SRC ts
+#+BEGIN_SRC typescript
 {
   updateRevisionRequired: boolean | null
   deleteRevisionRequired: boolean | null
@@ -686,7 +686,7 @@ await fetch('http://localhost:8080/admin/store-with-token-policies')
 =GET /admin/store/<namespace>/token-policies=
 
 返回JSON:
-#+BEGIN_SRC ts
+#+BEGIN_SRC typescript
 {
   writeTokenRequired: boolean | null
   readTokenRequired: boolean | null
