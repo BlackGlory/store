@@ -682,7 +682,7 @@ curl \
 await fetch('http://localhost:8080/admin/store-with-token-policies')
 #+END_SRC
 
-****** 获取特定频道的token策略
+****** 获取特定namespace的token策略
 =GET /admin/store/<namespace>/token-policies=
 
 返回JSON:
