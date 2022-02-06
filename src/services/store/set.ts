@@ -30,7 +30,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       schema: {
         params: {
           namespace: namespaceSchema
-        , itemId: idSchema
+        , id: idSchema
         }
       , querystring: { token: tokenSchema }
       , headers: {
