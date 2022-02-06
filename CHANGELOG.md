@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.7](https://github.com/BlackGlory/store/compare/v0.3.6...v0.3.7) (2022-02-06)
+
+
+### Bug Fixes
+
+* **set:** validation ([771af10](https://github.com/BlackGlory/store/commit/771af1009b1c7f2ed0bd8564a55a14c5efea7f46))
+
 ### [0.3.6](https://github.com/BlackGlory/store/compare/v0.3.5...v0.3.6) (2022-01-16)
 
 
