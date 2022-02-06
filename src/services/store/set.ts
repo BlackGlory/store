@@ -38,7 +38,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
             JSON_PAYLOAD_ONLY()
             ? { type: 'string', pattern: '^application/json' }
             : { type: 'string' }
-        , 'if-match': { type: 'string' }
+        , 'if-match': { type: 'string', nullable: true }
         }
       , response: {
           204: { type: 'null' }

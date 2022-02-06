@@ -20,7 +20,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
           token: tokenSchema
         }
       , headers: {
-          'if-none-match': { type: 'string' }
+          'if-none-match': { type: 'string', nullable: true }
         }
       }
     }

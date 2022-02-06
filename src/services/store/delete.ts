@@ -18,7 +18,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
         }
       , querystring: { token: tokenSchema }
       , headers: {
-          'if-match': { type: 'string' }
+          'if-match': { type: 'string', nullable: true }
         }
       }
     }
