@@ -385,7 +385,7 @@ await fetch(`http://localhost:8080/admin/store/${namespace}/json-schema`, {
 设置环境变量 =STORE_UPDATE_REVISION_REQUIRED=true= 可强制要求客户端在发出更新请求时提供 =If-Match= 请求头, 默认为 =false=.
 设置环境变量 =STORE_DELETE_REVISION_REQUIRED=true= 可强制要求客户端在发出删除请求时提供 =If-Match= 请求头, 默认为 =false=.
 
-可单独为特定store设置策略以覆盖默认值.
+可单独为特定namespace设置策略以覆盖默认值.
 
 ***** 获取所有具有revision策略的namesapce
 =GET /admin/store-with-revision-policies=
@@ -409,7 +409,7 @@ await fetch('http://localhost:8080/admin/store-with-revision-policies', {
 }).then(res => res.json())
 #+END_SRC
 
-***** 获取特定store的revision策略
+***** 获取特定namespace的revision策略
 =GET /admin/store/<namespace>/revision-policies=
 
 返回JSON:
@@ -531,7 +531,7 @@ await fetch('http://localhost:8080/admin/blacklist', {
 ******* 添加黑名单
 =PUT /admin/blacklist/<namespace>=
 
-将特定Store加入黑名单.
+将特定namespace加入黑名单.
 
 ******** Example
 ********* curl
@@ -555,7 +555,7 @@ await fetch(`http://localhost:8080/admin/blacklist/${namespace}`, {
 ******* 移除黑名单
 =DELETE /admin/blacklist/<namespace>=
 
-将特定Store从黑名单中移除.
+将特定namespace从黑名单中移除.
 
 ******** Example
 ********* curl
@@ -602,7 +602,7 @@ await fetch('http://localhost:8080/admin/whitelist', {
 ******* 添加白名单
 =PUT /admin/whitelist/<namespace>=
 
-将特定Store加入白名单.
+将特定namespace加入白名单.
 
 ******** Example
 ********* curl
@@ -626,7 +626,7 @@ await fetch(`http://localhost:8080/admin/whitelist/${namespace}`, {
 ******* 移除白名单
 =DELETE /admin/whitelist/<namespace>=
 
-将特定Store从白名单中移除.
+将特定namespace从白名单中移除.
 
 ******** Example
 ********* curl
@@ -788,10 +788,10 @@ await fetch(`http://localhost:8080/admin/store-with-tokens`, {
 }).then(res => res.json())
 #+END_SRC
 
-****** 获取特定Store的所有token信息
+****** 获取特定namespace的所有token信息
 =GET /admin/store/<namespace>/tokens=
 
-获取特定Store的所有token信息, 返回JSON表示的token信息数组
+获取特定namespace的所有token信息, 返回JSON表示的token信息数组
 =Array<{ token: string, write: boolean, read: boolean, delete: boolean }>=.
 
 ******* Example
@@ -811,7 +811,7 @@ await fetch(`http://localhost:8080/admin/store/${namespace}/tokens`, {
 }).then(res => res.json())
 #+END_SRC
 
-****** 为特定Store的token设置write权限
+****** 为特定namespace的token设置write权限
 =PUT /admin/store/<namespace>/tokens/<token>/write=
 
 添加/更新token, 为token设置write权限.
@@ -835,7 +835,7 @@ await fetch(`http://localhost:8080/admin/store/${namespace}/tokens/${token}/log`
 })
 #+END_SRC
 
-****** 取消特定Store的token的write权限
+****** 取消特定namespace的token的write权限
 =DELETE /admin/store/<namespace>/tokens/<token>/write=
 
 取消token的read权限.
@@ -859,7 +859,7 @@ await fetch(`http://localhost:8080/admin/store/${namespace}/tokens/${token}/writ
 })
 #+END_SRC
 
-****** 为特定Store的token设置read权限
+****** 为特定namespace的token设置read权限
 =PUT /admin/store/<namespace>/tokens/<token>/read=
 
 添加/更新token, 为token设置read权限.
@@ -883,7 +883,7 @@ await fetch(`http://localhost:8080/admin/store/${namespace}/tokens/${token}/read
 })
 #+END_SRC
 
-****** 取消特定Store的token的read权限
+****** 取消特定namespace的token的read权限
 =DELETE /admin/store/<namespace>/tokens/<token>/read=
 
 取消token的read权限.
@@ -899,10 +899,19 @@ curl \
 
 ******** fetch
 #+BEGIN_SRC js
-await fetch(`http://localhost:8080/admin/store/${namespace>/tokens/<token>/delete=
+await fetch(`http://localhost:8080/admin/store/${namespace>/tokens/${token}/read`, {
+  method: 'DELETE'
+, headers: {
+    'Authorization': `Bearer ${adminPassword}`
+  } 
+})
+#+END_SRC
+
+****** 为特定namespace的token设置delete权限
+=PUT /admin/store/<namespace>/tokens/<token>/delete=
 
 添加/更新token, 为token设置delete权限.
-
+       
 ******* Example
 ******** curl
 #+BEGIN_SRC sh
@@ -922,7 +931,7 @@ await fetch(`http://localhost:8080/admin/store/${namespace}/tokens/${token}/dele
 })
 #+END_SRC
 
-****** 取消特定Store的token的delete权限
+****** 取消特定namespace的token的delete权限
 =DELETE /admin/store/<namespace>/tokens/<token>/delete=
 
 取消token的delete权限.
