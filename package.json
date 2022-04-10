@@ -93,6 +93,7 @@
     "nanoid": "^3.3.0",
     "prom-client": "^14.0.1",
     "return-style": "^0.12.6",
-    "value-getter": "^0.2.2"
+    "value-getter": "^0.2.2",
+    "you-died": "^0.2.2"
   }
 }
