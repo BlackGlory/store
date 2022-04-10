@@ -107,6 +107,8 @@ revision 是一个由服务器计算出的值, 该值可被用于基于revision�
 可以使用 =If-Match= 发送带有revision的请求, 这可以在更新时启用乐观并发策略,
 当revision与服务器的文档不匹配时返回412.
 
+Store会将所有请求正文当作字符串原样处理.
+
 ***** Example
 ****** curl
 #+BEGIN_SRC sh
