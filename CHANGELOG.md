@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.11](https://github.com/BlackGlory/store/compare/v0.3.10...v0.3.11) (2022-07-27)
+
+
+### Bug Fixes
+
+* cannot find module dist/index.cjs ([f34a53c](https://github.com/BlackGlory/store/commit/f34a53ce0bad034cc345a446bf50d5b6d3cd2285))
+
 ### [0.3.10](https://github.com/BlackGlory/store/compare/v0.3.9...v0.3.10) (2022-07-27)
 
 ### [0.3.9](https://github.com/BlackGlory/store/compare/v0.3.8...v0.3.9) (2022-04-15)
