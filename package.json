@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "store",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "repository": "git@github.com:BlackGlory/store.git",
   "author": "BlackGlory <woshenmedoubuzhidao@blackglory.me>",
   "license": "MIT",
