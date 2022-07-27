@@ -31,6 +31,7 @@ git clone https://github.com/BlackGlory/store
 cd store
 yarn install
 yarn build
+yarn bundle
 yarn --silent start
 #+END_SRC
 

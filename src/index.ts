@@ -2,7 +2,7 @@ import { go } from '@blackglory/go'
 import * as ConfigInSqlite3 from '@src/dao/config-in-sqlite3/database'
 import * as DataInSqlite3 from '@src/dao/data-in-sqlite3/database'
 import { buildServer } from './server'
-import { PORT, HOST, CI } from '@env'
+import { PORT, HOST, NODE_ENV, NodeEnv } from '@env'
 import { youDied } from 'you-died'
 
 go(async () => {
@@ -16,7 +16,7 @@ go(async () => {
 
   const server = await buildServer()
   await server.listen(PORT(), HOST())
-  if (CI()) process.exit()
+  if (NODE_ENV() === NodeEnv.Test) process.exit()
 
   process.send?.('ready')
 })
