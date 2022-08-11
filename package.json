@@ -73,7 +73,7 @@
     "yarn-deduplicate": "^5.0.0"
   },
   "dependencies": {
-    "@blackglory/better-sqlite3-migrations": "^0.1.13",
+    "@blackglory/better-sqlite3-migrations": "^0.1.15",
     "@blackglory/errors": "^2.2.2",
     "@blackglory/go": "^1.1.2",
     "@blackglory/types": "^1.2.1",
