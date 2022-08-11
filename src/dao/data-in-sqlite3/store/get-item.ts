@@ -1,14 +1,18 @@
 import { getDatabase } from '../database'
+import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
-export function getItem(namespace: string, id: string): IItem | null {
-  const row = getDatabase().prepare(`
+export const getItem = withLazyStatic(function (
+  namespace: string
+, id: string
+): IItem | null {
+  const row = lazyStatic(() => getDatabase().prepare(`
     SELECT revision
          , type
          , payload
       FROM store_item
      WHERE namespace = $namespace
        AND id = $id
-  `).get({ namespace, id })
+  `), [getDatabase()]).get({ namespace, id })
   if (!row) return null
 
   return {
@@ -16,4 +20,4 @@ export function getItem(namespace: string, id: string): IItem | null {
   , type: row['type']
   , payload: row['payload']
   }
-}
+})

@@ -1,7 +1,8 @@
 import { getDatabase } from '../database'
 import { uuid } from './utils/uuid'
+import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
-export function setItem(
+export const setItem = withLazyStatic(function (
   namespace: string
 , id: string
 , type: string
@@ -9,14 +10,14 @@ export function setItem(
 ): IRevision {
   const revision = uuid()
 
-  getDatabase().prepare(`
+  lazyStatic(() => getDatabase().prepare(`
     INSERT INTO store_item (namespace, id, type, payload, revision)
     VALUES ($namespace, $id, $type, $payload, $revision)
         ON CONFLICT(namespace, id)
         DO UPDATE SET type = $type
                     , payload = $payload
                     , revision = $revision;
-  `).run({
+  `), [getDatabase()]).run({
     namespace
   , id
   , type
@@ -25,4 +26,4 @@ export function setItem(
   })
 
   return revision
-}
+})

@@ -1,27 +1,28 @@
 import { getDatabase } from '../database'
+import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
-export function getAllNamespacesWithRevisionPolicies(): string[] {
-  const result = getDatabase().prepare(`
+export const getAllNamespacesWithRevisionPolicies = withLazyStatic(function (): string[] {
+  const result = lazyStatic(() => getDatabase().prepare(`
     SELECT namespace
       FROM store_revision_policy;
-  `).all()
+  `), [getDatabase()]).all()
 
   return result.map(x => x['namespace'])
-}
+})
 
-export function getRevisionPolicies(namespace: string): {
+export const getRevisionPolicies = withLazyStatic(function (namespace: string): {
   updateRevisionRequired: boolean | null
   deleteRevisionRequired: boolean | null
 } {
   const row: {
     'update_revision_required': number | null
   , 'delete_revision_required': number | null
-  } = getDatabase().prepare(`
+  } = lazyStatic(() => getDatabase().prepare(`
     SELECT update_revision_required
          , delete_revision_required
       FROM store_revision_policy
      WHERE namespace = $namespace;
-  `).get({ namespace })
+  `), [getDatabase()]).get({ namespace })
 
   if (row) {
     const updateRevisionRequired = row['update_revision_required']
@@ -42,60 +43,58 @@ export function getRevisionPolicies(namespace: string): {
     , deleteRevisionRequired: null
     }
   }
-}
+})
 
-export function setUpdateRevisionRequired(namespace: string, val: boolean): void {
-  getDatabase().prepare(`
+export const setUpdateRevisionRequired = withLazyStatic(function (namespace: string, val: boolean): void {
+  lazyStatic(() => getDatabase().prepare(`
     INSERT INTO store_revision_policy (namespace, update_revision_required)
     VALUES ($namespace, $updateRevisionRequired)
         ON CONFLICT(namespace)
         DO UPDATE SET update_revision_required = $updateRevisionRequired;
-  `).run({ namespace, updateRevisionRequired: booleanToNumber(val) })
-}
+  `), [getDatabase()]).run({ namespace, updateRevisionRequired: booleanToNumber(val) })
+})
 
-export function unsetUpdateRevisionRequired(namespace: string): void {
-  const db = getDatabase()
-  db.transaction(() => {
-    db.prepare(`
+export const unsetUpdateRevisionRequired = withLazyStatic(function (namespace: string): void {
+  lazyStatic(() => getDatabase().transaction((namespace: string) => {
+    lazyStatic(() => getDatabase().prepare(`
       UPDATE store_revision_policy
          SET update_revision_required = NULL
        WHERE namespace = $namespace;
-    `).run({ namespace })
+    `), [getDatabase()]).run({ namespace })
 
     deleteNoPoliciesRow(namespace)
-  })()
-}
+  }), [getDatabase()])(namespace)
+})
 
-export function setDeleteRevisionRequired(namespace: string, val: boolean): void {
-  getDatabase().prepare(`
+export const setDeleteRevisionRequired = withLazyStatic(function (namespace: string, val: boolean): void {
+  lazyStatic(() => getDatabase().prepare(`
     INSERT INTO store_revision_policy (namespace, delete_revision_required)
     VALUES ($namespace, $deleteRevisionRequired)
         ON CONFLICT(namespace)
         DO UPDATE SET delete_revision_required = $deleteRevisionRequired;
-  `).run({ namespace, deleteRevisionRequired: booleanToNumber(val) })
-}
+  `), [getDatabase()]).run({ namespace, deleteRevisionRequired: booleanToNumber(val) })
+})
 
-export function unsetDeleteRevisionRequired(namespace: string): void {
-  const db = getDatabase()
-  db.transaction(() => {
-    db.prepare(`
+export const unsetDeleteRevisionRequired = withLazyStatic(function (namespace: string): void {
+  lazyStatic(() => getDatabase().transaction((namespace: string) => {
+    lazyStatic(() => getDatabase().prepare(`
       UPDATE store_revision_policy
          SET delete_revision_required = NULL
        WHERE namespace = $namespace;
-    `).run({ namespace })
+    `), [getDatabase()]).run({ namespace })
 
     deleteNoPoliciesRow(namespace)
-  })()
-}
+  }), [getDatabase()])(namespace)
+})
 
-function deleteNoPoliciesRow(namespace: string): void {
-  getDatabase().prepare(`
+const deleteNoPoliciesRow = withLazyStatic(function (namespace: string): void {
+  lazyStatic(() => getDatabase().prepare(`
     DELETE FROM store_revision_policy
      WHERE namespace = $namespace
        AND update_revision_required = NULL
        AND delete_revision_required = NULL
-  `).run({ namespace })
-}
+  `), [getDatabase()]).run({ namespace })
+})
 
 function numberToBoolean(val: number): boolean {
   if (val === 0) {
