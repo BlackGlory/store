@@ -47,12 +47,9 @@ export const updateItemWithCheck = withLazyStatic(function (
   ) => {
     const item = getItem(namespace, id)
     if (!item) throw new NotFound(namespace, id)
+    if (!validateRevision(item, revision)) throw new IncorrectRevision(namespace, id)
 
-    if (validateRevision(item, revision)) {
-      return update(namespace, id, type, payload)
-    } else {
-      throw new IncorrectRevision(namespace, id)
-    }
+    return update(namespace, id, type, payload)
   }), [getDatabase()])(namespace, id, type, revision, payload)
 })
 

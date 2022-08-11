@@ -38,12 +38,9 @@ export const deleteItemWithCheck = withLazyStatic(function (
   ) => {
     const item = getItem(namespace, id)
     if (!item) throw new NotFound(namespace, id)
+    if (!validateRevision(item, revision)) throw new IncorrectRevision(namespace, id)
 
-    if (validateRevision(item, revision)) {
-      del(namespace, id)
-    } else {
-      throw new IncorrectRevision(namespace, id)
-    }
+    del(namespace, id)
   }), [getDatabase()])(namespace, id, revision)
 })
 
