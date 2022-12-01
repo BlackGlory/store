@@ -95,7 +95,7 @@
     "fastify-plugin": "^3.0.1",
     "iterable-operator": "^1.2.0",
     "justypes": "^2.0.1",
-    "migrations-file": "^0.2.4",
+    "migration-files": "^0.4.0",
     "nanoid": "^3.3.2",
     "prom-client": "^14.0.1",
     "return-style": "^1.0.0",
