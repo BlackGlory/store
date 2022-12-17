@@ -3,8 +3,6 @@ import { NotFound, IncorrectRevision } from '@dao/data-in-sqlite3/store/error'
 import { getError } from 'return-style'
 import { initializeDatabases, clearDatabases } from '@test/utils'
 import { hasRawItem, setRawItem } from './utils'
-import '@blackglory/jest-matchers'
-import 'jest-extended'
 
 jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
@@ -28,7 +26,7 @@ describe('deleteItem(namespace: string, id: string): void', () => {
       const result = DAO.deleteItem(namespace, id)
 
       expect(result).toBeUndefined()
-      expect(hasRawItem(namespace, id)).toBeFalse()
+      expect(hasRawItem(namespace, id)).toBe(false)
     })
   })
 
@@ -40,7 +38,7 @@ describe('deleteItem(namespace: string, id: string): void', () => {
       const err = getError(() => DAO.deleteItem(namespace, id))
 
       expect(err).toBeInstanceOf(NotFound)
-      expect(hasRawItem(namespace, id)).toBeFalse()
+      expect(hasRawItem(namespace, id)).toBe(false)
     })
   })
 })
@@ -63,7 +61,7 @@ describe('deleteItemWithCheck(namespace: string, id: string, revision: string): 
         const result = DAO.deleteItemWithCheck(namespace, id, revision)
 
         expect(result).toBeUndefined()
-        expect(hasRawItem(namespace, id)).toBeFalse()
+        expect(hasRawItem(namespace, id)).toBe(false)
       })
     })
 
@@ -82,7 +80,7 @@ describe('deleteItemWithCheck(namespace: string, id: string, revision: string): 
         const result = getError(() => DAO.deleteItemWithCheck(namespace, id, 'bad-revision'))
 
         expect(result).toBeInstanceOf(IncorrectRevision)
-        expect(hasRawItem(namespace, id)).toBeTrue()
+        expect(hasRawItem(namespace, id)).toBe(true)
       })
     })
   })
@@ -96,7 +94,7 @@ describe('deleteItemWithCheck(namespace: string, id: string, revision: string): 
       const result = getError(() => DAO.deleteItemWithCheck(namespace, id, revision))
 
       expect(result).toBeInstanceOf(NotFound)
-      expect(hasRawItem(namespace, id)).toBeFalse()
+      expect(hasRawItem(namespace, id)).toBe(false)
     })
   })
 })

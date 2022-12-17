@@ -1,7 +1,6 @@
 import * as DAO from '@dao/config-in-sqlite3/revision-policy/revision-policy'
 import { initializeDatabases, clearDatabases } from '@test/utils'
 import { getRawRevisionPolicy, hasRawRevisionPolicy, setRawRevisionPolicy } from './utils'
-import 'jest-extended'
 
 jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
@@ -97,7 +96,7 @@ describe('RevisionPolicy', () => {
         const result = DAO.unsetUpdateRevisionRequired(namespace)
 
         expect(result).toBeUndefined()
-        expect(hasRawRevisionPolicy(namespace)).toBeFalse()
+        expect(hasRawRevisionPolicy(namespace)).toBe(false)
       })
     })
   })
@@ -141,7 +140,7 @@ describe('RevisionPolicy', () => {
         const result = DAO.unsetDeleteRevisionRequired(namespace)
 
         expect(result).toBeUndefined()
-        expect(hasRawRevisionPolicy(namespace)).toBeFalse()
+        expect(hasRawRevisionPolicy(namespace)).toBe(false)
       })
     })
   })

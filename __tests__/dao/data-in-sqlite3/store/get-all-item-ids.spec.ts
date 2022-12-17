@@ -2,7 +2,6 @@ import * as DAO from '@dao/data-in-sqlite3/store/get-all-item-ids'
 import { toArray } from 'iterable-operator'
 import { setRawItem } from './utils'
 import { initializeDatabases, clearDatabases } from '@test/utils'
-import '@blackglory/jest-matchers'
 
 jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
@@ -18,7 +17,6 @@ describe('getAllItemNamespaces(namespace: string): Iterable<string>', () => {
       const iter = DAO.getAllItemIds(namespace)
       const result = toArray(iter)
 
-      expect(iter).toBeIterable()
       expect(result).toStrictEqual([])
     })
   })
@@ -46,7 +44,6 @@ describe('getAllItemNamespaces(namespace: string): Iterable<string>', () => {
       const iter = DAO.getAllItemIds(namespace)
       const result = toArray(iter)
 
-      expect(iter).toBeIterable()
       expect(result).toStrictEqual([itemId1, itemId2])
     })
   })

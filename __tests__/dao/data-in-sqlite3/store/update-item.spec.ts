@@ -3,8 +3,6 @@ import { NotFound, IncorrectRevision } from '@dao/data-in-sqlite3/store/error'
 import { initializeDatabases, clearDatabases } from '@test/utils'
 import { getError } from 'return-style'
 import { getRawItem, setRawItem } from './utils'
-import '@blackglory/jest-matchers'
-import 'jest-extended'
 
 jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
@@ -31,7 +29,6 @@ describe('updateItem(namespace: string, id: string, type: string, payload: strin
       const result = DAO.updateItem(namespace, id, type, newPayload)
       const updatedItem = getRawItem(namespace, id)
 
-      expect(result).toBeString()
       expect(result).not.toBe(revision)
       expect(updatedItem).toMatchObject({
         payload: newPayload
@@ -82,7 +79,6 @@ describe(`
         const result = DAO.updateItemWithCheck(namespace, id, type, revision, newPayload)
         const updatedItem = getRawItem(namespace, id)
 
-        expect(result).toBeString()
         expect(result).not.toBe(revision)
         expect(updatedItem).toMatchObject({
           payload: newPayload

@@ -1,8 +1,6 @@
 import * as DAO from '@dao/data-in-sqlite3/store/get-item'
 import { initializeDatabases, clearDatabases } from '@test/utils'
 import { setRawItem } from './utils'
-import '@blackglory/jest-matchers'
-import 'jest-extended'
 
 jest.mock('@dao/config-in-sqlite3/database')
 jest.mock('@dao/data-in-sqlite3/database')
