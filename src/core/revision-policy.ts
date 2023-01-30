@@ -1,4 +1,4 @@
-import { RevisionPolicyDAO } from '@dao/config-in-sqlite3/revision-policy'
+import { RevisionPolicyDAO } from '@dao/config-in-sqlite3/revision-policy/index.js'
 
 export function getAllNamespaces(): Promise<string[]> {
   return RevisionPolicyDAO.getAllNamespacesWithRevisionPolicies()

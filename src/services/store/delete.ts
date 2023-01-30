@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { namespaceSchema, idSchema, tokenSchema } from '@src/schema'
+import { namespaceSchema, idSchema, tokenSchema } from '@src/schema.js'
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
   server.delete<{
@@ -41,7 +41,9 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
 
       try {
         await Core.Store.del(namespace, itemId, revision)
-        reply.status(204).send()
+        return reply
+          .status(204)
+          .send()
       } catch (e) {
         if (e instanceof Core.Store.NotFound) return reply.status(204).send()
         if (e instanceof Core.Store.IncorrectRevision) return reply.status(412).send()

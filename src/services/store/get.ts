@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { idSchema, namespaceSchema, tokenSchema } from '@src/schema'
+import { idSchema, namespaceSchema, tokenSchema } from '@src/schema.js'
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
   server.get<{
@@ -44,15 +44,19 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       const result = await Core.Store.get(namespace, id)
       if (result) {
         if (revision === result.revision) {
-          reply.status(304).send()
+          return reply
+            .status(304)
+            .send()
         } else {
-          reply
+          return reply
             .header('ETag', result.revision)
             .header('Content-Type', result.type)
             .send(result.payload)
         }
       } else {
-        reply.status(404).send()
+        return reply
+          .status(404)
+          .send()
       }
     }
   )

@@ -1,11 +1,8 @@
-import * as DAO from '@dao/data-in-sqlite3/store/delete-item'
-import { NotFound, IncorrectRevision } from '@dao/data-in-sqlite3/store/error'
+import * as DAO from '@dao/data-in-sqlite3/store/delete-item.js'
+import { NotFound, IncorrectRevision } from '@dao/data-in-sqlite3/store/error.js'
 import { getError } from 'return-style'
-import { initializeDatabases, clearDatabases } from '@test/utils'
-import { hasRawItem, setRawItem } from './utils'
-
-jest.mock('@dao/config-in-sqlite3/database')
-jest.mock('@dao/data-in-sqlite3/database')
+import { initializeDatabases, clearDatabases } from '@test/utils.js'
+import { hasRawItem, setRawItem } from './utils.js'
 
 beforeEach(initializeDatabases)
 afterEach(clearDatabases)

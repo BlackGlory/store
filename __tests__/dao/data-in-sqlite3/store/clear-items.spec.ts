@@ -1,9 +1,6 @@
-import * as DAO from '@dao/data-in-sqlite3/store/clear-items'
-import { initializeDatabases, clearDatabases } from '@test/utils'
-import { hasRawItem, setRawItem } from './utils'
-
-jest.mock('@dao/config-in-sqlite3/database')
-jest.mock('@dao/data-in-sqlite3/database')
+import * as DAO from '@dao/data-in-sqlite3/store/clear-items.js'
+import { initializeDatabases, clearDatabases } from '@test/utils.js'
+import { hasRawItem, setRawItem } from './utils.js'
 
 beforeEach(initializeDatabases)
 afterEach(clearDatabases)

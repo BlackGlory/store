@@ -1,4 +1,4 @@
-type Json = import('justypes').Json
+type JSONValue = import('justypes').JSONValue
 type CustomErrorConstructor = import('@blackglory/errors').CustomErrorConstructor
 type IRevision = string
 
@@ -85,13 +85,13 @@ interface ICore {
     isEnabled(): boolean
     getAllNamespaces(): Promise<string[]>
     get(namespace: string): Promise<string | null>
-    set(namespace: string, schema: Json): Promise<void>
+    set(namespace: string, schema: JSONValue): Promise<void>
     remove(namespace: string): Promise<void>
 
     /**
      * @throws {InvalidPayload}
      */
-    validate(namespace: string, payload: Json): Promise<void>
+    validate(namespace: string, payload: JSONValue): Promise<void>
     InvalidPayload: CustomErrorConstructor
   }
 

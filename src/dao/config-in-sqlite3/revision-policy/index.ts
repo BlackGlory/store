@@ -1,4 +1,4 @@
-import * as RevisionPolicy from './revision-policy'
+import * as RevisionPolicy from './revision-policy.js'
 
 export const RevisionPolicyDAO: IRevisionPolicyDAO = {
   getAllNamespacesWithRevisionPolicies: asyncify(RevisionPolicy.getAllNamespacesWithRevisionPolicies)

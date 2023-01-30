@@ -1,12 +1,12 @@
 import { FastifyPluginAsync } from 'fastify'
-import { routes as setRoutes } from './set'
-import { routes as hasRoutes } from './has'
-import { routes as getRoutes } from './get'
-import { routes as getAllItemIdsRoutes } from './get-all-item-ids'
-import { routes as getAllNamespacesRoutes } from './get-all-namespaces'
-import { routes as deleteRoutes } from './delete'
-import { routes as clearRoutes } from './clear'
-import { routes as statsRoutes } from './stats'
+import { routes as setRoutes } from './set.js'
+import { routes as hasRoutes } from './has.js'
+import { routes as getRoutes } from './get.js'
+import { routes as getAllItemIdsRoutes } from './get-all-item-ids.js'
+import { routes as getAllNamespacesRoutes } from './get-all-namespaces.js'
+import { routes as deleteRoutes } from './delete.js'
+import { routes as clearRoutes } from './clear.js'
+import { routes as statsRoutes } from './stats.js'
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
   server.register(setRoutes, { Core })

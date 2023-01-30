@@ -1,9 +1,9 @@
-import { validateRevision } from './utils/validate-revision'
-import { NotFound, IncorrectRevision } from './error'
-import { getItem } from './get-item'
-import { getDatabase } from '../database'
-import { uuid } from './utils/uuid'
-import { hasItem } from './has-item'
+import { validateRevision } from './utils/validate-revision.js'
+import { NotFound, IncorrectRevision } from './error.js'
+import { getItem } from './get-item.js'
+import { getDatabase } from '../database.js'
+import { uuid } from './utils/uuid.js'
+import { hasItem } from './has-item.js'
 import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
 /**

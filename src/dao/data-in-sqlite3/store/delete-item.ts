@@ -1,8 +1,8 @@
-import { getItem } from './get-item'
-import { validateRevision } from './utils/validate-revision'
-import { NotFound, IncorrectRevision } from './error'
-import { getDatabase } from '../database'
-import { hasItem } from './has-item'
+import { getItem } from './get-item.js'
+import { validateRevision } from './utils/validate-revision.js'
+import { NotFound, IncorrectRevision } from './error.js'
+import { getDatabase } from '../database.js'
+import { hasItem } from './has-item.js'
 import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
 /**

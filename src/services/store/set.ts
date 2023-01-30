@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from 'fastify'
-import { idSchema, namespaceSchema, tokenSchema } from '@src/schema'
-import { SET_PAYLOAD_LIMIT, JSON_PAYLOAD_ONLY } from '@env'
+import { idSchema, namespaceSchema, tokenSchema } from '@src/schema.js'
+import { SET_PAYLOAD_LIMIT, JSON_PAYLOAD_ONLY } from '@env/index.js'
 import { CustomError } from '@blackglory/errors'
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
@@ -78,7 +78,9 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
 
       try {
         await Core.Store.set(namespace, id, type, payload, revision)
-        reply.status(204).send()
+        return reply
+          .status(204)
+          .send()
       } catch (e) {
         if (e instanceof Core.Store.IncorrectRevision) return reply.status(412).send()
         throw e

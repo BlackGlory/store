@@ -1,4 +1,4 @@
-import { getDatabase } from '../database'
+import { getDatabase } from '../database.js'
 
 export function getAllNamespacesWithJsonSchema(): string[] {
   const result = getDatabase().prepare(`

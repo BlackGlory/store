@@ -1,5 +1,5 @@
-import { getDatabase } from '../database'
-import { uuid } from './utils/uuid'
+import { getDatabase } from '../database.js'
+import { uuid } from './utils/uuid.js'
 import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
 export const setItem = withLazyStatic(function (

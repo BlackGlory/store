@@ -1,13 +1,13 @@
-import { NotFound, IncorrectRevision } from './error'
-import { setItem } from './set-item'
-import { getItem }  from './get-item'
-import { hasItem } from './has-item'
-import { updateItem, updateItemWithCheck } from './update-item'
-import { deleteItem, deleteItemWithCheck } from './delete-item'
-import { clearItems } from './clear-items'
-import { getAllItemIds } from './get-all-item-ids'
-import { getAllNamespaces } from './get-all-namespaces'
-import { stats } from './stats'
+import { NotFound, IncorrectRevision } from './error.js'
+import { setItem } from './set-item.js'
+import { getItem }  from './get-item.js'
+import { hasItem } from './has-item.js'
+import { updateItem, updateItemWithCheck } from './update-item.js'
+import { deleteItem, deleteItemWithCheck } from './delete-item.js'
+import { clearItems } from './clear-items.js'
+import { getAllItemIds } from './get-all-item-ids.js'
+import { getAllNamespaces } from './get-all-namespaces.js'
+import { stats } from './stats.js'
 
 export const StoreDAO: IStoreDAO = {
   hasItem: asyncify(hasItem)

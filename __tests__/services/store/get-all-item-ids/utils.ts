@@ -1,4 +1,4 @@
-import { StoreDAO } from '@dao'
+import { StoreDAO } from '@dao/index.js'
 
 export async function prepareItems(namespace: string, itemNamespaces: string[]) {
   for (const id of itemNamespaces) {

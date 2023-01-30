@@ -1,4 +1,4 @@
-import { StoreDAO } from '@dao'
+import { StoreDAO } from '@dao/index.js'
 
 export async function prepareStores(namespaces: string[]) {
   for (const namespace of namespaces) {

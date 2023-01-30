@@ -1,5 +1,5 @@
-import { StoreDAO, RevisionPolicyDAO } from '@dao'
-import { UPDATE_REVISION_REQUIRED, DELETE_REVISION_REQUIRED } from '@env'
+import { StoreDAO, RevisionPolicyDAO } from '@dao/index.js'
+import { UPDATE_REVISION_REQUIRED, DELETE_REVISION_REQUIRED } from '@env/index.js'
 
 export function has(namespace: string, id: string): Promise<boolean> {
   return StoreDAO.hasItem(namespace, id)

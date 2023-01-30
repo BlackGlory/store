@@ -1,11 +1,12 @@
 import Ajv from 'ajv'
-import { JsonSchemaDAO } from '@dao'
-import { DEFAULT_JSON_SCHEMA } from '@env'
-import { JSON_VALIDATION } from '@env'
-import { Json } from 'justypes'
+import { JsonSchemaDAO } from '@dao/index.js'
+import { DEFAULT_JSON_SCHEMA } from '@env/index.js'
+import { JSON_VALIDATION } from '@env/index.js'
+import { JSONValue } from 'justypes'
 import { CustomError } from '@blackglory/errors'
 import { getErrorResult } from 'return-style'
 
+// @ts-ignore
 const ajv = new Ajv()
 
 export function isEnabled(): boolean {
@@ -20,7 +21,7 @@ export function get(namespace: string): Promise<string | null> {
   return JsonSchemaDAO.getJsonSchema(namespace)
 }
 
-export function set(namespace: string, schema: Json): Promise<void> {
+export function set(namespace: string, schema: JSONValue): Promise<void> {
   const schemaString = JSON.stringify(schema, null, 2)
   return JsonSchemaDAO.setJsonSchema({ namespace: namespace, schema: schemaString })
 }
