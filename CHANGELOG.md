@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/BlackGlory/store/compare/v0.3.14...v0.4.0) (2023-01-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* - The `Accept-Version` header is semver now.
+- Removed `/metrics`.
+- Removed HTTP2 support.
+
+* upgrade dependencies ([f689824](https://github.com/BlackGlory/store/commit/f68982447f1c6b15f078757a757dd42da31221d1))
+
 ### [0.3.14](https://github.com/BlackGlory/store/compare/v0.3.13...v0.3.14) (2022-12-01)
 
 
