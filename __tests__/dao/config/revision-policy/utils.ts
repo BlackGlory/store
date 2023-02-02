@@ -27,10 +27,10 @@ export function hasRawRevisionPolicy(namespace: string): boolean {
   return !!getRawRevisionPolicy(namespace)
 }
 
-export function getRawRevisionPolicy(namespace: string): IRawRevisionPolicy | null {
+export function getRawRevisionPolicy(namespace: string): IRawRevisionPolicy | undefined {
   return getDatabase().prepare(`
     SELECT *
       FROM store_revision_policy
      WHERE namespace = $namespace;
-  `).get({ namespace })
+  `).get({ namespace }) as IRawRevisionPolicy | undefined
 }

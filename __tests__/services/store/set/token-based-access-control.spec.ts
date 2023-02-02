@@ -17,8 +17,8 @@ describe('token-based access control', () => {
           const id = 'id'
           const token = 'token'
           const payload = 'document'
-          await AccessControlDAO.TokenPolicy.setWriteTokenRequired(namespace, true)
-          await AccessControlDAO.Token.setWriteToken({ namespace, token })
+          AccessControlDAO.TokenPolicy.setWriteTokenRequired(namespace, true)
+          AccessControlDAO.Token.setWriteToken({ namespace, token })
 
           const res = await fetch(put(
             url(getAddress())
@@ -38,8 +38,8 @@ describe('token-based access control', () => {
           const id = 'id'
           const token = 'token'
           const payload = 'document'
-          await AccessControlDAO.TokenPolicy.setWriteTokenRequired(namespace, true)
-          await AccessControlDAO.Token.setWriteToken({ namespace, token })
+          AccessControlDAO.TokenPolicy.setWriteTokenRequired(namespace, true)
+          AccessControlDAO.Token.setWriteToken({ namespace, token })
 
           const res = await fetch(put(
             url(getAddress())
@@ -58,8 +58,8 @@ describe('token-based access control', () => {
           const id = 'id'
           const token = 'token'
           const payload = 'document'
-          await AccessControlDAO.TokenPolicy.setWriteTokenRequired(namespace, true)
-          await AccessControlDAO.Token.setWriteToken({ namespace, token })
+          AccessControlDAO.TokenPolicy.setWriteTokenRequired(namespace, true)
+          AccessControlDAO.Token.setWriteToken({ namespace, token })
 
           const res = await fetch(put(
             url(getAddress())
@@ -118,8 +118,8 @@ describe('token-based access control', () => {
           const id = 'id'
           const token = 'token'
           const payload = 'document'
-          await AccessControlDAO.TokenPolicy.setWriteTokenRequired(namespace, true)
-          await AccessControlDAO.Token.setWriteToken({ namespace, token })
+          AccessControlDAO.TokenPolicy.setWriteTokenRequired(namespace, true)
+          AccessControlDAO.Token.setWriteToken({ namespace, token })
 
           const res = await fetch(put(
             url(getAddress())
@@ -140,8 +140,8 @@ describe('token-based access control', () => {
           const id = 'id'
           const token = 'token'
           const payload = 'document'
-          await AccessControlDAO.TokenPolicy.setWriteTokenRequired(namespace, true)
-          await AccessControlDAO.Token.setWriteToken({ namespace, token })
+          AccessControlDAO.TokenPolicy.setWriteTokenRequired(namespace, true)
+          AccessControlDAO.Token.setWriteToken({ namespace, token })
 
           const res = await fetch(put(
             url(getAddress())

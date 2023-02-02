@@ -1,7 +1,7 @@
 import { StoreDAO } from '@dao/index.js'
 
-export async function prepareStores(namespaces: string[]) {
+export function prepareStores(namespaces: string[]): void {
   for (const namespace of namespaces) {
-    await StoreDAO.setItem(namespace, 'id', 'type', 'payload')
+    StoreDAO.setItem(namespace, 'id', 'type', 'payload')
   }
 }

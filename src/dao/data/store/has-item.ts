@@ -12,7 +12,7 @@ export const hasItem = withLazyStatic(function (
               WHERE namespace = $namespace
                 AND id = $id
            ) AS matched;
-  `), [getDatabase()]).get({ namespace, id })
+  `), [getDatabase()]).get({ namespace, id }) as { matched: 1 | 0 }
 
   return row['matched'] === 1
 })

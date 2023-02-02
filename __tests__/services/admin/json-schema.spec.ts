@@ -4,6 +4,7 @@ import { fetch } from 'extra-fetch'
 import { get, put, del } from 'extra-request'
 import { url, text, pathname, headers, header, json } from 'extra-request/transformers'
 import { toJSON } from 'extra-response'
+import { createAuthHeaders } from './utils.js'
 
 beforeEach(startService)
 afterEach(stopService)
@@ -237,9 +238,3 @@ describe('json schema', () => {
     })
   })
 })
-
-function createAuthHeaders(adminPassword?: string) {
-  return {
-    'Authorization': `Bearer ${ adminPassword ?? process.env.STORE_ADMIN_PASSWORD }`
-  }
-}

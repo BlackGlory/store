@@ -13,7 +13,11 @@ export const getItem = withLazyStatic(function (
       FROM store_item
      WHERE namespace = $namespace
        AND id = $id
-  `), [getDatabase()]).get({ namespace, id })
+  `), [getDatabase()]).get({ namespace, id }) as {
+    revision: string
+  , type: string
+  , payload: string
+  }
   if (!row) return null
 
   return {

@@ -11,7 +11,7 @@ describe('no access control', () => {
   it('204', async () => {
     const namespace = 'namespace'
     const id = 'id'
-    await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+    StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
     const res = await fetch(head(
       url(getAddress())

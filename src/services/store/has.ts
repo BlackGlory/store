@@ -32,9 +32,9 @@ export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api })
       const revision = req.headers['if-none-match']
 
       try {
-        await api.Blacklist.check(namespace)
-        await api.Whitelist.check(namespace)
-        await api.TBAC.checkReadPermission(namespace, token)
+        api.Blacklist.check(namespace)
+        api.Whitelist.check(namespace)
+        api.TBAC.checkReadPermission(namespace, token)
       } catch (e) {
         if (e instanceof api.Blacklist.Forbidden) return reply.status(403).send()
         if (e instanceof api.Whitelist.Forbidden) return reply.status(403).send()
@@ -42,7 +42,7 @@ export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api })
         throw e
       }
 
-      const result = await api.Store.get(namespace, id)
+      const result = api.Store.get(namespace, id)
       if (result) {
         if (revision === result.revision) {
           return reply

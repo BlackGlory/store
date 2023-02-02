@@ -7,7 +7,7 @@ export const stats = withLazyStatic(function (namespace: string): IStats {
     SELECT COUNT(*) AS items
       FROM store_item
      WHERE namespace = $namespace;
-  `), [getDatabase()]).get({ namespace })
+  `), [getDatabase()]).get({ namespace }) as { items: number }
 
   return {
     namespace: namespace

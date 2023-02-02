@@ -10,12 +10,12 @@ import { routes as statsRoutes } from './stats.js'
 import { IAPI } from '@api/contract.js'
 
 export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api }) => {
-  server.register(setRoutes, { api })
-  server.register(hasRoutes, { api })
-  server.register(getRoutes, { api })
-  server.register(getAllItemIdsRoutes, { api })
-  server.register(getAllNamespacesRoutes, { api })
-  server.register(deleteRoutes, { api })
-  server.register(clearRoutes, { api })
-  server.register(statsRoutes, { api })
+  await server.register(setRoutes, { api })
+  await server.register(hasRoutes, { api })
+  await server.register(getRoutes, { api })
+  await server.register(getAllItemIdsRoutes, { api })
+  await server.register(getAllNamespacesRoutes, { api })
+  await server.register(deleteRoutes, { api })
+  await server.register(clearRoutes, { api })
+  await server.register(statsRoutes, { api })
 }

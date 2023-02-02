@@ -13,7 +13,7 @@ describe('revision', () => {
       it('204', async () => {
         const namespace = 'namespace'
         const id = 'id'
-        const revision = await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        const revision = StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
         const res = await fetch(put(
           url(getAddress())
@@ -30,7 +30,7 @@ describe('revision', () => {
       it('412', async () => {
         const namespace = 'namespace'
         const id = 'id'
-        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
         const res = await fetch(put(
           url(getAddress())
@@ -47,7 +47,7 @@ describe('revision', () => {
       it('204', async () => {
         const namespace = 'namespace'
         const id = 'id'
-        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
         const res = await fetch(put(
           url(getAddress())
@@ -65,8 +65,8 @@ describe('revision', () => {
       it('204', async () => {
         const namespace = 'namespace'
         const id = 'id'
-        const revision = await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
-        await RevisionPolicyDAO.setUpdateRevisionRequired(namespace, true)
+        const revision = StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        RevisionPolicyDAO.setUpdateRevisionRequired(namespace, true)
 
         const res = await fetch(put(
           url(getAddress())
@@ -83,8 +83,8 @@ describe('revision', () => {
       it('412', async () => {
         const namespace = 'namespace'
         const id = 'id'
-        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
-        await RevisionPolicyDAO.setUpdateRevisionRequired(namespace, true)
+        StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        RevisionPolicyDAO.setUpdateRevisionRequired(namespace, true)
 
         const res = await fetch(put(
           url(getAddress())
@@ -101,8 +101,8 @@ describe('revision', () => {
       it('412', async () => {
         const namespace = 'namespace'
         const id = 'id'
-        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
-        await RevisionPolicyDAO.setUpdateRevisionRequired(namespace, true)
+        StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        RevisionPolicyDAO.setUpdateRevisionRequired(namespace, true)
 
         const res = await fetch(put(
           url(getAddress())

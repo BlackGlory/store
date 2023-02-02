@@ -4,16 +4,17 @@ export function getAllNamespacesWithJSONSchema(): string[] {
   const result = getDatabase().prepare(`
     SELECT namespace
       FROM store_json_schema
-  `).all()
+  `).all() as Array<{ namespace: string }>
 
   return result.map(x => x['namespace'])
 }
 
 export function getJSONSchema(namespace: string): string | null {
   const result = getDatabase().prepare(`
-    SELECT json_schema FROM store_json_schema
+    SELECT json_schema
+      FROM store_json_schema
      WHERE namespace = $namespace;
-  `).get({ namespace })
+  `).get({ namespace }) as { json_schema: string } | undefined
 
   return result ? result['json_schema'] : null
 }

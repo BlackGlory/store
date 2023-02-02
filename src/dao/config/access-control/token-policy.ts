@@ -5,7 +5,7 @@ export const getAllNamespacesWithTokenPolicies = withLazyStatic(function (): str
   const result = lazyStatic(() => getDatabase().prepare(`
     SELECT namespace
       FROM store_token_policy;
-  `), [getDatabase()]).all()
+  `), [getDatabase()]).all() as Array<{ namespace: string }>
 
   return result.map(x => x['namespace'])
 })
@@ -15,17 +15,17 @@ export const getTokenPolicies = withLazyStatic(function (namespace: string): {
   readTokenRequired: boolean | null
   deleteTokenRequired: boolean | null
 } {
-  const row: {
-    'write_token_required': number | null
-  , 'read_token_required': number | null
-  , 'delete_token_required': number | null
-  } = lazyStatic(() => getDatabase().prepare(`
+  const row = lazyStatic(() => getDatabase().prepare(`
     SELECT write_token_required
          , read_token_required
          , delete_token_required
       FROM store_token_policy
      WHERE namespace = $namespace;
-  `), [getDatabase()]).get({ namespace })
+  `), [getDatabase()]).get({ namespace }) as {
+    write_token_required: number | null
+    read_token_required: number | null
+    delete_token_required: number | null
+  }
 
   if (row) {
     const writeTokenRequired = row['write_token_required']

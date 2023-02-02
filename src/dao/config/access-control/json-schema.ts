@@ -5,16 +5,17 @@ export const getAllNamespacesWithJsonSchema = withLazyStatic(function (): string
   const result = lazyStatic(() => getDatabase().prepare(`
     SELECT namespace
       FROM store_json_schema
-  `), [getDatabase()]).all()
+  `), [getDatabase()]).all() as Array<{ namespace: string }>
 
   return result.map(x => x['namespace'])
 })
 
 export const getJsonSchema = withLazyStatic(function (namespace: string): string | null {
   const result = lazyStatic(() => getDatabase().prepare(`
-    SELECT json_schema FROM store_json_schema
+    SELECT json_schema
+      FROM store_json_schema
      WHERE namespace = $namespace;
-  `), [getDatabase()]).get({ namespace })
+  `), [getDatabase()]).get({ namespace }) as { json_schema: string } | undefined
 
   return result ? result['json_schema'] : null
 })

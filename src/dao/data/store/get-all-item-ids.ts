@@ -9,7 +9,7 @@ export const getAllItemIds = withLazyStatic(function (
     SELECT id
       FROM store_item
      WHERE namespace = $namespace;
-  `), [getDatabase()]).iterate({ namespace })
+  `), [getDatabase()]).iterate({ namespace }) as IterableIterator<{ id: string }>
 
   return map(iter, row => row['id'])
 })

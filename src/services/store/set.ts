@@ -56,14 +56,14 @@ export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api })
       const revision = req.headers['if-match']
 
       try {
-        await api.Blacklist.check(namespace)
-        await api.Whitelist.check(namespace)
-        await api.TBAC.checkWritePermission(namespace, token)
-        if (api.JsonSchema.isEnabled()) {
+        api.Blacklist.check(namespace)
+        api.Whitelist.check(namespace)
+        api.TBAC.checkWritePermission(namespace, token)
+        if (api.JSONSchema.isEnabled()) {
           if (isJSONPayload()) {
-            await api.JsonSchema.validate(namespace, payload)
+            api.JSONSchema.validate(namespace, payload)
           } else {
-            if (await api.JsonSchema.get(namespace)) {
+            if (api.JSONSchema.get(namespace)) {
               throw new Error('This id only accepts application/json')
             }
           }
@@ -72,13 +72,13 @@ export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api })
         if (e instanceof api.Blacklist.Forbidden) return reply.status(403).send()
         if (e instanceof api.Whitelist.Forbidden) return reply.status(403).send()
         if (e instanceof api.TBAC.Unauthorized) return reply.status(401).send()
-        if (e instanceof api.JsonSchema.InvalidPayload) return reply.status(400).send()
+        if (e instanceof api.JSONSchema.InvalidPayload) return reply.status(400).send()
         if (e instanceof BadContentType) return reply.status(415).send()
         throw e
       }
 
       try {
-        await api.Store.set(namespace, id, type, payload, revision)
+        api.Store.set(namespace, id, type, payload, revision)
         return reply
           .status(204)
           .send()

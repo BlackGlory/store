@@ -76,7 +76,7 @@ describe('token-based access control', () => {
           process.env.STORE_READ_TOKEN_REQUIRED = 'true'
           const namespace = 'namespace'
           const id = 'id'
-          await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+          StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
           const res = await fetch(get(
             url(getAddress())
@@ -92,7 +92,7 @@ describe('token-based access control', () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
           const namespace = 'namespace'
           const id = 'id'
-          await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+          StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
           const res = await fetch(get(
             url(getAddress())

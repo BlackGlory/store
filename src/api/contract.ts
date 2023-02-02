@@ -88,7 +88,7 @@ export interface IAPI {
     Forbidden: CustomErrorConstructor
   }
 
-  JsonSchema: {
+  JSONSchema: {
     isEnabled(): boolean
     getAllNamespaces(): string[]
     get(namespace: string): string | null

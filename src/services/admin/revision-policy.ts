@@ -16,7 +16,7 @@ export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api })
       }
     }
   , async (req, reply) => {
-      const result = await api.RevisionPolicy.getAllNamespaces()
+      const result = api.RevisionPolicy.getAllNamespaces()
       return reply.send(result)
     }
   )
@@ -38,7 +38,7 @@ export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api })
     }
   , async (req, reply) => {
       const namespace = req.params.namespace
-      const result = await api.RevisionPolicy.get(namespace)
+      const result = api.RevisionPolicy.get(namespace)
       return reply.send(result)
     }
   )
@@ -60,7 +60,7 @@ export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api })
   , async (req, reply) => {
       const namespace = req.params.namespace
       const val = req.body
-      await api.RevisionPolicy.setUpdateRevisionRequired(namespace, val)
+      api.RevisionPolicy.setUpdateRevisionRequired(namespace, val)
       return reply
         .status(204)
         .send()
@@ -81,7 +81,7 @@ export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api })
     }
   , async (req, reply) => {
       const namespace = req.params.namespace
-      await api.RevisionPolicy.unsetUpdateRevisionRequired(namespace)
+      api.RevisionPolicy.unsetUpdateRevisionRequired(namespace)
       return reply
         .status(204)
         .send()
@@ -105,7 +105,7 @@ export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api })
   , async (req, reply) => {
       const namespace = req.params.namespace
       const val = req.body
-      await api.RevisionPolicy.setDeleteRevisionRequired(namespace, val)
+      api.RevisionPolicy.setDeleteRevisionRequired(namespace, val)
       return reply
         .status(204)
         .send()
@@ -126,7 +126,7 @@ export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api })
     }
   , async (req, reply) => {
       const namespace = req.params.namespace
-      await api.RevisionPolicy.unsetDeleteRevisionRequired(namespace)
+      api.RevisionPolicy.unsetDeleteRevisionRequired(namespace)
       return reply
         .status(204)
         .send()

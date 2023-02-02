@@ -16,8 +16,8 @@ describe('token-based access control', () => {
           const namespace = 'namespace'
           const id = 'id'
           const token = 'token'
-          await AccessControlDAO.TokenPolicy.setDeleteTokenRequired(namespace, true)
-          await AccessControlDAO.Token.setDeleteToken({ namespace, token })
+          AccessControlDAO.TokenPolicy.setDeleteTokenRequired(namespace, true)
+          AccessControlDAO.Token.setDeleteToken({ namespace, token })
 
           const res = await fetch(del(
             url(getAddress())
@@ -35,8 +35,8 @@ describe('token-based access control', () => {
           const namespace = 'namespace'
           const id = 'id'
           const token = 'token'
-          await AccessControlDAO.TokenPolicy.setDeleteTokenRequired(namespace, true)
-          await AccessControlDAO.Token.setDeleteToken({ namespace, token })
+          AccessControlDAO.TokenPolicy.setDeleteTokenRequired(namespace, true)
+          AccessControlDAO.Token.setDeleteToken({ namespace, token })
 
           const res = await fetch(del(
             url(getAddress())
@@ -53,8 +53,8 @@ describe('token-based access control', () => {
           const namespace = 'namespace'
           const id = 'id'
           const token = 'token'
-          await AccessControlDAO.TokenPolicy.setDeleteTokenRequired(namespace, true)
-          await AccessControlDAO.Token.setDeleteToken({ namespace, token })
+          AccessControlDAO.TokenPolicy.setDeleteTokenRequired(namespace, true)
+          AccessControlDAO.Token.setDeleteToken({ namespace, token })
 
           const res = await fetch(del(
             url(getAddress())

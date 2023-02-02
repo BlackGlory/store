@@ -13,6 +13,6 @@ export const api: IAPI = {
 , RevisionPolicy
 , Blacklist
 , Whitelist
-, JsonSchema
+, JSONSchema: JsonSchema
 , TBAC
 }

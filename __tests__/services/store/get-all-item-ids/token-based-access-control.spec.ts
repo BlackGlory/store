@@ -15,8 +15,8 @@ describe('token-based access control', () => {
           process.env.STORTOKEN_BASED_ACCESS_CONTROL = 'true'
           const namespace = 'namespace'
           const token = 'token'
-          await AccessControlDAO.TokenPolicy.setReadTokenRequired(namespace, true)
-          await AccessControlDAO.Token.setReadToken({ namespace, token })
+          AccessControlDAO.TokenPolicy.setReadTokenRequired(namespace, true)
+          AccessControlDAO.Token.setReadToken({ namespace, token })
 
           const res = await fetch(get(
             url(getAddress())
@@ -33,8 +33,8 @@ describe('token-based access control', () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
           const namespace = 'namespace'
           const token = 'token'
-          await AccessControlDAO.TokenPolicy.setReadTokenRequired(namespace, true)
-          await AccessControlDAO.Token.setReadToken({ namespace, token })
+          AccessControlDAO.TokenPolicy.setReadTokenRequired(namespace, true)
+          AccessControlDAO.Token.setReadToken({ namespace, token })
 
           const res = await fetch(get(
             url(getAddress())
@@ -50,8 +50,8 @@ describe('token-based access control', () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
           const namespace = 'namespace'
           const token = 'token'
-          await AccessControlDAO.TokenPolicy.setReadTokenRequired(namespace, true)
-          await AccessControlDAO.Token.setReadToken({ namespace, token })
+          AccessControlDAO.TokenPolicy.setReadTokenRequired(namespace, true)
+          AccessControlDAO.Token.setReadToken({ namespace, token })
 
           const res = await fetch(get(
             url(getAddress())
@@ -101,8 +101,8 @@ describe('token-based access control', () => {
         it('200', async () => {
           const namespace = 'namespace'
           const token = 'token'
-          await AccessControlDAO.TokenPolicy.setReadTokenRequired(namespace, true)
-          await AccessControlDAO.Token.setReadToken({ namespace, token })
+          AccessControlDAO.TokenPolicy.setReadTokenRequired(namespace, true)
+          AccessControlDAO.Token.setReadToken({ namespace, token })
 
           const res = await fetch(get(
             url(getAddress())
@@ -120,8 +120,8 @@ describe('token-based access control', () => {
           process.env.STORE_READ_TOKEN_REQUIRED = 'true'
           const namespace = 'namespace'
           const token = 'token'
-          await AccessControlDAO.TokenPolicy.setReadTokenRequired(namespace, true)
-          await AccessControlDAO.Token.setReadToken({ namespace, token })
+          AccessControlDAO.TokenPolicy.setReadTokenRequired(namespace, true)
+          AccessControlDAO.Token.setReadToken({ namespace, token })
 
           const res = await fetch(get(
             url(getAddress())

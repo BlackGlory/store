@@ -5,7 +5,7 @@ export const getAllNamespacesWithRevisionPolicies = withLazyStatic(function (): 
   const result = lazyStatic(() => getDatabase().prepare(`
     SELECT namespace
       FROM store_revision_policy;
-  `), [getDatabase()]).all()
+  `), [getDatabase()]).all() as Array<{ namespace: string }>
 
   return result.map(x => x['namespace'])
 })
@@ -14,15 +14,15 @@ export const getRevisionPolicies = withLazyStatic(function (namespace: string): 
   updateRevisionRequired: boolean | null
   deleteRevisionRequired: boolean | null
 } {
-  const row: {
-    'update_revision_required': number | null
-  , 'delete_revision_required': number | null
-  } = lazyStatic(() => getDatabase().prepare(`
+  const row = lazyStatic(() => getDatabase().prepare(`
     SELECT update_revision_required
          , delete_revision_required
       FROM store_revision_policy
      WHERE namespace = $namespace;
-  `), [getDatabase()]).get({ namespace })
+  `), [getDatabase()]).get({ namespace }) as {
+    update_revision_required: number | null
+  , delete_revision_required: number | null
+  } | undefined
 
   if (row) {
     const updateRevisionRequired = row['update_revision_required']

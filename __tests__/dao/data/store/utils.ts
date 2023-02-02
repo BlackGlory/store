@@ -33,11 +33,11 @@ export function hasRawItem(namespace: string, id: string): boolean {
   return !!getRawItem(namespace, id)
 }
 
-export function getRawItem(namespace: string, id: string): IRawItem | null {
+export function getRawItem(namespace: string, id: string): IRawItem | undefined {
   return getDatabase().prepare(`
     SELECT *
       FROM store_item
      WHERE namespace = $namespace
        AND id = $id;
-  `).get({ namespace, id })
+  `).get({ namespace, id }) as IRawItem | undefined
 }
