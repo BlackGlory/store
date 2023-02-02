@@ -1,7 +1,8 @@
 import { FastifyPluginAsync } from 'fastify'
 import { namespaceSchema } from '@src/schema.js'
+import { IAPI } from '@api/contract.js'
 
-export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
+export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api }) => {
   server.get(
     '/store-with-revision-policies'
   , {
@@ -15,7 +16,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       }
     }
   , async (req, reply) => {
-      const result = await Core.RevisionPolicy.getAllNamespaces()
+      const result = await api.RevisionPolicy.getAllNamespaces()
       return reply.send(result)
     }
   )
@@ -37,7 +38,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
     }
   , async (req, reply) => {
       const namespace = req.params.namespace
-      const result = await Core.RevisionPolicy.get(namespace)
+      const result = await api.RevisionPolicy.get(namespace)
       return reply.send(result)
     }
   )
@@ -59,7 +60,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
   , async (req, reply) => {
       const namespace = req.params.namespace
       const val = req.body
-      await Core.RevisionPolicy.setUpdateRevisionRequired(namespace, val)
+      await api.RevisionPolicy.setUpdateRevisionRequired(namespace, val)
       return reply
         .status(204)
         .send()
@@ -80,7 +81,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
     }
   , async (req, reply) => {
       const namespace = req.params.namespace
-      await Core.RevisionPolicy.unsetUpdateRevisionRequired(namespace)
+      await api.RevisionPolicy.unsetUpdateRevisionRequired(namespace)
       return reply
         .status(204)
         .send()
@@ -104,7 +105,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
   , async (req, reply) => {
       const namespace = req.params.namespace
       const val = req.body
-      await Core.RevisionPolicy.setDeleteRevisionRequired(namespace, val)
+      await api.RevisionPolicy.setDeleteRevisionRequired(namespace, val)
       return reply
         .status(204)
         .send()
@@ -125,7 +126,7 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
     }
   , async (req, reply) => {
       const namespace = req.params.namespace
-      await Core.RevisionPolicy.unsetDeleteRevisionRequired(namespace)
+      await api.RevisionPolicy.unsetDeleteRevisionRequired(namespace)
       return reply
         .status(204)
         .send()

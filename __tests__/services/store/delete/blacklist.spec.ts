@@ -14,7 +14,7 @@ describe('blacklist', () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'blacklist'
         const namespace = 'namespace'
         const id = 'id'
-        await AccessControlDAO.addBlacklistItem(namespace)
+        await AccessControlDAO.Blacklist.addBlacklistItem(namespace)
 
         const res = await fetch(del(
           url(getAddress())
@@ -46,7 +46,7 @@ describe('blacklist', () => {
       it('204', async () => {
         const namespace = 'namespace'
         const id = 'id'
-        await AccessControlDAO.addBlacklistItem(namespace)
+        await AccessControlDAO.Blacklist.addBlacklistItem(namespace)
 
         const res = await fetch(del(
           url(getAddress())

@@ -1,5 +1,5 @@
 import { expectMatchSchema, startService, stopService, getAddress } from '@test/utils.js'
-import { JsonSchemaDAO } from '@dao/index.js'
+import { JSONSchemaDAO } from '@dao/index.js'
 import { fetch } from 'extra-fetch'
 import { get, put, del } from 'extra-request'
 import { url, text, pathname, headers, header, json } from 'extra-request/transformers'
@@ -61,7 +61,7 @@ describe('json schema', () => {
           process.env.STORE_ADMIN_PASSWORD = 'password'
           const namespace = 'namespace'
           const schema = { type: 'number' }
-          await JsonSchemaDAO.setJsonSchema({
+          JSONSchemaDAO.setJSONSchema({
             namespace
           , schema: JSON.stringify(schema)
           })

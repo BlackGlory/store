@@ -2,8 +2,9 @@ import { FastifyPluginAsync } from 'fastify'
 import { idSchema, namespaceSchema, tokenSchema } from '@src/schema.js'
 import { SET_PAYLOAD_LIMIT, JSON_PAYLOAD_ONLY } from '@env/index.js'
 import { CustomError } from '@blackglory/errors'
+import { IAPI } from '@api/contract.js'
 
-export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
+export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api }) => {
   // overwrite application/json parser
   server.addContentTypeParser(
     'application/json'
@@ -55,34 +56,34 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes
       const revision = req.headers['if-match']
 
       try {
-        await Core.Blacklist.check(namespace)
-        await Core.Whitelist.check(namespace)
-        await Core.TBAC.checkWritePermission(namespace, token)
-        if (Core.JsonSchema.isEnabled()) {
+        await api.Blacklist.check(namespace)
+        await api.Whitelist.check(namespace)
+        await api.TBAC.checkWritePermission(namespace, token)
+        if (api.JsonSchema.isEnabled()) {
           if (isJSONPayload()) {
-            await Core.JsonSchema.validate(namespace, payload)
+            await api.JsonSchema.validate(namespace, payload)
           } else {
-            if (await Core.JsonSchema.get(namespace)) {
+            if (await api.JsonSchema.get(namespace)) {
               throw new Error('This id only accepts application/json')
             }
           }
         }
       } catch (e) {
-        if (e instanceof Core.Blacklist.Forbidden) return reply.status(403).send()
-        if (e instanceof Core.Whitelist.Forbidden) return reply.status(403).send()
-        if (e instanceof Core.TBAC.Unauthorized) return reply.status(401).send()
-        if (e instanceof Core.JsonSchema.InvalidPayload) return reply.status(400).send()
+        if (e instanceof api.Blacklist.Forbidden) return reply.status(403).send()
+        if (e instanceof api.Whitelist.Forbidden) return reply.status(403).send()
+        if (e instanceof api.TBAC.Unauthorized) return reply.status(401).send()
+        if (e instanceof api.JsonSchema.InvalidPayload) return reply.status(400).send()
         if (e instanceof BadContentType) return reply.status(415).send()
         throw e
       }
 
       try {
-        await Core.Store.set(namespace, id, type, payload, revision)
+        await api.Store.set(namespace, id, type, payload, revision)
         return reply
           .status(204)
           .send()
       } catch (e) {
-        if (e instanceof Core.Store.IncorrectRevision) return reply.status(412).send()
+        if (e instanceof api.Store.IncorrectRevision) return reply.status(412).send()
         throw e
       }
 

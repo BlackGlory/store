@@ -16,9 +16,9 @@ describe('token-based access control', () => {
           const namespace = 'namespace'
           const id = 'id'
           const token = 'token'
-          await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
-          await AccessControlDAO.setReadTokenRequired(namespace, true)
-          await AccessControlDAO.setReadToken({ namespace, token })
+          StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+          AccessControlDAO.TokenPolicy.setReadTokenRequired(namespace, true)
+          AccessControlDAO.Token.setReadToken({ namespace, token })
 
           const res = await fetch(get(
             url(getAddress())
@@ -36,9 +36,9 @@ describe('token-based access control', () => {
           const namespace = 'namespace'
           const id = 'id'
           const token = 'token'
-          await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
-          await AccessControlDAO.setReadTokenRequired(namespace, true)
-          await AccessControlDAO.setReadToken({ namespace, token })
+          StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+          AccessControlDAO.TokenPolicy.setReadTokenRequired(namespace, true)
+          AccessControlDAO.Token.setReadToken({ namespace, token })
 
           const res = await fetch(get(
             url(getAddress())
@@ -55,9 +55,9 @@ describe('token-based access control', () => {
           const namespace = 'namespace'
           const id = 'id'
           const token = 'token'
-          await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
-          await AccessControlDAO.setReadTokenRequired(namespace, true)
-          await AccessControlDAO.setReadToken({ namespace, token })
+          StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+          AccessControlDAO.TokenPolicy.setReadTokenRequired(namespace, true)
+          AccessControlDAO.Token.setReadToken({ namespace, token })
 
           const res = await fetch(get(
             url(getAddress())
@@ -112,9 +112,9 @@ describe('token-based access control', () => {
           const namespace = 'namespace'
           const id = 'id'
           const token = 'token'
-          await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
-          await AccessControlDAO.setReadTokenRequired(namespace, true)
-          await AccessControlDAO.setReadToken({ namespace, token })
+          StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+          AccessControlDAO.TokenPolicy.setReadTokenRequired(namespace, true)
+          AccessControlDAO.Token.setReadToken({ namespace, token })
 
           const res = await fetch(get(
             url(getAddress())
@@ -133,9 +133,9 @@ describe('token-based access control', () => {
           const namespace = 'namespace'
           const id = 'id'
           const token = 'token'
-          await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
-          await AccessControlDAO.setReadTokenRequired(namespace, true)
-          await AccessControlDAO.setReadToken({ namespace, token })
+          StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+          AccessControlDAO.TokenPolicy.setReadTokenRequired(namespace, true)
+          AccessControlDAO.Token.setReadToken({ namespace, token })
 
           const res = await fetch(get(
             url(getAddress())

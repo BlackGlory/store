@@ -14,8 +14,8 @@ describe('blacklist', () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'blacklist'
         const namespace = 'namespace'
         const id = 'id'
-        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
-        await AccessControlDAO.addBlacklistItem(namespace)
+        StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        AccessControlDAO.Blacklist.addBlacklistItem(namespace)
 
         const res = await fetch(get(
           url(getAddress())
@@ -31,7 +31,7 @@ describe('blacklist', () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'blacklist'
         const namespace = 'namespace'
         const id = 'id'
-        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
         const res = await fetch(get(
           url(getAddress())
@@ -48,8 +48,8 @@ describe('blacklist', () => {
       it('200', async () => {
         const namespace = 'namespace'
         const id = 'id'
-        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
-        await AccessControlDAO.addBlacklistItem(namespace)
+        StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        AccessControlDAO.Blacklist.addBlacklistItem(namespace)
 
         const res = await fetch(get(
           url(getAddress())

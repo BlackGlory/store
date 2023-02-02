@@ -14,8 +14,8 @@ describe('whitelist', () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'whitelist'
         const namespace = 'namespace'
         const id = 'id'
-        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
-        await AccessControlDAO.addWhitelistItem(namespace)
+        StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        AccessControlDAO.Whitelist.addWhitelistItem(namespace)
 
         const res = await fetch(head(
           url(getAddress())
@@ -31,7 +31,7 @@ describe('whitelist', () => {
         process.env.STORE_LIST_BASED_ACCESS_CONTROL = 'whitelist'
         const namespace = 'namespace'
         const id = 'id'
-        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
         const res = await fetch(head(
           url(getAddress())
@@ -48,7 +48,7 @@ describe('whitelist', () => {
       it('204', async () => {
         const namespace = 'namespace'
         const id = 'id'
-        await StoreDAO.setItem(namespace, id, 'text/plain', 'document')
+        StoreDAO.setItem(namespace, id, 'text/plain', 'document')
 
         const res = await fetch(head(
           url(getAddress())

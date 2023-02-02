@@ -7,14 +7,15 @@ import { routes as getAllNamespacesRoutes } from './get-all-namespaces.js'
 import { routes as deleteRoutes } from './delete.js'
 import { routes as clearRoutes } from './clear.js'
 import { routes as statsRoutes } from './stats.js'
+import { IAPI } from '@api/contract.js'
 
-export const routes: FastifyPluginAsync<{ Core: ICore }> = async function routes(server, { Core }) {
-  server.register(setRoutes, { Core })
-  server.register(hasRoutes, { Core })
-  server.register(getRoutes, { Core })
-  server.register(getAllItemIdsRoutes, { Core })
-  server.register(getAllNamespacesRoutes, { Core })
-  server.register(deleteRoutes, { Core })
-  server.register(clearRoutes, { Core })
-  server.register(statsRoutes, { Core })
+export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api }) => {
+  server.register(setRoutes, { api })
+  server.register(hasRoutes, { api })
+  server.register(getRoutes, { api })
+  server.register(getAllItemIdsRoutes, { api })
+  server.register(getAllNamespacesRoutes, { api })
+  server.register(deleteRoutes, { api })
+  server.register(clearRoutes, { api })
+  server.register(statsRoutes, { api })
 }

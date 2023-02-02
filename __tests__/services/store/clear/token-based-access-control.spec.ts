@@ -15,8 +15,8 @@ describe('token-based access control', () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
           const namespace = 'namespace'
           const token = 'token'
-          await AccessControlDAO.setDeleteTokenRequired(namespace, true)
-          await AccessControlDAO.setDeleteToken({ namespace, token })
+          await AccessControlDAO.TokenPolicy.setDeleteTokenRequired(namespace, true)
+          await AccessControlDAO.Token.setDeleteToken({ namespace, token })
 
           const res = await fetch(del(
             url(getAddress())
@@ -33,8 +33,8 @@ describe('token-based access control', () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
           const namespace = 'namespace'
           const token = 'token'
-          await AccessControlDAO.setDeleteTokenRequired(namespace, true)
-          await AccessControlDAO.setDeleteToken({ namespace, token })
+          await AccessControlDAO.TokenPolicy.setDeleteTokenRequired(namespace, true)
+          await AccessControlDAO.Token.setDeleteToken({ namespace, token })
 
           const res = await fetch(del(
             url(getAddress())
@@ -50,8 +50,8 @@ describe('token-based access control', () => {
           process.env.STORE_TOKEN_BASED_ACCESS_CONTROL = 'true'
           const namespace = 'namespace'
           const token = 'token'
-          await AccessControlDAO.setDeleteTokenRequired(namespace, true)
-          await AccessControlDAO.setDeleteToken({ namespace, token })
+          await AccessControlDAO.TokenPolicy.setDeleteTokenRequired(namespace, true)
+          await AccessControlDAO.Token.setDeleteToken({ namespace, token })
 
           const res = await fetch(del(
             url(getAddress())
@@ -101,8 +101,8 @@ describe('token-based access control', () => {
         it('204', async () => {
           const namespace = 'namespace'
           const token = 'token'
-          await AccessControlDAO.setDeleteTokenRequired(namespace, true)
-          await AccessControlDAO.setDeleteToken({ namespace, token })
+          await AccessControlDAO.TokenPolicy.setDeleteTokenRequired(namespace, true)
+          await AccessControlDAO.Token.setDeleteToken({ namespace, token })
 
           const res = await fetch(del(
             url(getAddress())
@@ -120,8 +120,8 @@ describe('token-based access control', () => {
           process.env.STORE_DELETE_TOKEN_REQUIRED = 'true'
           const namespace = 'namespace'
           const token = 'token'
-          await AccessControlDAO.setDeleteTokenRequired(namespace, true)
-          await AccessControlDAO.setDeleteToken({ namespace, token })
+          await AccessControlDAO.TokenPolicy.setDeleteTokenRequired(namespace, true)
+          await AccessControlDAO.Token.setDeleteToken({ namespace, token })
 
           const res = await fetch(del(
             url(getAddress())

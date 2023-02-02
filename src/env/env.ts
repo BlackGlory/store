@@ -1,6 +1,6 @@
 import { ValueGetter } from 'value-getter'
 import { isNumber } from '@blackglory/prelude'
-import { Getter } from 'justypes'
+import { Getter } from '@blackglory/prelude'
 import { assert } from '@blackglory/errors'
 import { getCache } from '@env/cache.js'
 import * as path from 'path'
