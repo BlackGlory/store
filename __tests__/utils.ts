@@ -1,65 +1,44 @@
-import * as Config from '@dao/config/database.js'
-import * as Data from '@dao/data/database.js'
 import { resetCache } from '@env/cache.js'
-import { buildServer } from '@src/server.js'
-import Ajv from 'ajv'
-import { UnpackedPromise } from 'hotypes'
+import { startServer } from '@src/server.js'
+import { WebSocket } from 'ws'
+import { createClient } from '@delight-rpc/websocket'
+import { IAPI } from '@src/contract.js'
+import { openDatabase, closeDatabase, prepareDatabase } from '@src/database.js'
+import { waitForEventEmitter } from '@blackglory/wait-for'
+import { ClientProxy } from 'delight-rpc'
 
-const ajv = new Ajv.default()
-let server: UnpackedPromise<ReturnType<typeof buildServer>>
+let closeServer: ReturnType<typeof startServer>
 let address: string
 
-export function getAddress() {
-  return address
+export async function startService(): Promise<void> {
+  await initializeDatabase()
+  closeServer = startServer('localhost', 8080)
+  address = 'ws://localhost:8080'
 }
 
-export async function startService() {
-  await initializeDatabases()
-  server = await buildServer()
-  address = await server.listen()
-}
-
-export async function stopService() {
-  await server.close()
-  clearDatabases()
+export async function stopService(): Promise<void> {
+  await closeServer()
+  clearDatabase()
   resetEnvironment()
 }
 
-export async function initializeDatabases() {
-  Config.openDatabase()
-  await Config.prepareDatabase()
-
-  Data.openDatabase()
-  await Data.prepareDatabase()
+async function initializeDatabase(): Promise<void> {
+  openDatabase()
+  await prepareDatabase()
 }
 
-export function clearDatabases() {
-  Config.closeDatabase()
-  Data.closeDatabase()
+function clearDatabase(): void {
+  closeDatabase()
 }
 
-export function resetEnvironment() {
-  // assigning a property on `process.env` will implicitly convert the value to a string.
-  // use `delete` to delete a property from `process.env`.
-  // see also: https://nodejs.org/api/process.html#process_process_env
-  delete process.env.STORE_ADMIN_PASSWORD
-  delete process.env.STORE_LIST_BASED_ACCESS_CONTROL
-  delete process.env.STORE_TOKEN_BASED_ACCESS_CONTROL
-  delete process.env.STORE_WRITE_TOKEN_REQUIRED
-  delete process.env.STORE_READ_TOKEN_REQUIRED
-  delete process.env.STORE_DELETE_TOKEN_REQUIRED
-  delete process.env.STORE_JSON_VALIDATION
-  delete process.env.STORE_DEFAULT_JSON_SCHEMA
-  delete process.env.STORE_JSON_PAYLOAD_ONLY
-  delete process.env.STORE_UPDATE_REVISION_REQUIRED
-  delete process.env.STORE_DELETE_REVISION_REQUIRED
-
+function resetEnvironment(): void {
   // reset memoize
   resetCache()
 }
 
-export function expectMatchSchema(data: unknown, schema: object): void {
-  if (!ajv.validate(schema, data)) {
-    throw new Error(ajv.errorsText())
-  }
+export async function buildClient(): Promise<ClientProxy<IAPI>> {
+  const ws = new WebSocket(address)
+  await waitForEventEmitter(ws, 'open')
+  const [client] = createClient<IAPI>(ws)
+  return client
 }
