@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/BlackGlory/store/compare/v0.4.1...v0.5.0) (2023-02-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* - `HTTP` => `WebSocket`
+- The APIs have been redesigned.
+- Removed revision policy and related environment variables.
+* - Removed JSON schema validation.
+- Removed access control.
+
+* redesign APIs ([2a0f827](https://github.com/BlackGlory/store/commit/2a0f8272d9eae3d7fd8bb3f51aadac7ea9a6bc04))
+* remove JSON schema validation, access control ([349bf4e](https://github.com/BlackGlory/store/commit/349bf4e78a0abfbdc8d11ea82c4de525f9a18ca7))
+
 ### [0.4.1](https://github.com/BlackGlory/store/compare/v0.4.0...v0.4.1) (2023-02-02)
 
 ## [0.4.0](https://github.com/BlackGlory/store/compare/v0.3.14...v0.4.0) (2023-01-30)
