@@ -1,7 +1,7 @@
 import { startService, stopService, buildClient } from '@test/utils.js'
 import { getErrorAsync } from 'return-style'
 import { setRawItem, getRawItem } from './utils.js'
-import { IncorrectRevision } from '@src/errors.js'
+import { IncorrectRevision } from '@src/contract.js'
 
 beforeEach(startService)
 afterEach(stopService)

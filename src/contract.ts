@@ -1,3 +1,5 @@
+import { CustomError } from '@blackglory/errors'
+
 export type Revision = string
 
 export interface IStats {
@@ -36,3 +38,5 @@ export interface IAPI {
    */
   removeItem(namespace: string, itemId: string, revision?: Revision): null
 }
+
+export class IncorrectRevision extends CustomError {}

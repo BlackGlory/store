@@ -1,7 +1,7 @@
 import { isntUndefined } from '@blackglory/prelude'
 import { removeItem as _removeItem, removeItemWithRevision } from '@dao/remove-item.js'
 import { Revision } from '@src/contract.js'
-import { IncorrectRevision } from '@src/errors.js'
+import { IncorrectRevision } from '@src/contract.js'
 
 /**
  * @throws {IncorrectRevision}
