@@ -15,7 +15,7 @@ describe('deleteItem', () => {
       setRawItem({
         namespace
       , id
-      , value: 'value'
+      , value: JSON.stringify('value')
       , revision: 'revision'
       })
 
@@ -46,7 +46,7 @@ describe('deleteItem', () => {
           namespace
         , id
         , revision
-        , value: 'value'
+        , value: JSON.stringify('value')
         })
 
         await client.removeItem(namespace, id, revision)
@@ -62,7 +62,7 @@ describe('deleteItem', () => {
           namespace
         , id
         , revision: 'revision'
-        , value: 'value'
+        , value: JSON.stringify('value')
         })
 
         const err = await getErrorAsync(
@@ -80,7 +80,11 @@ describe('deleteItem', () => {
       const id = 'id'
       const revision = 'revision'
 
-      const err = await getErrorAsync(() => client.removeItem(namespace, id, revision))
+      const err = await getErrorAsync(() => client.removeItem(
+        namespace
+      , id
+      , revision
+      ))
 
       expect(err).toBeInstanceOf(IncorrectRevision)
       expect(hasRawItem(namespace, id)).toBe(false)

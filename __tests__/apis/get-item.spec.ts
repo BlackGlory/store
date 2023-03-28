@@ -17,7 +17,7 @@ describe('getItem', () => {
     setRawItem({
       namespace
     , id
-    , value: item.value
+    , value: JSON.stringify(item.value)
     , revision: item.revision
     })
 

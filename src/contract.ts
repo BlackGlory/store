@@ -1,22 +1,20 @@
 import { CustomError } from '@blackglory/errors'
+import { JSONValue } from '@blackglory/prelude'
 
-export type Revision = string
-
-export interface IStats {
-  namespace: string
+export interface INamespaceStats {
   items: number
 }
 
 export interface IItem {
-  value: string
+  value: JSONValue
   revision: string
 }
 
 export interface IAPI {
-  stats(namespace: string): IStats
-
   getAllNamespaces(): string[]
   getAllItemIds(namespace: string): string[]
+
+  getNamespaceStats(namespace: string): INamespaceStats
 
   clearItemsByNamespace(namespace: string): null
 
@@ -29,14 +27,19 @@ export interface IAPI {
    * 在提供revision参数的情况下, 如果目标项目的revision值不等于参数, 或项目不存在, 则抛出此错误.
    * @returns 如果成功, 返回新的revision.
    */
-  setItem(namespace: string, itemId: string, value: string, revision?: Revision): Revision
+  setItem(
+    namespace: string
+  , itemId: string
+  , value: JSONValue
+  , revision?: string
+  ): string
 
   /**
    * @param revision 可选参数, 用于实现乐观并发策略.
    * @throws {IncorrectRevision}
    * 在提供revision参数的情况下, 如果目标项目的revision值不等于参数, 或项目不存在, 则抛出此错误.
    */
-  removeItem(namespace: string, itemId: string, revision?: Revision): null
+  removeItem(namespace: string, itemId: string, revision?: string): null
 }
 
 export class IncorrectRevision extends CustomError {}

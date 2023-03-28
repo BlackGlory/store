@@ -1,6 +1,5 @@
 import { isntUndefined } from '@blackglory/prelude'
 import { setItem as _setItem, setItemWithRevision } from '@dao/set-item.js'
-import { Revision } from '@src/contract.js'
 import { IncorrectRevision } from '@src/contract.js'
 
 /**
@@ -10,8 +9,8 @@ export function setItem(
   namespace: string
 , itemId: string
 , value: string
-, revision?: Revision
-): Revision {
+, revision?: string
+): string {
   if (isntUndefined(revision)) {
     const newRevision = setItemWithRevision(namespace, itemId, value, revision)
     if (newRevision) {

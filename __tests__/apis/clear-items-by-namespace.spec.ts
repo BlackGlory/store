@@ -13,7 +13,7 @@ describe('clearItemsByNamespace', () => {
     setRawItem({
       namespace: namesapce2
     , id
-    , value: 'value'
+    , value: JSON.stringify('value')
     , revision: 'revision'
     })
 
@@ -30,13 +30,13 @@ describe('clearItemsByNamespace', () => {
     setRawItem({
       namespace: namesapce1
     , id
-    , value: 'value'
+    , value: JSON.stringify('value')
     , revision: 'revision'
     })
     setRawItem({
       namespace: namesapce2
     , id
-    , value: 'value'
+    , value: JSON.stringify('value')
     , revision: 'revision'
     })
 

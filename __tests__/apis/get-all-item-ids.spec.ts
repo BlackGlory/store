@@ -22,13 +22,13 @@ describe('getAllItemIds', () => {
     setRawItem({
       namespace
     , id: itemId1
-    , value: 'value-1'
+    , value: JSON.stringify('value-1')
     , revision: 'revision-1'
     })
     setRawItem({
       namespace
     , id: itemId2
-    , value: 'value-2'
+    , value: JSON.stringify('value-2')
     , revision: 'revision-2'
     })
 

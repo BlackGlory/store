@@ -1,8 +1,12 @@
 import { getDatabase } from '../database.js'
 import { withLazyStatic, lazyStatic } from 'extra-lazy'
 import { IItem } from '@src/contract.js'
+import { JSONValue } from '@blackglory/prelude'
 
-export const getItem = withLazyStatic((namespace: string, id: string): IItem | null => {
+export const getItem = withLazyStatic((
+  namespace: string
+, id: string
+): IItem | null => {
   const row = lazyStatic(() => getDatabase().prepare(`
     SELECT value
          , revision
@@ -17,7 +21,7 @@ export const getItem = withLazyStatic((namespace: string, id: string): IItem | n
   if (!row) return null
 
   return {
-    revision: row.revision
-  , value: row.value
+    value: JSON.parse(row.value) as JSONValue
+  , revision: row.revision
   }
 })

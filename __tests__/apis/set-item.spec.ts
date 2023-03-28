@@ -16,10 +16,10 @@ describe('setItem', () => {
 
       const result = await client.setItem(namespace, id, value)
 
-      const item = getRawItem(namespace, id)
-      expect(item).not.toBeNull()
-      expect(item!.revision).toBe(result)
-      expect(item!.value).toStrictEqual(value)
+      const rawItem = getRawItem(namespace, id)
+      expect(rawItem).not.toBeNull()
+      expect(rawItem!.revision).toBe(result)
+      expect(rawItem!.value).toStrictEqual(JSON.stringify(value))
     })
 
     test('item exists', async () => {
@@ -31,16 +31,16 @@ describe('setItem', () => {
         namespace
       , id
       , revision
-      , value: 'value'
+      , value: JSON.stringify('value')
       })
       const newValue = 'new-value'
 
       const result = await client.setItem(namespace, id, newValue)
 
-      const item = getRawItem(namespace, id)
       expect(result).not.toBe(revision)
-      expect(item).toMatchObject({
-        value: newValue
+      const rawItem = getRawItem(namespace, id)
+      expect(rawItem).toMatchObject({
+        value: JSON.stringify(newValue)
       , revision: result
       })
     })
@@ -54,7 +54,12 @@ describe('setItem', () => {
       const value = 'value'
       const revision = 'revision'
 
-      const err = await getErrorAsync(() => client.setItem(namespace, id, value, revision))
+      const err = await getErrorAsync(() => client.setItem(
+        namespace
+      , id
+      , value
+      , revision
+      ))
 
       expect(err).toBeInstanceOf(IncorrectRevision)
     })
@@ -70,15 +75,15 @@ describe('setItem', () => {
           namespace
         , id
         , revision: revision
-        , value: 'value'
+        , value: JSON.stringify('value')
         })
 
         const result = await client.setItem(namespace, id, newValue, revision)
 
-        const item = getRawItem(namespace, id)
         expect(result).not.toBe(revision)
-        expect(item).toMatchObject({
-          value: newValue
+        const rawItem = getRawItem(namespace, id)
+        expect(rawItem).toMatchObject({
+          value: JSON.stringify(newValue)
         , revision: result
         })
       })
@@ -87,22 +92,26 @@ describe('setItem', () => {
         const client = await buildClient()
         const namespace = 'test'
         const id = 'id'
-        const rawItem = {
+        setRawItem({
           namespace
         , id
         , revision: 'revision'
-        , value: 'value'
-        }
-        setRawItem(rawItem)
+        , value: JSON.stringify('value')
+        })
         const newValue = 'new-value'
 
         const err = await getErrorAsync(
           () => client.setItem(namespace, id, newValue, 'bad-revision')
         )
 
-        const item = getRawItem(namespace, id)
         expect(err).toBeInstanceOf(IncorrectRevision)
-        expect(item).toEqual(rawItem)
+        const rawItem = getRawItem(namespace, id)
+        expect(rawItem).toEqual({
+          namespace
+        , id
+        , revision: 'revision'
+        , value: JSON.stringify('value')
+        })
       })
     })
   })

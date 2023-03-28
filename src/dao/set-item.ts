@@ -1,7 +1,6 @@
 import { getDatabase } from '../database.js'
 import { uuid } from './utils/uuid.js'
 import { withLazyStatic, lazyStatic } from 'extra-lazy'
-import { Revision } from '@src/contract.js'
 
 export const setItem = withLazyStatic((
   namespace: string
@@ -20,7 +19,7 @@ export const setItem = withLazyStatic((
     .run({
       namespace
     , id
-    , value
+    , value: JSON.stringify(value)
     , revision
     })
 
@@ -31,7 +30,7 @@ export const setItemWithRevision = withLazyStatic((
   namespace: string
 , id: string
 , value: string
-, revision: Revision
+, revision: string
 ): string | false => {
   const newRevision = uuid()
 
@@ -46,7 +45,7 @@ export const setItemWithRevision = withLazyStatic((
     .run({
       namespace
     , id
-    , value
+    , value: JSON.stringify(value)
     , revision
     , newRevision
     })

@@ -20,7 +20,7 @@ describe('getAllNamespaces', () => {
     setRawItem({
       namespace
     , id
-    , value: 'value-1'
+    , value: JSON.stringify('value-1')
     , revision: 'revision-1'
     })
 
