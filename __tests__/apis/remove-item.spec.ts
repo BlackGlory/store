@@ -6,7 +6,7 @@ import { IncorrectRevision } from '@src/contract.js'
 beforeEach(startService)
 afterEach(stopService)
 
-describe('deleteItem', () => {
+describe('removeItem', () => {
   describe('without revision', () => {
     test('item exists', async () => {
       const client = await buildClient()
