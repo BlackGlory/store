@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.2](https://github.com/BlackGlory/store/compare/v0.6.1...v0.6.2) (2025-05-08)
+
+
+### Bug Fixes
+
+* abort signal support ([27015da](https://github.com/BlackGlory/store/commit/27015da506fe7072c1f9994a0ff98e4ecab52983))
+* types ([a1663c5](https://github.com/BlackGlory/store/commit/a1663c5eb2bf1e655815f7199a14a0429ad8bc3e))
+
 ### [0.6.1](https://github.com/BlackGlory/store/compare/v0.6.0...v0.6.1) (2023-12-06)
 
 ## [0.6.0](https://github.com/BlackGlory/store/compare/v0.5.0...v0.6.0) (2023-03-28)
