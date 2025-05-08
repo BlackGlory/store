@@ -1,3 +1,4 @@
+import { ImplementationOf } from 'delight-rpc'
 import { IAPI } from '@src/contract.js'
 import { getNamespaceStats } from './get-namespace-stats.js'
 import { getAllNamespaces } from './get-all-namespaces.js'
@@ -8,7 +9,7 @@ import { getItem } from './get-item.js'
 import { setItem } from './set-item.js'
 import { removeItem } from './remove-item.js'
 
-export const API: IAPI = {
+export const API: ImplementationOf<IAPI> = {
   getNamespaceStats
 , getAllNamespaces
 , getAllItemIds

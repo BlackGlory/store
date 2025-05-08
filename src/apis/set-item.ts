@@ -1,4 +1,4 @@
-import { isntUndefined } from '@blackglory/prelude'
+import { isntUndefined, JSONValue } from '@blackglory/prelude'
 import { setItem as _setItem, setItemWithRevision } from '@dao/set-item.js'
 import { IncorrectRevision } from '@src/contract.js'
 
@@ -8,7 +8,7 @@ import { IncorrectRevision } from '@src/contract.js'
 export function setItem(
   namespace: string
 , itemId: string
-, value: string
+, value: JSONValue
 , revision?: string
 ): string {
   if (isntUndefined(revision)) {

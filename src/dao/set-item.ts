@@ -1,3 +1,4 @@
+import { JSONValue } from '@blackglory/prelude'
 import { getDatabase } from '../database.js'
 import { uuid } from './utils/uuid.js'
 import { withLazyStatic, lazyStatic } from 'extra-lazy'
@@ -5,7 +6,7 @@ import { withLazyStatic, lazyStatic } from 'extra-lazy'
 export const setItem = withLazyStatic((
   namespace: string
 , id: string
-, value: string
+, value: JSONValue
 ): string => {
   const revision = uuid()
 
@@ -29,7 +30,7 @@ export const setItem = withLazyStatic((
 export const setItemWithRevision = withLazyStatic((
   namespace: string
 , id: string
-, value: string
+, value: JSONValue
 , revision: string
 ): string | false => {
   const newRevision = uuid()
