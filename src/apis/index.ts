@@ -9,7 +9,7 @@ import { setItem } from './set-item.js'
 import { removeItem } from './remove-item.js'
 
 export const API: IAPI = {
-  getNamespaceStats: getNamespaceStats
+  getNamespaceStats
 , getAllNamespaces
 , getAllItemIds
 , clearItemsByNamespace
