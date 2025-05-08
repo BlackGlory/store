@@ -16,6 +16,6 @@ export const API: ImplementationOf<IAPI> = {
 , clearItemsByNamespace
 , hasItem
 , getItem
-, setItem
-, removeItem
+, setItem: setItem as ImplementationOf<IAPI>['setItem']
+, removeItem: removeItem as ImplementationOf<IAPI>['removeItem']
 }
