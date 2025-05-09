@@ -47,6 +47,7 @@ services:
 volumes:
   store-data:
 ```
+
 ## API
 ```ts
 interface INamespaceStats {
