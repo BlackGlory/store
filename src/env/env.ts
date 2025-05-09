@@ -4,7 +4,7 @@ import { Getter } from '@blackglory/prelude'
 import { assert } from '@blackglory/errors'
 import { getCache } from '@env/cache.js'
 import * as path from 'path'
-import { getAppRoot } from '@src/utils.js'
+import { getAppRoot } from '@utils/get-app-root.js'
 
 export enum NodeEnv {
   Test

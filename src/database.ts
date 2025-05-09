@@ -7,7 +7,7 @@ import { assert } from '@blackglory/errors'
 import { readMigrationFile, findMigrationFilenames } from 'migration-files'
 import { map } from 'extra-promise'
 import { migrate } from '@blackglory/better-sqlite3-migrations'
-import { getAppRoot } from '@src/utils.js'
+import { getAppRoot } from '@utils/get-app-root.js'
 
 let db: IDatabase
 
