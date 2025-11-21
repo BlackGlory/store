@@ -116,26 +116,51 @@ describe('setItem', () => {
       })
 
       describe('revision isnt null', () => {
-        test('revision is correct', async () => {
-          const client = await buildClient()
-          const namespace = 'test'
-          const id = 'id'
-          const revision = 'revision'
-          const newValue = 'new-value'
-          setRawItem({
-            namespace
-          , id
-          , revision: revision
-          , value: JSON.stringify('value')
+        describe('revision is correct', () => {
+          test('general', async () => {
+            const client = await buildClient()
+            const namespace = 'test'
+            const id = 'id'
+            const revision = 'revision'
+            const newValue = 'new-value'
+            setRawItem({
+              namespace
+            , id
+            , revision: revision
+            , value: JSON.stringify('value')
+            })
+
+            const newRevision = await client.setItem(namespace, id, newValue, revision)
+
+            expect(newRevision).not.toBe(revision)
+            const rawItem = getRawItem(namespace, id)
+            expect(rawItem).toMatchObject({
+              value: JSON.stringify(newValue)
+            , revision: newRevision
+            })
           })
 
-          const newRevision = await client.setItem(namespace, id, newValue, revision)
+          test('edge: same value', async () => {
+            const client = await buildClient()
+            const namespace = 'test'
+            const id = 'id'
+            const revision = 'revision'
+            const value = 'value'
+            setRawItem({
+              namespace
+            , id
+            , revision: revision
+            , value: JSON.stringify(value)
+            })
 
-          expect(newRevision).not.toBe(revision)
-          const rawItem = getRawItem(namespace, id)
-          expect(rawItem).toMatchObject({
-            value: JSON.stringify(newValue)
-          , revision: newRevision
+            const newRevision = await client.setItem(namespace, id, value, revision)
+
+            expect(newRevision).not.toBe(revision)
+            const rawItem = getRawItem(namespace, id)
+            expect(rawItem).toMatchObject({
+              value: JSON.stringify(value)
+            , revision: newRevision
+            })
           })
         })
 
