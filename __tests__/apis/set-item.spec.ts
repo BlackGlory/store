@@ -47,48 +47,49 @@ describe('setItem', () => {
   })
 
   describe('with revision', () => {
-    test('item does not exist', async () => {
-      const client = await buildClient()
-      const namespace = 'test'
-      const id = 'id-1'
-      const value = 'value'
-      const revision = 'revision'
+    describe('item does not exist', () => {
+      test('revision isnt null', async () => {
+        const client = await buildClient()
+        const namespace = 'test'
+        const id = 'id-1'
+        const value = 'value'
+        const revision = 'revision'
 
-      const err = await getErrorAsync(() => client.setItem(
-        namespace
-      , id
-      , value
-      , revision
-      ))
+        const err = await getErrorAsync(() => client.setItem(
+          namespace
+        , id
+        , value
+        , revision
+        ))
 
-      expect(err).toBeInstanceOf(IncorrectRevision)
+        expect(err).toBeInstanceOf(IncorrectRevision)
+      })
+
+      test('revision is null', async () => {
+        const client = await buildClient()
+        const namespace = 'test'
+        const id = 'id-1'
+        const value = 'value'
+        const revision = null
+
+        const newRevision = await client.setItem(
+          namespace
+        , id
+        , value
+        , revision
+        )
+
+        expect(newRevision).not.toBe(revision)
+        const rawItem = getRawItem(namespace, id)
+        expect(rawItem).toMatchObject({
+          value: JSON.stringify(value)
+        , revision: newRevision
+        })
+      })
     })
 
     describe('item exists', () => {
-      test('revision is correct', async () => {
-        const client = await buildClient()
-        const namespace = 'test'
-        const id = 'id'
-        const revision = 'revision'
-        const newValue = 'new-value'
-        setRawItem({
-          namespace
-        , id
-        , revision: revision
-        , value: JSON.stringify('value')
-        })
-
-        const result = await client.setItem(namespace, id, newValue, revision)
-
-        expect(result).not.toBe(revision)
-        const rawItem = getRawItem(namespace, id)
-        expect(rawItem).toMatchObject({
-          value: JSON.stringify(newValue)
-        , revision: result
-        })
-      })
-
-      test('revison isnt correct', async () => {
+      test('revision is null', async () => {
         const client = await buildClient()
         const namespace = 'test'
         const id = 'id'
@@ -101,7 +102,7 @@ describe('setItem', () => {
         const newValue = 'new-value'
 
         const err = await getErrorAsync(
-          () => client.setItem(namespace, id, newValue, 'bad-revision')
+          () => client.setItem(namespace, id, newValue, null)
         )
 
         expect(err).toBeInstanceOf(IncorrectRevision)
@@ -111,6 +112,57 @@ describe('setItem', () => {
         , id
         , revision: 'revision'
         , value: JSON.stringify('value')
+        })
+      })
+
+      describe('revision isnt null', () => {
+        test('revision is correct', async () => {
+          const client = await buildClient()
+          const namespace = 'test'
+          const id = 'id'
+          const revision = 'revision'
+          const newValue = 'new-value'
+          setRawItem({
+            namespace
+          , id
+          , revision: revision
+          , value: JSON.stringify('value')
+          })
+
+          const newRevision = await client.setItem(namespace, id, newValue, revision)
+
+          expect(newRevision).not.toBe(revision)
+          const rawItem = getRawItem(namespace, id)
+          expect(rawItem).toMatchObject({
+            value: JSON.stringify(newValue)
+          , revision: newRevision
+          })
+        })
+
+        test('revison isnt correct', async () => {
+          const client = await buildClient()
+          const namespace = 'test'
+          const id = 'id'
+          setRawItem({
+            namespace
+          , id
+          , revision: 'revision'
+          , value: JSON.stringify('value')
+          })
+          const newValue = 'new-value'
+
+          const err = await getErrorAsync(
+            () => client.setItem(namespace, id, newValue, 'bad-revision')
+          )
+
+          expect(err).toBeInstanceOf(IncorrectRevision)
+          const rawItem = getRawItem(namespace, id)
+          expect(rawItem).toEqual({
+            namespace
+          , id
+          , revision: 'revision'
+          , value: JSON.stringify('value')
+          })
         })
       })
     })
