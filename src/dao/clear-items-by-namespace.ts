@@ -1,4 +1,4 @@
-import { getDatabase } from '../database.js'
+import { getDatabase } from '@src/database.js'
 import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
 export const clearItemsByNamespace = withLazyStatic((namespace: string): void => {

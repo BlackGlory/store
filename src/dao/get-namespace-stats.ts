@@ -1,4 +1,4 @@
-import { getDatabase } from '../database.js'
+import { getDatabase } from '@src/database.js'
 import { withLazyStatic, lazyStatic } from 'extra-lazy'
 import { INamespaceStats } from '@src/contract.js'
 

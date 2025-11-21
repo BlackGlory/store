@@ -1,5 +1,5 @@
 import { isNull, JSONValue } from '@blackglory/prelude'
-import { getDatabase } from '../database.js'
+import { getDatabase } from '@src/database.js'
 import { uuid } from './utils/uuid.js'
 import { withLazyStatic, lazyStatic } from 'extra-lazy'
 import { IncorrectRevision } from '@src/contract.js'
@@ -42,6 +42,9 @@ export function setItemWithRevision(
        : updateItemWithRevision(namespace, id, value, revision)
 }
 
+/**
+ * @throws {IncorrectRevision}
+ */
 const insertItemStrict = withLazyStatic((
   namespace: string
 , id: string
