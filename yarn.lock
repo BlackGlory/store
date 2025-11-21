@@ -2788,14 +2788,6 @@ extra-generator@^0.2.21:
     "@blackglory/prelude" "^0.2.0"
     return-style "^1.0.0"
 
-extra-generator@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/extra-generator/-/extra-generator-0.4.0.tgz#5094823f98bb0b8a01940c1bf84b02028213eaa2"
-  integrity sha512-2+SNQJtTA5RT2SlMdLip/GRHochEZl+myw0B4NLLsBRx9qFMndAhicCWml8kaqKLC8r4zJicZq2O3Djn1DD5uA==
-  dependencies:
-    "@blackglory/prelude" "^0.3.1"
-    return-style "^3.0.0"
-
 extra-generator@^0.5.1:
   version "0.5.9"
   resolved "https://registry.yarnpkg.com/extra-generator/-/extra-generator-0.5.9.tgz#c90de74a4958079d1fbed59f7965ea22dba1c5a6"
@@ -2882,14 +2874,6 @@ extra-sort@^0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/extra-sort/-/extra-sort-0.1.2.tgz#f1eb3fa248a429fee899faba3d322ff71602fe5d"
   integrity sha512-7TlwKucAY16+MPU01yvUmd/JggNQH0t86HdljR5/g0rwILSBm2Ih9a+lMtV70Ys9iWGPg7B1t1A2BnkgnZIdZA==
-
-extra-tags@^0.4.1:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/extra-tags/-/extra-tags-0.4.2.tgz#5424e77da733b8bf59fcbcb524e52481226f5477"
-  integrity sha512-TutjboVckfOce+MyLsJU1KT+pxlRDNHD0RSFAXF9l82V0aW2EFeCNaqaQvS4bY//ZfItSN8KdxfGaig2F8EojA==
-  dependencies:
-    "@blackglory/prelude" "^0.3.1"
-    extra-utils "^5.1.0"
 
 extra-timers@^0.2.5, extra-timers@^0.2.6:
   version "0.2.6"
@@ -3686,11 +3670,6 @@ is-stream@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-2.0.1.tgz#fac1e3d53b97ad5a9d0ae9cef2389f5810a5c077"
   integrity sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==
-
-is-stream@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-3.0.0.tgz#e6bfd7aa6bef69f4f472ce9bb681e3e57b4319ac"
-  integrity sha512-LnQR4bZ9IADDRSkvpqMGvt/tEJWclzklNgSw48V5EAaAeDd6qGvN8ei6k5p0tvxSR171VmGyHuTiAOfxAbr8kA==
 
 is-string@^1.1.1:
   version "1.1.1"
