@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.3](https://github.com/BlackGlory/store/compare/v0.6.2...v0.6.3) (2025-11-21)
+
+
+### Features
+
+* **set-item:** add support for `null` revision ([4d311e4](https://github.com/BlackGlory/store/commit/4d311e47be965a4e6a00c1c2e7af27b1d575120e))
+
 ### [0.6.2](https://github.com/BlackGlory/store/compare/v0.6.1...v0.6.2) (2025-05-08)
 
 
