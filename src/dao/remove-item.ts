@@ -4,8 +4,8 @@ import { withLazyStatic, lazyStatic } from 'extra-lazy'
 export const removeItem = withLazyStatic((namespace: string, id: string): boolean => {
   const { changes } = lazyStatic(() => getDatabase().prepare(`
     DELETE FROM store_item
-    WHERE namespace = $namespace
-      AND id = $id;
+     WHERE namespace = $namespace
+       AND id = $id
   `), [getDatabase()])
     .run({ namespace, id })
 
@@ -19,9 +19,9 @@ export const removeItemWithRevision = withLazyStatic((
 ): boolean => {
   const { changes } = lazyStatic(() => getDatabase().prepare(`
     DELETE FROM store_item
-    WHERE namespace = $namespace
-      AND id = $id
-      AND revision = $revision;
+     WHERE namespace = $namespace
+       AND id = $id
+       AND revision = $revision
   `), [getDatabase()])
     .run({ namespace, id, revision })
 

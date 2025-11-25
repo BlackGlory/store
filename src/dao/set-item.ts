@@ -16,7 +16,7 @@ export const setItem = withLazyStatic((
     VALUES ($namespace, $id, $value, $revision)
         ON CONFLICT(namespace, id)
         DO UPDATE SET value = $value
-                    , revision = $revision;
+                    , revision = $revision
   `), [getDatabase()])
     .run({
       namespace
@@ -87,7 +87,7 @@ const updateItemWithRevision = withLazyStatic((
          , revision = $newRevision
      WHERE namespace = $namespace
        AND id = $id
-       AND revision = $revision;
+       AND revision = $revision
   `), [getDatabase()])
     .run({
       namespace

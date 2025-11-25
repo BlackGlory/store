@@ -8,7 +8,7 @@ export const getNamespaceStats = withLazyStatic((
   const row = lazyStatic(() => getDatabase().prepare(`
     SELECT COUNT(*) AS items
       FROM store_item
-     WHERE namespace = $namespace;
+     WHERE namespace = $namespace
   `), [getDatabase()])
     .get({ namespace }) as { items: number }
 

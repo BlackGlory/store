@@ -8,7 +8,7 @@ export const hasItem = withLazyStatic((namespace: string, id: string): boolean =
                FROM store_item
               WHERE namespace = $namespace
                 AND id = $id
-           ) AS matched;
+           ) AS matched
   `), [getDatabase()])
     .get({ namespace, id }) as { matched: 1 | 0 }
 

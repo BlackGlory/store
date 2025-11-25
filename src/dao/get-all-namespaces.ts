@@ -4,7 +4,7 @@ import { withLazyStatic, lazyStatic } from 'extra-lazy'
 export const getAllNamespaces = withLazyStatic((): string[] => {
   const rows = lazyStatic(() => getDatabase().prepare(`
     SELECT DISTINCT namespace
-      FROM store_item;
+      FROM store_item
   `), [getDatabase()])
     .all() as Array<{ namespace: string }>
 
